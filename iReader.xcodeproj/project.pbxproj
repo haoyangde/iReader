@@ -48,6 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		81D3402520EC6BC40082725B /* 细说明朝.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "细说明朝.epub"; sourceTree = "<group>"; };
+		81D3402720EC6D0A0082725B /* iReader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iReader.pch; sourceTree = "<group>"; };
 		DFDC3BC3205665E100E40E27 /* iReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFDC3BC6205665E100E40E27 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DFDC3BC7205665E100E40E27 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -117,6 +119,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		81D3402420EC6BB70082725B /* Books */ = {
+			isa = PBXGroup;
+			children = (
+				81D3402520EC6BC40082725B /* 细说明朝.epub */,
+			);
+			path = Books;
+			sourceTree = "<group>";
+		};
+		81D3402620EC6CCD0082725B /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				81D3402720EC6D0A0082725B /* iReader.pch */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
 		DFDC3BBA205665E100E40E27 = {
 			isa = PBXGroup;
 			children = (
@@ -145,6 +163,7 @@
 				DFDC3C0C205668B400E40E27 /* Main */,
 				DFDC3C1020566A3A00E40E27 /* MyBooks */,
 				DFDC3C1420566AA300E40E27 /* Discovery */,
+				81D3402620EC6CCD0082725B /* Other */,
 				DFDC3C042056688400E40E27 /* Resource */,
 				DFDC3BD4205665E100E40E27 /* Info.plist */,
 			);
@@ -182,6 +201,7 @@
 		DFDC3C042056688400E40E27 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				81D3402420EC6BB70082725B /* Books */,
 				DFDC3C052056688400E40E27 /* Storyboards */,
 				DFDC3C082056688400E40E27 /* Assets.xcassets */,
 			);
@@ -578,10 +598,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = iReader/Other/iReader.pch;
 				INFOPLIST_FILE = iReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = yy.iReader;
+				PRODUCT_BUNDLE_IDENTIFIER = zzy.iReader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -592,10 +614,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = iReader/Other/iReader.pch;
 				INFOPLIST_FILE = iReader/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = yy.iReader;
+				PRODUCT_BUNDLE_IDENTIFIER = zzy.iReader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

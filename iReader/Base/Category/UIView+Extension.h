@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIView (Extension)
+@interface UIView (IRLayout)
 
 @property(nonatomic, assign) CGFloat x;
 @property(nonatomic, assign) CGFloat y;

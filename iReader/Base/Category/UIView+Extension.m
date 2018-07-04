@@ -8,7 +8,7 @@
 
 #import "UIView+Extension.h"
 
-@implementation UIView (Extension)
+@implementation UIView (IRLayout)
 
 - (CGFloat)x
 {
