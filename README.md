@@ -1,2 +1,2 @@
-# iReader
-阅读器，epub，text
+# iRead：爱看书
+支持：epub，text
