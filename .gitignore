@@ -40,3 +40,6 @@ fastlane/test_output
 # Code Injection
 
 iOSInjectionProject/
+iReader/iReader.xcodeproj/xcuserdata/zzyong.xcuserdatad/xcschemes/xcschememanagement.plist
+iReader/iReader.xcworkspace/contents.xcworkspacedata
+iReader/iReader.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist

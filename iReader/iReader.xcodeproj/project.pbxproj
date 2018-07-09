@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8145189220F3074E00DC5F3D /* IRMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189120F3074E00DC5F3D /* IRMetadata.m */; };
 		8145189520F307E000DC5F3D /* IREpubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189420F307E000DC5F3D /* IREpubBook.m */; };
+		CC9EB8FE7CDD1B0D1AF79B38 /* libPods-iReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D886AB0BE345FE472D2E28 /* libPods-iReader.a */; };
 		DFDC3BC8205665E100E40E27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BC7205665E100E40E27 /* AppDelegate.m */; };
 		DFDC3BD6205665E100E40E27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BD5205665E100E40E27 /* main.m */; };
 		DFDC3BE0205665E100E40E27 /* iReaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BDF205665E100E40E27 /* iReaderTests.m */; };
@@ -46,12 +47,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1F5255C12A7E313323610965 /* Pods-iReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iReader.release.xcconfig"; path = "Pods/Target Support Files/Pods-iReader/Pods-iReader.release.xcconfig"; sourceTree = "<group>"; };
+		42D886AB0BE345FE472D2E28 /* libPods-iReader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iReader.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8145189020F3074E00DC5F3D /* IRMetadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRMetadata.h; sourceTree = "<group>"; };
 		8145189120F3074E00DC5F3D /* IRMetadata.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRMetadata.m; sourceTree = "<group>"; };
 		8145189320F307E000DC5F3D /* IREpubBook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubBook.h; sourceTree = "<group>"; };
 		8145189420F307E000DC5F3D /* IREpubBook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IREpubBook.m; sourceTree = "<group>"; };
 		81D3402520EC6BC40082725B /* 细说明朝.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "细说明朝.epub"; sourceTree = "<group>"; };
 		81D3402720EC6D0A0082725B /* iReader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iReader.pch; sourceTree = "<group>"; };
+		B2035DF92994DB586CB903BD /* Pods-iReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iReader/Pods-iReader.debug.xcconfig"; sourceTree = "<group>"; };
 		DFDC3BC3205665E100E40E27 /* iReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFDC3BC6205665E100E40E27 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DFDC3BC7205665E100E40E27 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -93,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC9EB8FE7CDD1B0D1AF79B38 /* libPods-iReader.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,6 +118,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		577A8CA8467CBEAAFE776266 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B2035DF92994DB586CB903BD /* Pods-iReader.debug.xcconfig */,
+				1F5255C12A7E313323610965 /* Pods-iReader.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		81D3402420EC6BB70082725B /* Books */ = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +143,14 @@
 			path = Other;
 			sourceTree = "<group>";
 		};
+		9042A5057239B9FDD6473889 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				42D886AB0BE345FE472D2E28 /* libPods-iReader.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		DFDC3BBA205665E100E40E27 = {
 			isa = PBXGroup;
 			children = (
@@ -136,6 +158,8 @@
 				DFDC3BDE205665E100E40E27 /* iReaderTests */,
 				DFDC3BE9205665E100E40E27 /* iReaderUITests */,
 				DFDC3BC4205665E100E40E27 /* Products */,
+				577A8CA8467CBEAAFE776266 /* Pods */,
+				9042A5057239B9FDD6473889 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -302,9 +326,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DFDC3BEF205665E100E40E27 /* Build configuration list for PBXNativeTarget "iReader" */;
 			buildPhases = (
+				236352A1509C2345576D71E6 /* [CP] Check Pods Manifest.lock */,
 				DFDC3BBF205665E100E40E27 /* Sources */,
 				DFDC3BC0205665E100E40E27 /* Frameworks */,
 				DFDC3BC1205665E100E40E27 /* Resources */,
+				D15198FF6996F9DDC9F776BE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -422,6 +448,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		236352A1509C2345576D71E6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-iReader-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D15198FF6996F9DDC9F776BE /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-iReader/Pods-iReader-resources.sh",
+				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iReader/Pods-iReader-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DFDC3BBF205665E100E40E27 /* Sources */ = {
@@ -583,6 +648,7 @@
 		};
 		DFDC3BF0205665E100E40E27 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B2035DF92994DB586CB903BD /* Pods-iReader.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -599,6 +665,7 @@
 		};
 		DFDC3BF1205665E100E40E27 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1F5255C12A7E313323610965 /* Pods-iReader.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

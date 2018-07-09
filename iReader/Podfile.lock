@@ -1,0 +1,24 @@
+PODS:
+  - Masonry (0.5.3)
+  - SVProgressHUD (2.1.2)
+  - ZipArchive (1.4.0)
+
+DEPENDENCIES:
+  - Masonry (= 0.5.3)
+  - SVProgressHUD (= 2.1.2)
+  - ZipArchive (~> 1.4.0)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Masonry
+    - SVProgressHUD
+    - ZipArchive
+
+SPEC CHECKSUMS:
+  Masonry: 9f515466afe48632562342a40a1c224071a1a022
+  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
+  ZipArchive: e25a4373192673e3229ac8d6e9f64a3e5713c966
+
+PODFILE CHECKSUM: dd420770b962c9cf37eb19a1897b45ff76d83267
+
+COCOAPODS: 1.5.0

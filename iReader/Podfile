@@ -5,6 +5,7 @@ target 'iReader' do
     
     pod 'SVProgressHUD', '2.1.2'
     pod 'Masonry', '0.5.3'
+    pod 'ZipArchive', '~> 1.4.0'
 
 end
 
