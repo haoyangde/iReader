@@ -74,6 +74,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
         }
         
         unzipPath = [[IRFileUtilites applicationCachesDirectory] stringByAppendingPathComponent:epubName];
+        IRDebugLog(@"[IREpubParser] Epub unzip Path: %@", unzipPath);
         
         BOOL isDir;
         BOOL needUnzip = ![_fileManager fileExistsAtPath:unzipPath isDirectory:&isDir] || !isDir;
@@ -97,7 +98,10 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
         book = [[IREpubBook alloc] init];
         book.name = epubName;
         [self readContainerXMLWithUnzipPath:unzipPath book:book error:&epubError];
-        [self readOpfXMLWithUnzipPath:unzipPath book:book error:&epubError];
+        if (!epubError) {
+            [self readOpfXMLWithUnzipPath:unzipPath book:book error:&epubError];
+        }
+        
     } else {
         epubError = [self epubPareserErrorWithInfo:errorInfo];
     }
@@ -121,10 +125,20 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
 - (void)readContainerXMLWithUnzipPath:(NSString *)unzipPath book:(IREpubBook *)book error:(NSError **)error
 {
     NSString *containerXMLPath = [unzipPath stringByAppendingPathComponent:kContainerXMLAppendPath];
-    NSData *containerData = [NSData dataWithContentsOfFile:containerXMLPath options:NSDataReadingMappedAlways error:nil];
+    NSData *containerData = [NSData dataWithContentsOfFile:containerXMLPath options:NSDataReadingMappedAlways error:error];
+    
+    if (!containerData && *error) {
+        IRDebugLog(@"[IREpubParser] Creat container data error: %@", *error);
+        return;
+    }
     
     GDataXMLDocument *xmlDoc = [[GDataXMLDocument alloc] initWithData:containerData options:0 error:error];
-    NSLog(@"%@", xmlDoc.rootElement);
+    IRDebugLog(@"[IREpubParser] containerXML: %@", xmlDoc.rootElement);
+    
+    if (!xmlDoc && *error) {
+        IRDebugLog(@"[IREpubParser] Container XML parse error: %@", *error);
+        return;
+    }
     
     GDataXMLElement *rootfiles = [xmlDoc.rootElement elementsForName:@"rootfiles"].firstObject;
     GDataXMLElement *rootfile  = [rootfiles elementsForName:@"rootfile"].firstObject;
@@ -149,7 +163,30 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
  */
 - (void)readOpfXMLWithUnzipPath:(NSString *)unzipPath book:(IREpubBook *)book error:(NSError **)error
 {
+    NSString *opfPath = [unzipPath stringByAppendingPathComponent:book.container.fullPath];
+    NSData *opfData = [NSData dataWithContentsOfFile:opfPath options:NSDataReadingMappedAlways error:error];
     
+    if (!opfData && *error) {
+        IRDebugLog(@"[IREpubParser] Creat OPF data error: %@", *error);
+        return;
+    }
+    
+    GDataXMLDocument *opfDoc = [[GDataXMLDocument alloc] initWithData:opfData options:0 error:error];
+    IRDebugLog(@"[IREpubParser] OPF content: %@", opfDoc.rootElement);
+    
+    if (!opfDoc && *error) {
+        IRDebugLog(@"[IREpubParser] OPF parse error: %@", *error);
+        return;
+    }
+    
+    // Base OPF info
+    NSString *identifier = nil;
+    GDataXMLElement *package = opfDoc.rootElement;
+    identifier = [[package attributeForName:@"unique-identifier"] stringValue];
+    book.version = [[package attributeForName:@"version"] stringValue];
+    IRDebugLog(@"[IREpubParser] OPF unique-identifier: %@ version: %@", identifier, book.version);
+    
+    // metadata
 }
 
 #pragma mark - helper
