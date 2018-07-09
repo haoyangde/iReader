@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@class IRAuthor, IRMetadata;
+@class IRAuthor, IRMetadata, IRContainer;
 
 @interface IREpubBook : NSObject
 
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) IRContainer *container;
 @property (nonatomic, strong) IRAuthor *author;
 @property (nonatomic, strong) IRMetadata *metadata;
 

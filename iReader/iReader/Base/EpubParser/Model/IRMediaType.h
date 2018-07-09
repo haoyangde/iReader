@@ -14,6 +14,10 @@
 @property (nonatomic, strong) NSString *defaultExtension;
 @property (nonatomic, strong) NSArray<NSString *> *extensions;
 
++ (instancetype)mediaTypeWithName:(NSString *)name filePath:(NSString *)filePath;
+
+- (BOOL)isBitmapImage;
+
 - (instancetype)initWithName:(NSString *)name
             defaultExtension:(NSString *)defaultExtension
                   extensions:(NSArray<NSString *> *)extensions;
