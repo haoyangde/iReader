@@ -9,7 +9,7 @@ DEPENDENCIES:
   - ZipArchive (~> 1.4.0)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - Masonry
     - SVProgressHUD
     - ZipArchive
@@ -21,4 +21,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 673c7f00d70da51e40c85299818de133a3550d40
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3
