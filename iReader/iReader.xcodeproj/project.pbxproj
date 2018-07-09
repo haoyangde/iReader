@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8145189220F3074E00DC5F3D /* IRMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189120F3074E00DC5F3D /* IRMetadata.m */; };
+		8145189520F307E000DC5F3D /* IREpubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189420F307E000DC5F3D /* IREpubBook.m */; };
 		DFDC3BC8205665E100E40E27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BC7205665E100E40E27 /* AppDelegate.m */; };
 		DFDC3BD6205665E100E40E27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BD5205665E100E40E27 /* main.m */; };
 		DFDC3BE0205665E100E40E27 /* iReaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BDF205665E100E40E27 /* iReaderTests.m */; };
@@ -21,11 +23,7 @@
 		DFDC3C2420567EFC00E40E27 /* RouterBlockList.plist in Resources */ = {isa = PBXBuildFile; fileRef = DFDC3C2220567EFC00E40E27 /* RouterBlockList.plist */; };
 		DFDC3C2720567F5000E40E27 /* NSString+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3C2520567F5000E40E27 /* NSString+Extension.m */; };
 		DFDC3C3D205A5A0A00E40E27 /* IREpubParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3C3C205A5A0A00E40E27 /* IREpubParser.m */; };
-		DFDC3C43205A5DCE00E40E27 /* IREpubMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3C42205A5DCE00E40E27 /* IREpubMetadata.m */; };
 		DFDC3C47205A613600E40E27 /* IRAuthor.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3C46205A613600E40E27 /* IRAuthor.m */; };
-		DFDC3C4A205A615100E40E27 /* IRIndetifier.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3C49205A615100E40E27 /* IRIndetifier.m */; };
-		DFDC3C4D205A616D00E40E27 /* IREventDate.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3C4C205A616D00E40E27 /* IREventDate.m */; };
-		DFDC3C50205A618500E40E27 /* IRMeta.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3C4F205A618500E40E27 /* IRMeta.m */; };
 		DFDC3C53205A647500E40E27 /* IRMediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3C52205A647500E40E27 /* IRMediaType.m */; };
 		DFDC3C56205A690800E40E27 /* IRMediaTypeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3C55205A690800E40E27 /* IRMediaTypeManager.m */; };
 /* End PBXBuildFile section */
@@ -48,6 +46,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8145189020F3074E00DC5F3D /* IRMetadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRMetadata.h; sourceTree = "<group>"; };
+		8145189120F3074E00DC5F3D /* IRMetadata.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRMetadata.m; sourceTree = "<group>"; };
+		8145189320F307E000DC5F3D /* IREpubBook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubBook.h; sourceTree = "<group>"; };
+		8145189420F307E000DC5F3D /* IREpubBook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IREpubBook.m; sourceTree = "<group>"; };
 		81D3402520EC6BC40082725B /* 细说明朝.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "细说明朝.epub"; sourceTree = "<group>"; };
 		81D3402720EC6D0A0082725B /* iReader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iReader.pch; sourceTree = "<group>"; };
 		DFDC3BC3205665E100E40E27 /* iReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,16 +80,8 @@
 		DFDC3C2620567F5000E40E27 /* NSString+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Extension.h"; sourceTree = "<group>"; };
 		DFDC3C3B205A5A0A00E40E27 /* IREpubParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubParser.h; sourceTree = "<group>"; };
 		DFDC3C3C205A5A0A00E40E27 /* IREpubParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IREpubParser.m; sourceTree = "<group>"; };
-		DFDC3C41205A5DCE00E40E27 /* IREpubMetadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubMetadata.h; sourceTree = "<group>"; };
-		DFDC3C42205A5DCE00E40E27 /* IREpubMetadata.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IREpubMetadata.m; sourceTree = "<group>"; };
 		DFDC3C45205A613600E40E27 /* IRAuthor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRAuthor.h; sourceTree = "<group>"; };
 		DFDC3C46205A613600E40E27 /* IRAuthor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRAuthor.m; sourceTree = "<group>"; };
-		DFDC3C48205A615100E40E27 /* IRIndetifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRIndetifier.h; sourceTree = "<group>"; };
-		DFDC3C49205A615100E40E27 /* IRIndetifier.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRIndetifier.m; sourceTree = "<group>"; };
-		DFDC3C4B205A616D00E40E27 /* IREventDate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREventDate.h; sourceTree = "<group>"; };
-		DFDC3C4C205A616D00E40E27 /* IREventDate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IREventDate.m; sourceTree = "<group>"; };
-		DFDC3C4E205A618500E40E27 /* IRMeta.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRMeta.h; sourceTree = "<group>"; };
-		DFDC3C4F205A618500E40E27 /* IRMeta.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRMeta.m; sourceTree = "<group>"; };
 		DFDC3C51205A647500E40E27 /* IRMediaType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRMediaType.h; sourceTree = "<group>"; };
 		DFDC3C52205A647500E40E27 /* IRMediaType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRMediaType.m; sourceTree = "<group>"; };
 		DFDC3C54205A690800E40E27 /* IRMediaTypeManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRMediaTypeManager.h; sourceTree = "<group>"; };
@@ -280,8 +274,6 @@
 				DFDC3C44205A611900E40E27 /* Model */,
 				DFDC3C3B205A5A0A00E40E27 /* IREpubParser.h */,
 				DFDC3C3C205A5A0A00E40E27 /* IREpubParser.m */,
-				DFDC3C41205A5DCE00E40E27 /* IREpubMetadata.h */,
-				DFDC3C42205A5DCE00E40E27 /* IREpubMetadata.m */,
 			);
 			path = EpubParser;
 			sourceTree = "<group>";
@@ -295,12 +287,10 @@
 				DFDC3C55205A690800E40E27 /* IRMediaTypeManager.m */,
 				DFDC3C45205A613600E40E27 /* IRAuthor.h */,
 				DFDC3C46205A613600E40E27 /* IRAuthor.m */,
-				DFDC3C48205A615100E40E27 /* IRIndetifier.h */,
-				DFDC3C49205A615100E40E27 /* IRIndetifier.m */,
-				DFDC3C4B205A616D00E40E27 /* IREventDate.h */,
-				DFDC3C4C205A616D00E40E27 /* IREventDate.m */,
-				DFDC3C4E205A618500E40E27 /* IRMeta.h */,
-				DFDC3C4F205A618500E40E27 /* IRMeta.m */,
+				8145189020F3074E00DC5F3D /* IRMetadata.h */,
+				8145189120F3074E00DC5F3D /* IRMetadata.m */,
+				8145189320F307E000DC5F3D /* IREpubBook.h */,
+				8145189420F307E000DC5F3D /* IREpubBook.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -442,18 +432,16 @@
 				DFDC3C1D20567E8900E40E27 /* UIView+Extension.m in Sources */,
 				DFDC3BD6205665E100E40E27 /* main.m in Sources */,
 				DFDC3C2320567EFC00E40E27 /* IERouter.m in Sources */,
-				DFDC3C50205A618500E40E27 /* IRMeta.m in Sources */,
+				8145189220F3074E00DC5F3D /* IRMetadata.m in Sources */,
 				DFDC3C1320566A5C00E40E27 /* MyBooksViewController.m in Sources */,
 				DFDC3C3D205A5A0A00E40E27 /* IREpubParser.m in Sources */,
 				DFDC3C56205A690800E40E27 /* IRMediaTypeManager.m in Sources */,
-				DFDC3C43205A5DCE00E40E27 /* IREpubMetadata.m in Sources */,
 				DFDC3C0F2056690000E40E27 /* MainViewController.m in Sources */,
+				8145189520F307E000DC5F3D /* IREpubBook.m in Sources */,
 				DFDC3C47205A613600E40E27 /* IRAuthor.m in Sources */,
 				DFDC3BC8205665E100E40E27 /* AppDelegate.m in Sources */,
 				DFDC3C1720566ACD00E40E27 /* DiscoveryViewController.m in Sources */,
 				DFDC3C2720567F5000E40E27 /* NSString+Extension.m in Sources */,
-				DFDC3C4D205A616D00E40E27 /* IREventDate.m in Sources */,
-				DFDC3C4A205A615100E40E27 /* IRIndetifier.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
