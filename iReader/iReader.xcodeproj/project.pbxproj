@@ -14,6 +14,10 @@
 		81E2887920F38C4E006DB29B /* IRContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2887820F38C4E006DB29B /* IRContainer.m */; };
 		81E2887C20F391C5006DB29B /* IRCommonUtilites.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2887B20F391C5006DB29B /* IRCommonUtilites.m */; };
 		81E2888220F44FCF006DB29B /* IROpfMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2888120F44FCF006DB29B /* IROpfMetadata.m */; };
+		81E2888D20F48A46006DB29B /* IRResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2888C20F48A46006DB29B /* IRResource.m */; };
+		81E2889320F4A4D7006DB29B /* IROpfManifest.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2889220F4A4D7006DB29B /* IROpfManifest.m */; };
+		81E2889720F4A99F006DB29B /* The Silver Chair.epub in Resources */ = {isa = PBXBuildFile; fileRef = 81E2889620F4A99F006DB29B /* The Silver Chair.epub */; };
+		81E2889A20F4D924006DB29B /* IRTocRefrence.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2889920F4D924006DB29B /* IRTocRefrence.m */; };
 		CC9EB8FE7CDD1B0D1AF79B38 /* libPods-iReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D886AB0BE345FE472D2E28 /* libPods-iReader.a */; };
 		DFDC3BC8205665E100E40E27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BC7205665E100E40E27 /* AppDelegate.m */; };
 		DFDC3BD6205665E100E40E27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BD5205665E100E40E27 /* main.m */; };
@@ -70,6 +74,13 @@
 		81E2888020F44FCF006DB29B /* IROpfMetadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IROpfMetadata.h; sourceTree = "<group>"; };
 		81E2888120F44FCF006DB29B /* IROpfMetadata.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IROpfMetadata.m; sourceTree = "<group>"; };
 		81E2888720F4556A006DB29B /* IREpubBookPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubBookPrivate.h; sourceTree = "<group>"; };
+		81E2888B20F48A46006DB29B /* IRResource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRResource.h; sourceTree = "<group>"; };
+		81E2888C20F48A46006DB29B /* IRResource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRResource.m; sourceTree = "<group>"; };
+		81E2889120F4A4D7006DB29B /* IROpfManifest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IROpfManifest.h; sourceTree = "<group>"; };
+		81E2889220F4A4D7006DB29B /* IROpfManifest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IROpfManifest.m; sourceTree = "<group>"; };
+		81E2889620F4A99F006DB29B /* The Silver Chair.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "The Silver Chair.epub"; sourceTree = "<group>"; };
+		81E2889820F4D924006DB29B /* IRTocRefrence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRTocRefrence.h; sourceTree = "<group>"; };
+		81E2889920F4D924006DB29B /* IRTocRefrence.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRTocRefrence.m; sourceTree = "<group>"; };
 		B2035DF92994DB586CB903BD /* Pods-iReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iReader/Pods-iReader.debug.xcconfig"; sourceTree = "<group>"; };
 		DFDC3BC3205665E100E40E27 /* iReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFDC3BC6205665E100E40E27 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -143,6 +154,7 @@
 		81D3402420EC6BB70082725B /* Books */ = {
 			isa = PBXGroup;
 			children = (
+				81E2889620F4A99F006DB29B /* The Silver Chair.epub */,
 				81E2887520F381B3006DB29B /* 每天懂一点好玩心理学.epub */,
 			);
 			path = Books;
@@ -190,8 +202,16 @@
 		81E2887F20F44F9E006DB29B /* OPF-INF */ = {
 			isa = PBXGroup;
 			children = (
+				DFDC3C51205A647500E40E27 /* IRMediaType.h */,
+				DFDC3C52205A647500E40E27 /* IRMediaType.m */,
+				81E2888B20F48A46006DB29B /* IRResource.h */,
+				81E2888C20F48A46006DB29B /* IRResource.m */,
 				81E2888020F44FCF006DB29B /* IROpfMetadata.h */,
 				81E2888120F44FCF006DB29B /* IROpfMetadata.m */,
+				81E2889120F4A4D7006DB29B /* IROpfManifest.h */,
+				81E2889220F4A4D7006DB29B /* IROpfManifest.m */,
+				81E2889820F4D924006DB29B /* IRTocRefrence.h */,
+				81E2889920F4D924006DB29B /* IRTocRefrence.m */,
 			);
 			path = "OPF-INF";
 			sourceTree = "<group>";
@@ -375,8 +395,6 @@
 				81E2888320F454CF006DB29B /* Book */,
 				81E2887F20F44F9E006DB29B /* OPF-INF */,
 				81E2887E20F44F57006DB29B /* META-INF */,
-				DFDC3C51205A647500E40E27 /* IRMediaType.h */,
-				DFDC3C52205A647500E40E27 /* IRMediaType.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -492,6 +510,7 @@
 				DFDC3C0B2056688400E40E27 /* Assets.xcassets in Resources */,
 				81E2887620F381B3006DB29B /* 每天懂一点好玩心理学.epub in Resources */,
 				DFDC3C0A2056688400E40E27 /* Main.storyboard in Resources */,
+				81E2889720F4A99F006DB29B /* The Silver Chair.epub in Resources */,
 				DFDC3C2420567EFC00E40E27 /* RouterBlockList.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -559,7 +578,10 @@
 				DFDC3C53205A647500E40E27 /* IRMediaType.m in Sources */,
 				DFDC3C1D20567E8900E40E27 /* UIView+Extension.m in Sources */,
 				81E2886A20F34700006DB29B /* GDataXMLNode.m in Sources */,
+				81E2889320F4A4D7006DB29B /* IROpfManifest.m in Sources */,
 				81E2888220F44FCF006DB29B /* IROpfMetadata.m in Sources */,
+				81E2889A20F4D924006DB29B /* IRTocRefrence.m in Sources */,
+				81E2888D20F48A46006DB29B /* IRResource.m in Sources */,
 				DFDC3BD6205665E100E40E27 /* main.m in Sources */,
 				DFDC3C2320567EFC00E40E27 /* IERouter.m in Sources */,
 				DFDC3C1320566A5C00E40E27 /* MyBooksViewController.m in Sources */,

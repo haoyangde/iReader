@@ -27,5 +27,7 @@
 @property (nonatomic, strong) NSString *source;
 /** 版权*/
 @property (nonatomic, strong) NSString *rights;
+/** 封面ID*/
+@property (nonatomic, strong) NSString *coverImageId;
 
 @end

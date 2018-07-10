@@ -8,12 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-@class IRAuthor;
+@class IRAuthor, IRResource, IRTocRefrence;
 
 @interface IREpubBook : NSObject
 
+/** 书名*/
 @property (nonatomic, strong) NSString *name;
+/** 版本*/
 @property (nonatomic, strong) NSString *version;
+/** 作者*/
 @property (nonatomic, strong) IRAuthor *author;
+/** 封面*/
+@property (nonatomic, strong) IRResource *coverImage;
+/** 目录*/
+@property (nonatomic, strong) NSArray<IRTocRefrence *> *tableOfContents;
 
 @end

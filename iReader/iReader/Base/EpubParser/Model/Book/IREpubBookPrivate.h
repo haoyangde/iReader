@@ -12,11 +12,15 @@
 #import "IREpubBook.h"
 #import "IRContainer.h"
 #import "IROpfMetadata.h"
+#import "IRResource.h"
+#import "IROpfManifest.h"
+#import "IRTocRefrence.h"
 
 @interface IREpubBook ()
 
 @property (nonatomic, strong) IRContainer *container;
 @property (nonatomic, strong) IROpfMetadata *opfMetadata;
+@property (nonatomic, strong) IROpfManifest *opfManifest;
 
 @end
 

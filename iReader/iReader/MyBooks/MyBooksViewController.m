@@ -21,7 +21,7 @@
     [super viewDidLoad];
     
     [[IREpubParser sharedInstance] asyncReadEpubWithEpubName:@"每天懂一点好玩心理学" completion:^(IREpubBook *book, NSError *error) {
-        
+        NSLog(@"lolo");
     }];
 }
 

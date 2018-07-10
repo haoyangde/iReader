@@ -10,4 +10,11 @@
 
 @implementation IRAuthor
 
++ (instancetype)authorWithName:(NSString *)name
+{
+    IRAuthor *author = [[self alloc] init];
+    author.name = name;
+    return author;
+}
+
 @end

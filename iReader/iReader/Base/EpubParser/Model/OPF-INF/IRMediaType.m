@@ -35,7 +35,7 @@
            [self.defaultExtension isEqualToString:@"gif"];
 }
 
-+ (instancetype)mediaTypeWithName:(NSString *)name filePath:(NSString *)filePath
++ (instancetype)mediaTypeWithName:(NSString *)name fileName:(NSString *)fileName
 {
     static NSString *const kXhtmlMediaType = @"application/xhtml+xml";
     static NSString *const kEpubMediaType  = @"application/epub+zip";
@@ -167,7 +167,7 @@
         
     } else {
         return [[IRMediaType alloc] initWithName:name
-                                defaultExtension:filePath.pathExtension
+                                defaultExtension:fileName.pathExtension
                                       extensions:nil];
     }
 }

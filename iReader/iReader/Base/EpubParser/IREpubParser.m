@@ -11,6 +11,7 @@
 #import "GDataXMLNode.h"
 #import "IRMediaType.h"
 #import "IREpubBookPrivate.h"
+#import "IRAuthor.h"
 
 static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
 
@@ -19,6 +20,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
 @property (nonatomic, strong) IREpubBook *book;
 @property (nonatomic, strong) dispatch_queue_t ir_epub_parser_queue;
 @property (nonatomic, strong) NSFileManager *fileManager;
+@property (nonatomic, strong) NSString *resourcesBasePath;
 
 @end
 
@@ -94,11 +96,12 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     }
     
     if (!errorInfo.length) {
+        
         book = [[IREpubBook alloc] init];
         book.name = epubName;
         [self readContainerXMLWithUnzipPath:unzipPath book:book error:&epubError];
         if (!epubError) {
-            [self readOpfXMLWithUnzipPath:unzipPath book:book error:&epubError];
+            [self readOpfWithUnzipPath:unzipPath book:book error:&epubError];
         }
         
     } else {
@@ -141,9 +144,11 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     
     GDataXMLElement *rootfiles = [xmlDoc.rootElement elementsForName:@"rootfiles"].firstObject;
     GDataXMLElement *rootfile  = [rootfiles elementsForName:@"rootfile"].firstObject;
-    IRMediaType *mediaType = [IRMediaType mediaTypeWithName:[[rootfile attributeForName:@"media-type"] stringValue] filePath:nil];
+    IRMediaType *mediaType = [IRMediaType mediaTypeWithName:[[rootfile attributeForName:@"media-type"] stringValue] fileName:nil];
     book.container = [IRContainer containerWithFullPath:[[rootfile attributeForName:@"full-path"] stringValue]
                                               mediaType:mediaType];
+    self.resourcesBasePath = [unzipPath stringByAppendingPathComponent:[book.container.fullPath stringByDeletingLastPathComponent]];
+    IRDebugLog(@"[IREpubParser] Resources base path: %@", self.resourcesBasePath);
 }
 
 /**
@@ -160,7 +165,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
      5. tour
  @param unzipPath Epub 文件解压路径
  */
-- (void)readOpfXMLWithUnzipPath:(NSString *)unzipPath book:(IREpubBook *)book error:(NSError **)error
+- (void)readOpfWithUnzipPath:(NSString *)unzipPath book:(IREpubBook *)book error:(NSError **)error
 {
     NSString *opfPath = [unzipPath stringByAppendingPathComponent:book.container.fullPath];
     NSData *opfData = [NSData dataWithContentsOfFile:opfPath options:NSDataReadingMappedAlways error:error];
@@ -178,24 +183,186 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
         return;
     }
     
-    // Base OPF info
-    NSString *identifier = nil;
+    // Package
     GDataXMLElement *package = opfDoc.rootElement;
-    identifier = [[package attributeForName:@"unique-identifier"] stringValue];
     book.version = [[package attributeForName:@"version"] stringValue];
-    IRDebugLog(@"[IREpubParser] OPF unique-identifier: %@ version: %@", identifier, book.version);
+    IRDebugLog(@"[IREpubParser] OPF Package version: %@", book.version);
     
-    // metadata
+    // Metadata
     GDataXMLElement *opfMetadataDoc = [package elementsForName:@"metadata"].firstObject;
     if (opfMetadataDoc) {
         book.opfMetadata = [self readOpfMetadataWithXMLElement:opfMetadataDoc];
+        book.author = [IRAuthor authorWithName:book.opfMetadata.creator];
     }
+    
+    // Manifest
+    GDataXMLElement *opfManifestDoc = [package elementsForName:@"manifest"].firstObject;
+    if (opfManifestDoc) {
+        book.opfManifest = [self readOpfManifestWithXMLElement:opfManifestDoc book:book unzipPath:unzipPath];
+    }
+    
+    if (!book.opfManifest.tocNCXResource && !book.opfManifest.htmlNCXResource) {
+        NSString *errorInfo = @"[IREpubParser] ERROR: Could not find table of contents resource. The book don't have a TOC resource.";
+        *error = [self epubPareserErrorWithInfo:errorInfo];
+        NSAssert(NO, errorInfo);
+        return;
+    }
+    
+    // Table of contents
+    book.tableOfContents = [self readTableOfContentsWithBook:book error:error];
+}
+
+- (NSArray<IRTocRefrence *> *)readTableOfContentsWithBook:(IREpubBook *)book error:(NSError **)error
+{
+    NSMutableArray<IRTocRefrence *> *tableOfContents = nil;
+    NSArray *tocItems = nil;
+    IRResource *tocResource = book.opfManifest.tocNCXResource ?: book.opfManifest.htmlNCXResource;
+    if (!tocResource) {
+        return tableOfContents;
+    }
+    
+    NSData *ncxData = [NSData dataWithContentsOfFile:tocResource.fullHref options:NSDataReadingMappedAlways error:error];
+    GDataXMLDocument *xmlDoc = [[GDataXMLDocument alloc] initWithData:ncxData options:0 error:error];
+    
+    if ([tocResource.mediaType.defaultExtension isEqualToString:@"ncx"]) {
+        tocItems = [[xmlDoc.rootElement elementsForName:@"navMap"].firstObject elementsForName:@"navPoint"];
+    } else {
+        GDataXMLElement *nav = [[xmlDoc.rootElement elementsForName:@"body"].firstObject elementsForName:@"nav"].firstObject;
+        if (!nav) {
+            nav = [xmlDoc.rootElement elementsForName:@"body"].firstObject;
+        }
+        tocItems = [[nav elementsForName:@"ol"].firstObject elementsForName:@"li"];
+    }
+    
+    if (!tocItems) {
+        return tableOfContents;
+    }
+    
+    tableOfContents = [NSMutableArray arrayWithCapacity:tocItems.count];
+    for (GDataXMLElement *element in tocItems) {
+        if (![element isKindOfClass:[GDataXMLElement class]]) {
+            continue;
+        }
+        
+        IRTocRefrence *toc = [self readTocRefrenceWithXMLElement:element tocResource:tocResource book:book];
+        if (toc) {
+            [tableOfContents addObject:toc];
+        }
+    }
+    
+    return [tableOfContents copy];
+}
+
+- (IRTocRefrence *)readTocRefrenceWithXMLElement:(GDataXMLElement *)tocElement tocResource:(IRResource *)tocResource book:(IREpubBook *)book
+{
+    IRTocRefrence *toc = nil;
+    if ([tocResource.mediaType.defaultExtension isEqualToString:@"ncx"]) {
+    
+        NSString *src = [[[tocElement elementsForName:@"content"].firstObject attributeForName:@"src"] stringValue];
+        if (!src.length) {
+            return toc;
+        }
+        NSArray *srcSplit = [src componentsSeparatedByString:@"#"];
+        toc = [[IRTocRefrence alloc] init];
+        toc.fragmentId = srcSplit.count > 1 ? srcSplit.firstObject : @"";
+        toc.resource = [book.opfManifest.resources objectForKey:srcSplit.firstObject];
+        toc.title = [[[tocElement elementsForName:@"navLabel"].firstObject elementsForName:@"text"].firstObject stringValue];
+        
+        // Recursively find child
+        NSArray *navPoints = [tocElement elementsForName:@"navPoint"];
+        if (navPoints.count) {
+            NSMutableArray *childen = [NSMutableArray arrayWithCapacity:navPoints.count];
+            for (GDataXMLElement *element in navPoints) {
+                if (![element isKindOfClass:[GDataXMLElement class]]) {
+                    continue;
+                }
+                
+                IRTocRefrence *item = [self readTocRefrenceWithXMLElement:element tocResource:tocResource book:book];
+                if (item) {
+                    [childen addObject:item];
+                }
+            }
+            toc.childen = childen;
+        }
+        
+    } else {
+        NSString *href = [[[tocElement elementsForName:@"a"].firstObject attributeForName:@"href"] stringValue];
+        if (!href.length) {
+            return toc;
+        }
+        NSArray *hrefSplit = [href componentsSeparatedByString:@"#"];
+        toc = [[IRTocRefrence alloc] init];
+        toc.fragmentId = hrefSplit.count > 1 ? hrefSplit.firstObject : @"";
+        toc.resource = [book.opfManifest.resources objectForKey:hrefSplit.firstObject];
+        toc.title = [[tocElement elementsForName:@"a"].firstObject stringValue];
+        
+        // Recursively find child
+        NSArray *navPoints = [[tocElement elementsForName:@"ol"].firstObject elementsForName:@"li"];
+        if (navPoints.count) {
+            NSMutableArray *childen = [NSMutableArray arrayWithCapacity:navPoints.count];
+            for (GDataXMLElement *element in navPoints) {
+                if (![element isKindOfClass:[GDataXMLElement class]]) {
+                    continue;
+                }
+                
+                IRTocRefrence *item = [self readTocRefrenceWithXMLElement:element tocResource:tocResource book:book];
+                if (item) {
+                    [childen addObject:item];
+                }
+            }
+            toc.childen = childen;
+        }
+    }
+    
+    return toc;
+}
+
+- (IROpfManifest *)readOpfManifestWithXMLElement:(GDataXMLElement *)opfManifestDoc book:(IREpubBook *)book unzipPath:(NSString *)unzipPath
+{
+    IROpfManifest *manifest = [[IROpfManifest alloc] init];
+    NSMutableDictionary *resources = [NSMutableDictionary dictionaryWithCapacity:opfManifestDoc.childCount];
+    NSMutableArray *cssResources = [NSMutableArray arrayWithCapacity:opfManifestDoc.childCount];
+    for (GDataXMLElement *element in opfManifestDoc.children) {
+        if (![element isKindOfClass:[GDataXMLElement class]]) {
+            continue;
+        }
+        IRResource *resource = [[IRResource alloc] init];
+        resource.itemId = [[element attributeForName:@"id"] stringValue];
+        resource.properties = [[element attributeForName:@"properties"] stringValue];
+        resource.href = [[element attributeForName:@"href"] stringValue];
+        resource.fullHref = [self.resourcesBasePath stringByAppendingPathComponent:resource.href];
+        resource.mediaType = [IRMediaType mediaTypeWithName:[[element attributeForName:@"media-type"] stringValue]
+                                                   fileName:resource.href];
+        if ([resource.mediaType.name isEqualToString:@"text/css"]) {
+            [cssResources addObject:resource];
+        } else if ([resource.itemId isEqualToString:book.opfMetadata.coverImageId]) {
+            // Cover image
+            manifest.coverImageResource = resource;
+            book.coverImage = resource;
+        } else if ([resource.href.pathExtension isEqualToString:@"ncx"]) {
+            manifest.tocNCXResource = resource;
+        } else if ([resource.properties isEqualToString:@"nav"]) {
+            manifest.htmlNCXResource = resource;
+        } else {
+            [resources setObject:resource forKey:resource.href];
+        }
+    }
+    
+    manifest.resources = resources;
+    manifest.cssResources = cssResources;
+    
+    return manifest;
 }
 
 - (IROpfMetadata *)readOpfMetadataWithXMLElement:(GDataXMLElement *)opfMetadataDoc
 {
     IROpfMetadata *opfMetadata = [[IROpfMetadata alloc] init];
     for (GDataXMLElement *element in opfMetadataDoc.children) {
+        
+        if (![element isKindOfClass:[GDataXMLElement class]]) {
+            continue;
+        }
+        
         if ([element.name isEqualToString:@"dc:title"]) {
             opfMetadata.title = [element stringValue];
             
@@ -230,6 +397,15 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
                 [opfMetadata.subjects addObject:subject];
             }
             
+        } else if ([element.name isEqualToString:@"meta"]) {
+           
+            if ([[[element attributeForName:@"name"] stringValue] isEqualToString:@"cover"] ||
+                [[[element attributeForName:@"properties"] stringValue] isEqualToString:@"cover-image"]) {
+                
+                opfMetadata.coverImageId = [[element attributeForName:@"content"] stringValue];
+            } else {
+                continue;
+            }
         }
     }
     

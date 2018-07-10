@@ -14,4 +14,6 @@
 @property (nonatomic, strong) NSString *role;
 @property (nonatomic, strong) NSString *fileAs;
 
++ (instancetype)authorWithName:(NSString *)name;
+
 @end
