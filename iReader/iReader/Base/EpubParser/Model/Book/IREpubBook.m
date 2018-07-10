@@ -7,6 +7,7 @@
 //
 
 #import "IREpubBook.h"
+#import "IREpubBookPrivate.h"
 
 @implementation IREpubBook
 

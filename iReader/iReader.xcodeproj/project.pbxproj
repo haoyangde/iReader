@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8145189220F3074E00DC5F3D /* IRMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189120F3074E00DC5F3D /* IRMetadata.m */; };
 		8145189520F307E000DC5F3D /* IREpubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189420F307E000DC5F3D /* IREpubBook.m */; };
 		81E2886A20F34700006DB29B /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2886920F34700006DB29B /* GDataXMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		81E2886E20F35295006DB29B /* IRFileUtilites.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2886D20F35295006DB29B /* IRFileUtilites.m */; };
 		81E2887620F381B3006DB29B /* 每天懂一点好玩心理学.epub in Resources */ = {isa = PBXBuildFile; fileRef = 81E2887520F381B3006DB29B /* 每天懂一点好玩心理学.epub */; };
 		81E2887920F38C4E006DB29B /* IRContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2887820F38C4E006DB29B /* IRContainer.m */; };
 		81E2887C20F391C5006DB29B /* IRCommonUtilites.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2887B20F391C5006DB29B /* IRCommonUtilites.m */; };
+		81E2888220F44FCF006DB29B /* IROpfMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2888120F44FCF006DB29B /* IROpfMetadata.m */; };
 		CC9EB8FE7CDD1B0D1AF79B38 /* libPods-iReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D886AB0BE345FE472D2E28 /* libPods-iReader.a */; };
 		DFDC3BC8205665E100E40E27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BC7205665E100E40E27 /* AppDelegate.m */; };
 		DFDC3BD6205665E100E40E27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BD5205665E100E40E27 /* main.m */; };
@@ -53,8 +53,6 @@
 /* Begin PBXFileReference section */
 		1F5255C12A7E313323610965 /* Pods-iReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iReader.release.xcconfig"; path = "Pods/Target Support Files/Pods-iReader/Pods-iReader.release.xcconfig"; sourceTree = "<group>"; };
 		42D886AB0BE345FE472D2E28 /* libPods-iReader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iReader.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8145189020F3074E00DC5F3D /* IRMetadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRMetadata.h; sourceTree = "<group>"; };
-		8145189120F3074E00DC5F3D /* IRMetadata.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRMetadata.m; sourceTree = "<group>"; };
 		8145189320F307E000DC5F3D /* IREpubBook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubBook.h; sourceTree = "<group>"; };
 		8145189420F307E000DC5F3D /* IREpubBook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IREpubBook.m; sourceTree = "<group>"; };
 		81D3402720EC6D0A0082725B /* iReader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iReader.pch; sourceTree = "<group>"; };
@@ -69,6 +67,9 @@
 		81E2887A20F391C5006DB29B /* IRCommonUtilites.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCommonUtilites.h; sourceTree = "<group>"; };
 		81E2887B20F391C5006DB29B /* IRCommonUtilites.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRCommonUtilites.m; sourceTree = "<group>"; };
 		81E2887D20F393C3006DB29B /* IRCommonDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCommonDefines.h; sourceTree = "<group>"; };
+		81E2888020F44FCF006DB29B /* IROpfMetadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IROpfMetadata.h; sourceTree = "<group>"; };
+		81E2888120F44FCF006DB29B /* IROpfMetadata.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IROpfMetadata.m; sourceTree = "<group>"; };
+		81E2888720F4556A006DB29B /* IREpubBookPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubBookPrivate.h; sourceTree = "<group>"; };
 		B2035DF92994DB586CB903BD /* Pods-iReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iReader/Pods-iReader.debug.xcconfig"; sourceTree = "<group>"; };
 		DFDC3BC3205665E100E40E27 /* iReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFDC3BC6205665E100E40E27 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -175,6 +176,36 @@
 				81E2887B20F391C5006DB29B /* IRCommonUtilites.m */,
 			);
 			path = IRUtilites;
+			sourceTree = "<group>";
+		};
+		81E2887E20F44F57006DB29B /* META-INF */ = {
+			isa = PBXGroup;
+			children = (
+				81E2887720F38C4E006DB29B /* IRContainer.h */,
+				81E2887820F38C4E006DB29B /* IRContainer.m */,
+			);
+			path = "META-INF";
+			sourceTree = "<group>";
+		};
+		81E2887F20F44F9E006DB29B /* OPF-INF */ = {
+			isa = PBXGroup;
+			children = (
+				81E2888020F44FCF006DB29B /* IROpfMetadata.h */,
+				81E2888120F44FCF006DB29B /* IROpfMetadata.m */,
+			);
+			path = "OPF-INF";
+			sourceTree = "<group>";
+		};
+		81E2888320F454CF006DB29B /* Book */ = {
+			isa = PBXGroup;
+			children = (
+				DFDC3C45205A613600E40E27 /* IRAuthor.h */,
+				DFDC3C46205A613600E40E27 /* IRAuthor.m */,
+				8145189320F307E000DC5F3D /* IREpubBook.h */,
+				8145189420F307E000DC5F3D /* IREpubBook.m */,
+				81E2888720F4556A006DB29B /* IREpubBookPrivate.h */,
+			);
+			path = Book;
 			sourceTree = "<group>";
 		};
 		9042A5057239B9FDD6473889 /* Frameworks */ = {
@@ -341,16 +372,11 @@
 		DFDC3C44205A611900E40E27 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				81E2888320F454CF006DB29B /* Book */,
+				81E2887F20F44F9E006DB29B /* OPF-INF */,
+				81E2887E20F44F57006DB29B /* META-INF */,
 				DFDC3C51205A647500E40E27 /* IRMediaType.h */,
 				DFDC3C52205A647500E40E27 /* IRMediaType.m */,
-				DFDC3C45205A613600E40E27 /* IRAuthor.h */,
-				DFDC3C46205A613600E40E27 /* IRAuthor.m */,
-				8145189020F3074E00DC5F3D /* IRMetadata.h */,
-				8145189120F3074E00DC5F3D /* IRMetadata.m */,
-				8145189320F307E000DC5F3D /* IREpubBook.h */,
-				8145189420F307E000DC5F3D /* IREpubBook.m */,
-				81E2887720F38C4E006DB29B /* IRContainer.h */,
-				81E2887820F38C4E006DB29B /* IRContainer.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -533,9 +559,9 @@
 				DFDC3C53205A647500E40E27 /* IRMediaType.m in Sources */,
 				DFDC3C1D20567E8900E40E27 /* UIView+Extension.m in Sources */,
 				81E2886A20F34700006DB29B /* GDataXMLNode.m in Sources */,
+				81E2888220F44FCF006DB29B /* IROpfMetadata.m in Sources */,
 				DFDC3BD6205665E100E40E27 /* main.m in Sources */,
 				DFDC3C2320567EFC00E40E27 /* IERouter.m in Sources */,
-				8145189220F3074E00DC5F3D /* IRMetadata.m in Sources */,
 				DFDC3C1320566A5C00E40E27 /* MyBooksViewController.m in Sources */,
 				DFDC3C3D205A5A0A00E40E27 /* IREpubParser.m in Sources */,
 				81E2887C20F391C5006DB29B /* IRCommonUtilites.m in Sources */,

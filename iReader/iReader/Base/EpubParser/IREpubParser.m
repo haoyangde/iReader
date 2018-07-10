@@ -7,11 +7,10 @@
 //
 
 #import "IREpubParser.h"
-#import "IREpubBook.h"
 #import <ZipArchive.h>
 #import "GDataXMLNode.h"
-#import "IRContainer.h"
 #import "IRMediaType.h"
+#import "IREpubBookPrivate.h"
 
 static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
 
@@ -187,6 +186,54 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     IRDebugLog(@"[IREpubParser] OPF unique-identifier: %@ version: %@", identifier, book.version);
     
     // metadata
+    GDataXMLElement *opfMetadataDoc = [package elementsForName:@"metadata"].firstObject;
+    if (opfMetadataDoc) {
+        book.opfMetadata = [self readOpfMetadataWithXMLElement:opfMetadataDoc];
+    }
+}
+
+- (IROpfMetadata *)readOpfMetadataWithXMLElement:(GDataXMLElement *)opfMetadataDoc
+{
+    IROpfMetadata *opfMetadata = [[IROpfMetadata alloc] init];
+    for (GDataXMLElement *element in opfMetadataDoc.children) {
+        if ([element.name isEqualToString:@"dc:title"]) {
+            opfMetadata.title = [element stringValue];
+            
+        } else if ([element.name isEqualToString:@"dc:language"]) {
+            opfMetadata.language = [element stringValue];
+            
+        } else if ([element.name isEqualToString:@"dc:creator"]) {
+            opfMetadata.creator = [element stringValue];
+            
+        } else if ([element.name isEqualToString:@"dc:description"]) {
+            opfMetadata.bookDesc = [element stringValue];
+            
+        } else if ([element.name isEqualToString:@"dc:source"]) {
+            opfMetadata.source = [element stringValue];
+            
+        } else if ([element.name isEqualToString:@"dc:date"]) {
+            opfMetadata.date = [element stringValue];
+            
+        } else if ([element.name isEqualToString:@"dc:rights"]) {
+            opfMetadata.rights = [element stringValue];
+            
+        } else if ([element.name isEqualToString:@"dc:identifier"]) {
+            opfMetadata.identifier = [[element attributeForName:@"opf:scheme"] stringValue];
+            
+        } else if ([element.name isEqualToString:@"dc:subject"]) {
+            if (!opfMetadata.subjects) {
+                opfMetadata.subjects = [NSMutableArray arrayWithCapacity:opfMetadataDoc.childCount];
+            }
+            
+            NSString *subject = [element stringValue];
+            if (subject) {
+                [opfMetadata.subjects addObject:subject];
+            }
+            
+        }
+    }
+    
+    return opfMetadata;
 }
 
 #pragma mark - helper
