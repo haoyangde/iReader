@@ -6,18 +6,7 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "IRSpine.h"
-#import "IRAuthor.h"
-#import "IREpubBook.h"
-#import "IRResource.h"
-#import "IROpfSpine.h"
-#import "IRContainer.h"
-#import "IRMediaType.h"
-#import "IREpubParser.h"
-#import "GDataXMLNode.h"
-#import "IROpfManifest.h"
-#import "IRTocRefrence.h"
-#import "IROpfMetadata.h"
+#import "IREpubHeaders.h"
 
 // pod headers
 #import <ZipArchive.h>
@@ -350,7 +339,8 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
         
         if ([resource.mediaType.name isEqualToString:@"text/css"]) {
             [cssResources addObject:resource];
-        } else if ([resource.itemId isEqualToString:book.opfMetadata.coverImageId]) {
+        } else if ([resource.itemId isEqualToString:book.opfMetadata.coverImageId] ||
+                   ([resource.itemId isEqualToString:@"cover"] && [resource.mediaType isBitmapImage])) {
             // Cover image
             manifest.coverImageResource = resource;
             book.coverImage = resource;
