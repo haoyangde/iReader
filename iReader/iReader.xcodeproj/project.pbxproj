@@ -10,7 +10,6 @@
 		8145189520F307E000DC5F3D /* IREpubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189420F307E000DC5F3D /* IREpubBook.m */; };
 		81E2886A20F34700006DB29B /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2886920F34700006DB29B /* GDataXMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		81E2886E20F35295006DB29B /* IRFileUtilites.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2886D20F35295006DB29B /* IRFileUtilites.m */; };
-		81E2887620F381B3006DB29B /* 每天懂一点好玩心理学.epub in Resources */ = {isa = PBXBuildFile; fileRef = 81E2887520F381B3006DB29B /* 每天懂一点好玩心理学.epub */; };
 		81E2887920F38C4E006DB29B /* IRContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2887820F38C4E006DB29B /* IRContainer.m */; };
 		81E2887C20F391C5006DB29B /* IRCommonUtilites.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2887B20F391C5006DB29B /* IRCommonUtilites.m */; };
 		81E2888220F44FCF006DB29B /* IROpfMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2888120F44FCF006DB29B /* IROpfMetadata.m */; };
@@ -20,6 +19,7 @@
 		81E2889A20F4D924006DB29B /* IRTocRefrence.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2889920F4D924006DB29B /* IRTocRefrence.m */; };
 		81E2889F20F5F42B006DB29B /* IROpfSpine.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2889E20F5F42B006DB29B /* IROpfSpine.m */; };
 		81E288A220F5F45D006DB29B /* IRSpine.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E288A120F5F45D006DB29B /* IRSpine.m */; };
+		81E288A420F620C3006DB29B /* 内容算法.epub in Resources */ = {isa = PBXBuildFile; fileRef = 81E288A320F620C3006DB29B /* 内容算法.epub */; };
 		CC9EB8FE7CDD1B0D1AF79B38 /* libPods-iReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D886AB0BE345FE472D2E28 /* libPods-iReader.a */; };
 		DFDC3BC8205665E100E40E27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BC7205665E100E40E27 /* AppDelegate.m */; };
 		DFDC3BD6205665E100E40E27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BD5205665E100E40E27 /* main.m */; };
@@ -67,7 +67,6 @@
 		81E2886C20F35295006DB29B /* IRFileUtilites.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRFileUtilites.h; sourceTree = "<group>"; };
 		81E2886D20F35295006DB29B /* IRFileUtilites.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRFileUtilites.m; sourceTree = "<group>"; };
 		81E2886F20F353E2006DB29B /* IRUtilites.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRUtilites.h; sourceTree = "<group>"; };
-		81E2887520F381B3006DB29B /* 每天懂一点好玩心理学.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "每天懂一点好玩心理学.epub"; sourceTree = "<group>"; };
 		81E2887720F38C4E006DB29B /* IRContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRContainer.h; sourceTree = "<group>"; };
 		81E2887820F38C4E006DB29B /* IRContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRContainer.m; sourceTree = "<group>"; };
 		81E2887A20F391C5006DB29B /* IRCommonUtilites.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCommonUtilites.h; sourceTree = "<group>"; };
@@ -86,6 +85,7 @@
 		81E2889E20F5F42B006DB29B /* IROpfSpine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IROpfSpine.m; sourceTree = "<group>"; };
 		81E288A020F5F45D006DB29B /* IRSpine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSpine.h; sourceTree = "<group>"; };
 		81E288A120F5F45D006DB29B /* IRSpine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRSpine.m; sourceTree = "<group>"; };
+		81E288A320F620C3006DB29B /* 内容算法.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "内容算法.epub"; sourceTree = "<group>"; };
 		B2035DF92994DB586CB903BD /* Pods-iReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iReader/Pods-iReader.debug.xcconfig"; sourceTree = "<group>"; };
 		DFDC3BC3205665E100E40E27 /* iReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFDC3BC6205665E100E40E27 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -160,7 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				81E2889620F4A99F006DB29B /* The Silver Chair.epub */,
-				81E2887520F381B3006DB29B /* 每天懂一点好玩心理学.epub */,
+				81E288A320F620C3006DB29B /* 内容算法.epub */,
 			);
 			path = Books;
 			sourceTree = "<group>";
@@ -516,7 +516,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DFDC3C0B2056688400E40E27 /* Assets.xcassets in Resources */,
-				81E2887620F381B3006DB29B /* 每天懂一点好玩心理学.epub in Resources */,
+				81E288A420F620C3006DB29B /* 内容算法.epub in Resources */,
 				DFDC3C0A2056688400E40E27 /* Main.storyboard in Resources */,
 				81E2889720F4A99F006DB29B /* The Silver Chair.epub in Resources */,
 				DFDC3C2420567EFC00E40E27 /* RouterBlockList.plist in Resources */,
