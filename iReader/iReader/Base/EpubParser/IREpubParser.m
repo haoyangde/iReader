@@ -35,17 +35,6 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
 
 @implementation IREpubParser
 
-+ (instancetype)sharedInstance
-{
-    static IREpubParser *sharedInstance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[self alloc] init];
-    });
-    
-    return sharedInstance;
-}
-
 - (instancetype)init
 {
     if (self = [super init]) {
@@ -54,17 +43,6 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     }
     
     return self;
-}
-
-- (void)asyncReadEpubWithEpubName:(NSString *)epubPath completion:(ReadEpubCompletion)completion
-{
-    if (!completion) {
-        return;
-    }
-    
-    dispatch_async(_ir_epub_parser_queue, ^{
-        [self handleEpubWithEpubName:epubPath completion:completion];
-    });
 }
 
 - (void)handleEpubWithEpubName:(NSString *)epubName completion:(ReadEpubCompletion)completion
@@ -122,17 +100,6 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     });
 }
 
-/**
- ContainerXML format
- 
- <?xml version="1.0" encoding="UTF-8" ?>
- <container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
-     <rootfiles>
-         <rootfile full-path="OPS/fb.opf" media-type="application/oebps-package+xml"/>
-     </rootfiles>
- </container>
-
- */
 - (void)readContainerXMLWithUnzipPath:(NSString *)unzipPath book:(IREpubBook *)book error:(NSError **)error
 {
     NSString *containerXMLPath = [unzipPath stringByAppendingPathComponent:kContainerXMLAppendPath];
@@ -160,20 +127,6 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     IRDebugLog(@"[IREpubParser] Resources base path: %@", self.resourcesBasePath);
 }
 
-/**
- OPF 文件构成
-     1. meatadata
-         < dc-metadata >: 核心元素
-             < title >, < creator >, < subject >, < description >, < contributor >
-             < date >, < type >, < format >, < identifier >, < source >, < language >
-             < relation >, < coverage >, < rights >
-         < x-metadata >: 扩展元素
-     2. manifest
-     3. spine
-     4. guide
-     5. tour
- @param unzipPath Epub 文件解压路径
- */
 - (void)readOpfWithUnzipPath:(NSString *)unzipPath book:(IREpubBook *)book error:(NSError **)error
 {
     NSString *opfPath = [unzipPath stringByAppendingPathComponent:book.container.fullPath];
@@ -484,4 +437,66 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     return [NSError errorWithDomain:@"EpubPareserErrorDomain" code:-1 userInfo:@{@"errorInfo" : info}];
 }
 
+#pragma mark - public
+
++ (instancetype)sharedInstance
+{
+    static IREpubParser *sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    
+    return sharedInstance;
+}
+
+- (void)asyncReadEpubWithEpubName:(NSString *)epubName completion:(ReadEpubCompletion)completion
+{
+    if (!completion) {
+        return;
+    }
+    
+    dispatch_async(_ir_epub_parser_queue, ^{
+        [self handleEpubWithEpubName:epubName completion:completion];
+    });
+}
+
 @end
+
+// MARK: Epub 文件结构
+/**
+     <1> Mimetype 文件：文件格式
+     <2> META-INF 目录：
+         作用：用于存放容器信息
+         内容：
+         1. 基本文件：container.xml
+         2. 可选：manifest.xml(文件列表)、metadata.xml(元数据)、signatures.xml(数字签名)、encryption.xml(加密)、rights.xml(权限管理)
+     <3> OEDPS(OPS) 目录：
+         1. 存放OPF文档、CSS文档、NCX 文档、资源文件（images等）。中文电子书则还包含 TTF文档
+         2. content.opf 文件和 toc.ncx 文件为必需。其他可选
+ */
+
+//MARK: OPF 文件构成
+/*
+    1. meatadata
+        < dc-metadata >: 核心元素
+            < title >, < creator >, < subject >, < description >, < contributor >
+            < date >, < type >, < format >, < identifier >, < source >, < language >
+            < relation >, < coverage >, < rights >
+        < x-metadata >: 扩展元素
+    2. manifest
+    3. spine
+    4. guide
+    5. tour
+*/
+
+// MARK: Container.xml 文件结构
+/**
+ <?xml version="1.0" encoding="UTF-8" ?>
+ <container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
+     <rootfiles>
+         <rootfile full-path="OPS/fb.opf" media-type="application/oebps-package+xml"/>
+     </rootfiles>
+ </container>
+ 
+ */
