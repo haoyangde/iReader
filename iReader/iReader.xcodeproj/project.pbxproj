@@ -18,6 +18,8 @@
 		81E2889320F4A4D7006DB29B /* IROpfManifest.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2889220F4A4D7006DB29B /* IROpfManifest.m */; };
 		81E2889720F4A99F006DB29B /* The Silver Chair.epub in Resources */ = {isa = PBXBuildFile; fileRef = 81E2889620F4A99F006DB29B /* The Silver Chair.epub */; };
 		81E2889A20F4D924006DB29B /* IRTocRefrence.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2889920F4D924006DB29B /* IRTocRefrence.m */; };
+		81E2889F20F5F42B006DB29B /* IROpfSpine.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2889E20F5F42B006DB29B /* IROpfSpine.m */; };
+		81E288A220F5F45D006DB29B /* IRSpine.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E288A120F5F45D006DB29B /* IRSpine.m */; };
 		CC9EB8FE7CDD1B0D1AF79B38 /* libPods-iReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D886AB0BE345FE472D2E28 /* libPods-iReader.a */; };
 		DFDC3BC8205665E100E40E27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BC7205665E100E40E27 /* AppDelegate.m */; };
 		DFDC3BD6205665E100E40E27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BD5205665E100E40E27 /* main.m */; };
@@ -73,7 +75,6 @@
 		81E2887D20F393C3006DB29B /* IRCommonDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCommonDefines.h; sourceTree = "<group>"; };
 		81E2888020F44FCF006DB29B /* IROpfMetadata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IROpfMetadata.h; sourceTree = "<group>"; };
 		81E2888120F44FCF006DB29B /* IROpfMetadata.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IROpfMetadata.m; sourceTree = "<group>"; };
-		81E2888720F4556A006DB29B /* IREpubBookPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubBookPrivate.h; sourceTree = "<group>"; };
 		81E2888B20F48A46006DB29B /* IRResource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRResource.h; sourceTree = "<group>"; };
 		81E2888C20F48A46006DB29B /* IRResource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRResource.m; sourceTree = "<group>"; };
 		81E2889120F4A4D7006DB29B /* IROpfManifest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IROpfManifest.h; sourceTree = "<group>"; };
@@ -81,6 +82,10 @@
 		81E2889620F4A99F006DB29B /* The Silver Chair.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "The Silver Chair.epub"; sourceTree = "<group>"; };
 		81E2889820F4D924006DB29B /* IRTocRefrence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRTocRefrence.h; sourceTree = "<group>"; };
 		81E2889920F4D924006DB29B /* IRTocRefrence.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRTocRefrence.m; sourceTree = "<group>"; };
+		81E2889D20F5F42B006DB29B /* IROpfSpine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IROpfSpine.h; sourceTree = "<group>"; };
+		81E2889E20F5F42B006DB29B /* IROpfSpine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IROpfSpine.m; sourceTree = "<group>"; };
+		81E288A020F5F45D006DB29B /* IRSpine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSpine.h; sourceTree = "<group>"; };
+		81E288A120F5F45D006DB29B /* IRSpine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRSpine.m; sourceTree = "<group>"; };
 		B2035DF92994DB586CB903BD /* Pods-iReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iReader/Pods-iReader.debug.xcconfig"; sourceTree = "<group>"; };
 		DFDC3BC3205665E100E40E27 /* iReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFDC3BC6205665E100E40E27 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -212,6 +217,10 @@
 				81E2889220F4A4D7006DB29B /* IROpfManifest.m */,
 				81E2889820F4D924006DB29B /* IRTocRefrence.h */,
 				81E2889920F4D924006DB29B /* IRTocRefrence.m */,
+				81E288A020F5F45D006DB29B /* IRSpine.h */,
+				81E288A120F5F45D006DB29B /* IRSpine.m */,
+				81E2889D20F5F42B006DB29B /* IROpfSpine.h */,
+				81E2889E20F5F42B006DB29B /* IROpfSpine.m */,
 			);
 			path = "OPF-INF";
 			sourceTree = "<group>";
@@ -223,7 +232,6 @@
 				DFDC3C46205A613600E40E27 /* IRAuthor.m */,
 				8145189320F307E000DC5F3D /* IREpubBook.h */,
 				8145189420F307E000DC5F3D /* IREpubBook.m */,
-				81E2888720F4556A006DB29B /* IREpubBookPrivate.h */,
 			);
 			path = Book;
 			sourceTree = "<group>";
@@ -579,6 +587,7 @@
 				DFDC3C1D20567E8900E40E27 /* UIView+Extension.m in Sources */,
 				81E2886A20F34700006DB29B /* GDataXMLNode.m in Sources */,
 				81E2889320F4A4D7006DB29B /* IROpfManifest.m in Sources */,
+				81E2889F20F5F42B006DB29B /* IROpfSpine.m in Sources */,
 				81E2888220F44FCF006DB29B /* IROpfMetadata.m in Sources */,
 				81E2889A20F4D924006DB29B /* IRTocRefrence.m in Sources */,
 				81E2888D20F48A46006DB29B /* IRResource.m in Sources */,
@@ -586,6 +595,7 @@
 				DFDC3C2320567EFC00E40E27 /* IERouter.m in Sources */,
 				DFDC3C1320566A5C00E40E27 /* MyBooksViewController.m in Sources */,
 				DFDC3C3D205A5A0A00E40E27 /* IREpubParser.m in Sources */,
+				81E288A220F5F45D006DB29B /* IRSpine.m in Sources */,
 				81E2887C20F391C5006DB29B /* IRCommonUtilites.m in Sources */,
 				81E2887920F38C4E006DB29B /* IRContainer.m in Sources */,
 				81E2886E20F35295006DB29B /* IRFileUtilites.m in Sources */,

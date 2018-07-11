@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@class IRAuthor, IRResource, IRTocRefrence;
+@class IRAuthor, IRResource, IRTocRefrence, IRContainer;
+@class IROpfMetadata, IROpfManifest, IROpfSpine;
 
 @interface IREpubBook : NSObject
 
@@ -22,5 +23,10 @@
 @property (nonatomic, strong) IRResource *coverImage;
 /** 目录*/
 @property (nonatomic, strong) NSArray<IRTocRefrence *> *tableOfContents;
+
+@property (nonatomic, strong) IRContainer   *container;
+@property (nonatomic, strong) IROpfMetadata *opfMetadata;
+@property (nonatomic, strong) IROpfManifest *opfManifest;
+@property (nonatomic, strong) IROpfSpine *opfSpine;
 
 @end

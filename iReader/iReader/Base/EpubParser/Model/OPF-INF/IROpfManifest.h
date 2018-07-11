@@ -12,10 +12,11 @@
 
 @interface IROpfManifest : NSObject
 
-@property (nonatomic, strong) NSDictionary<NSString *, IRResource *> *resources;
+@property (nonatomic, strong) NSDictionary<NSString *, IRResource *> *resources; // key 为 item href
 @property (nonatomic, strong) NSArray<IRResource *> *cssResources;
 @property (nonatomic, strong) IRResource *coverImageResource;
 @property (nonatomic, strong) IRResource *tocNCXResource;
 @property (nonatomic, strong) IRResource *htmlNCXResource;
+@property (nonatomic, strong) NSDictionary<NSString *, NSString *> *manifestOfHrefs;// {key : id , value : href}
 
 @end

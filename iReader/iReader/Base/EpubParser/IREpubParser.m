@@ -6,12 +6,21 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "IREpubParser.h"
-#import <ZipArchive.h>
-#import "GDataXMLNode.h"
-#import "IRMediaType.h"
-#import "IREpubBookPrivate.h"
+#import "IRSpine.h"
 #import "IRAuthor.h"
+#import "IREpubBook.h"
+#import "IRResource.h"
+#import "IROpfSpine.h"
+#import "IRContainer.h"
+#import "IRMediaType.h"
+#import "IREpubParser.h"
+#import "GDataXMLNode.h"
+#import "IROpfManifest.h"
+#import "IRTocRefrence.h"
+#import "IROpfMetadata.h"
+
+// pod headers
+#import <ZipArchive.h>
 
 static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
 
@@ -176,7 +185,6 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     }
     
     GDataXMLDocument *opfDoc = [[GDataXMLDocument alloc] initWithData:opfData options:0 error:error];
-    IRDebugLog(@"[IREpubParser] OPF content: %@", opfDoc.rootElement);
     
     if (!opfDoc && *error) {
         IRDebugLog(@"[IREpubParser] OPF parse error: %@", *error);
@@ -210,6 +218,41 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     
     // Table of contents
     book.tableOfContents = [self readTableOfContentsWithBook:book error:error];
+    
+    // Spine
+    GDataXMLElement *opfSpineDoc = [package elementsForName:@"spine"].firstObject;
+    if (opfSpineDoc) {
+        book.opfSpine = [self readOpfSpineWithXMLElement:opfSpineDoc book:book error:error];
+    }
+}
+
+- (IROpfSpine *)readOpfSpineWithXMLElement:(GDataXMLElement *)spineElement book:(IREpubBook *)book error:(NSError **)error
+{
+    IROpfSpine *opfSpine = [[IROpfSpine alloc] init];
+    
+    // Page progress direction `ltr` or `rtl`
+    opfSpine.pageProgressionDirection = [[spineElement attributeForName:@"page-progression-direction"] stringValue];
+    
+    NSMutableArray *tempSpines = [NSMutableArray arrayWithCapacity:spineElement.childCount];
+    for (GDataXMLElement *element in spineElement.children) {
+        if (![element isKindOfClass:[GDataXMLElement class]]) {
+            continue;
+        }
+        
+        NSString *idref = [[element attributeForName:@"idref"] stringValue];
+        if (!idref.length) {
+            continue;
+        }
+        IRDebugLog(@"[IREpubParser] Spine idref: %@", idref);
+        NSString *linear = [[element attributeForName:@"linear"] stringValue];
+        NSString *resourceId = [book.opfManifest.manifestOfHrefs objectForKey:idref];
+        [tempSpines addObject:[IRSpine spineWithResource:[book.opfManifest.resources objectForKey:resourceId ?: @""]
+                                                  linear:([linear isEqualToString:@"yes"])]];
+    }
+    
+    opfSpine.spineReferences = tempSpines;
+    
+    return opfSpine;
 }
 
 - (NSArray<IRTocRefrence *> *)readTableOfContentsWithBook:(IREpubBook *)book error:(NSError **)error
@@ -229,7 +272,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     } else {
         GDataXMLElement *nav = [[xmlDoc.rootElement elementsForName:@"body"].firstObject elementsForName:@"nav"].firstObject;
         if (!nav) {
-            nav = [xmlDoc.rootElement elementsForName:@"body"].firstObject;
+            nav = [self findHtmlTocNavTag:[xmlDoc.rootElement elementsForName:@"body"].firstObject];
         }
         tocItems = [[nav elementsForName:@"ol"].firstObject elementsForName:@"li"];
     }
@@ -253,6 +296,20 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     return [tableOfContents copy];
 }
 
+- (GDataXMLElement *)findHtmlTocNavTag:(GDataXMLElement *)bodyElement
+{
+    for (GDataXMLElement *element in bodyElement.children) {
+        GDataXMLElement *nav = [element elementsForName:@"nav"].firstObject;
+        if (nav) {
+            return nav;
+        } else {
+            [self findHtmlTocNavTag:element];
+        }
+    }
+    
+    return nil;
+}
+
 - (IRTocRefrence *)readTocRefrenceWithXMLElement:(GDataXMLElement *)tocElement tocResource:(IRResource *)tocResource book:(IREpubBook *)book
 {
     IRTocRefrence *toc = nil;
@@ -267,6 +324,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
         toc.fragmentId = srcSplit.count > 1 ? srcSplit.firstObject : @"";
         toc.resource = [book.opfManifest.resources objectForKey:srcSplit.firstObject];
         toc.title = [[[tocElement elementsForName:@"navLabel"].firstObject elementsForName:@"text"].firstObject stringValue];
+        IRDebugLog(@"[IREpubParser] Toc title: %@", toc.title);
         
         // Recursively find child
         NSArray *navPoints = [tocElement elementsForName:@"navPoint"];
@@ -321,6 +379,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
 {
     IROpfManifest *manifest = [[IROpfManifest alloc] init];
     NSMutableDictionary *resources = [NSMutableDictionary dictionaryWithCapacity:opfManifestDoc.childCount];
+    NSMutableDictionary *manifestOfHrefs = [NSMutableDictionary dictionaryWithCapacity:opfManifestDoc.childCount];
     NSMutableArray *cssResources = [NSMutableArray arrayWithCapacity:opfManifestDoc.childCount];
     for (GDataXMLElement *element in opfManifestDoc.children) {
         if (![element isKindOfClass:[GDataXMLElement class]]) {
@@ -333,6 +392,9 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
         resource.fullHref = [self.resourcesBasePath stringByAppendingPathComponent:resource.href];
         resource.mediaType = [IRMediaType mediaTypeWithName:[[element attributeForName:@"media-type"] stringValue]
                                                    fileName:resource.href];
+        [manifestOfHrefs setValue:resource.href forKey:resource.itemId];
+        IRDebugLog(@"[IREpubParser] Manifest id: %@ href: %@", resource.itemId, resource.href );
+        
         if ([resource.mediaType.name isEqualToString:@"text/css"]) {
             [cssResources addObject:resource];
         } else if ([resource.itemId isEqualToString:book.opfMetadata.coverImageId]) {
@@ -349,6 +411,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     }
     
     manifest.resources = resources;
+    manifest.manifestOfHrefs = manifestOfHrefs;
     manifest.cssResources = cssResources;
     
     return manifest;
@@ -362,6 +425,8 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
         if (![element isKindOfClass:[GDataXMLElement class]]) {
             continue;
         }
+        
+        IRDebugLog(@"[IREpubParser] OPF metadata element: [%@] %@", element.name, [element stringValue]);
         
         if ([element.name isEqualToString:@"dc:title"]) {
             opfMetadata.title = [element stringValue];
