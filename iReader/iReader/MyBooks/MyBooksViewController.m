@@ -8,6 +8,7 @@
 
 // Controller
 #import "MyBooksViewController.h"
+#import "ReaderMainViewController.h"
 
 // View
 #import "MyBookCell.h"
@@ -127,7 +128,9 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    ReaderMainViewController *mainVc = [[ReaderMainViewController alloc] init];
+    mainVc.book = [self.myBooks objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:mainVc animated:YES];
 }
 
 @end

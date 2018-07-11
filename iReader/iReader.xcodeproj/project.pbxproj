@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		81154F5020F65027008A15E8 /* ReaderMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81154F4F20F65027008A15E8 /* ReaderMainViewController.m */; };
+		81154F5320F65135008A15E8 /* ReaderWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81154F5220F65135008A15E8 /* ReaderWebView.m */; };
 		8145189520F307E000DC5F3D /* IREpubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189420F307E000DC5F3D /* IREpubBook.m */; };
 		81E2886A20F34700006DB29B /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2886920F34700006DB29B /* GDataXMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		81E2886E20F35295006DB29B /* IRFileUtilites.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2886D20F35295006DB29B /* IRFileUtilites.m */; };
@@ -60,6 +62,10 @@
 /* Begin PBXFileReference section */
 		1F5255C12A7E313323610965 /* Pods-iReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iReader.release.xcconfig"; path = "Pods/Target Support Files/Pods-iReader/Pods-iReader.release.xcconfig"; sourceTree = "<group>"; };
 		42D886AB0BE345FE472D2E28 /* libPods-iReader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iReader.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81154F4E20F65027008A15E8 /* ReaderMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderMainViewController.h; sourceTree = "<group>"; };
+		81154F4F20F65027008A15E8 /* ReaderMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReaderMainViewController.m; sourceTree = "<group>"; };
+		81154F5120F65135008A15E8 /* ReaderWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderWebView.h; sourceTree = "<group>"; };
+		81154F5220F65135008A15E8 /* ReaderWebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReaderWebView.m; sourceTree = "<group>"; };
 		8145189320F307E000DC5F3D /* IREpubBook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubBook.h; sourceTree = "<group>"; };
 		8145189420F307E000DC5F3D /* IREpubBook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IREpubBook.m; sourceTree = "<group>"; };
 		81D3402720EC6D0A0082725B /* iReader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iReader.pch; sourceTree = "<group>"; };
@@ -158,6 +164,17 @@
 				1F5255C12A7E313323610965 /* Pods-iReader.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		81154F4D20F64F9F008A15E8 /* RreaderKit */ = {
+			isa = PBXGroup;
+			children = (
+				81154F4E20F65027008A15E8 /* ReaderMainViewController.h */,
+				81154F4F20F65027008A15E8 /* ReaderMainViewController.m */,
+				81154F5120F65135008A15E8 /* ReaderWebView.h */,
+				81154F5220F65135008A15E8 /* ReaderWebView.m */,
+			);
+			path = RreaderKit;
 			sourceTree = "<group>";
 		};
 		81D3402420EC6BB70082725B /* Books */ = {
@@ -287,8 +304,8 @@
 				DFDC3C0C205668B400E40E27 /* Main */,
 				DFDC3C1020566A3A00E40E27 /* MyBooks */,
 				DFDC3C1420566AA300E40E27 /* Discovery */,
-				81D3402620EC6CCD0082725B /* Other */,
 				DFDC3C042056688400E40E27 /* Resource */,
+				81D3402620EC6CCD0082725B /* Other */,
 				DFDC3BD4205665E100E40E27 /* Info.plist */,
 			);
 			path = iReader;
@@ -371,6 +388,7 @@
 		DFDC3C1920567E4400E40E27 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				81154F4D20F64F9F008A15E8 /* RreaderKit */,
 				81E2886B20F35248006DB29B /* IRUtilites */,
 				81E2886720F34408006DB29B /* GDataXML */,
 				DFDC3C3A205A4A4300E40E27 /* EpubParser */,
@@ -607,9 +625,11 @@
 				81E2888220F44FCF006DB29B /* IROpfMetadata.m in Sources */,
 				81E2889A20F4D924006DB29B /* IRTocRefrence.m in Sources */,
 				81E2888D20F48A46006DB29B /* IRResource.m in Sources */,
+				81154F5320F65135008A15E8 /* ReaderWebView.m in Sources */,
 				DFDC3BD6205665E100E40E27 /* main.m in Sources */,
 				DFDC3C2320567EFC00E40E27 /* IERouter.m in Sources */,
 				DFDC3C1320566A5C00E40E27 /* MyBooksViewController.m in Sources */,
+				81154F5020F65027008A15E8 /* ReaderMainViewController.m in Sources */,
 				DFDC3C3D205A5A0A00E40E27 /* IREpubParser.m in Sources */,
 				81E288A220F5F45D006DB29B /* IRSpine.m in Sources */,
 				81E2887C20F391C5006DB29B /* IRCommonUtilites.m in Sources */,
