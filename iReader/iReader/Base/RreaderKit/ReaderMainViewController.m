@@ -7,12 +7,13 @@
 //
 
 #import "ReaderMainViewController.h"
-#import "ReaderWebView.h"
+#import "ReaderPageViewCell.h"
 #import "IREpubHeaders.h"
-@interface ReaderMainViewController ()
 
-//@property (nonatomic, strong) UIWebView *readerWebView;
-@property (nonatomic, strong) ReaderWebView *readerWebView;
+@interface ReaderMainViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
+
+@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) NSArray<IRTocRefrence *> *chapters;
 
 @end
 
@@ -21,32 +22,82 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-//    self.readerWebView = [[UIWebView alloc] init];
-//    self.readerWebView.scrollView.pagingEnabled = YES;
-//    self.readerWebView.scrollView.alwaysBounceVertical = NO;
-//    self.readerWebView.paginationMode = UIWebPaginationModeLeftToRight;
-//    self.readerWebView.paginationBreakingMode = UIWebPaginationBreakingModePage;
-    
-    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-    WKPreferences *preferences = [[WKPreferences alloc] init];
-    preferences.minimumFontSize = 25;
-    
-    config.preferences = preferences;
-    self.readerWebView = [[ReaderWebView alloc] initWithFrame:self.view.bounds configuration:config];
-    self.readerWebView.scrollView.pagingEnabled = YES;
-    self.readerWebView.scrollView.alwaysBounceVertical = NO;
-    
-    [self.view addSubview:self.readerWebView];
-    
-    [self.readerWebView loadHTMLString:[NSString stringWithContentsOfFile:self.book.tableOfContents[3].resource.fullHref encoding:NSUTF8StringEncoding error:nil] baseURL:nil];
+    [self commonInit];
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     
-    self.readerWebView.frame = self.view.bounds;
+    self.collectionView.frame = self.view.bounds;
+}
+
+#pragma mark - Private
+
+- (void)commonInit
+{
+    [self setupCollectionView];
+}
+
+- (void)setupCollectionView
+{
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.minimumLineSpacing = 0;
+    flowLayout.minimumInteritemSpacing = 0;
+    flowLayout.scrollDirection =  UICollectionViewScrollDirectionHorizontal;
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds
+                                                          collectionViewLayout:flowLayout];
+    collectionView.dataSource = self;
+    collectionView.delegate   = self;
+    collectionView.pagingEnabled = YES;
+    collectionView.backgroundColor = [UIColor whiteColor];
+    collectionView.alwaysBounceHorizontal = YES;
+    collectionView.showsVerticalScrollIndicator = NO;
+    collectionView.showsHorizontalScrollIndicator = NO;
+    
+    if (@available(iOS 11.0, *)) {
+        collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
+    
+    [collectionView registerClass:[ReaderPageViewCell class] forCellWithReuseIdentifier:@"ReaderPageViewCell"];
+    
+    [self.view addSubview:collectionView];
+    self.collectionView = collectionView;
+}
+
+#pragma mark - UICollectionView
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.chapters.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    ReaderPageViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ReaderPageViewCell" forIndexPath:indexPath];
+    [cell setChapter:[self.chapters objectAtIndex:indexPath.row]];
+    
+    return cell;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return collectionView.size;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
+#pragma mark - Public
+
+- (void)setBook:(IREpubBook *)book
+{
+    _book = book;
+    
+    self.chapters = book.tableOfContents;
+    [self.collectionView reloadData];
 }
 
 @end

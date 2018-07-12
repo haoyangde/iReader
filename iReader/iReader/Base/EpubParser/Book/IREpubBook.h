@@ -23,6 +23,7 @@
 @property (nonatomic, strong) IRResource *coverImage;
 /** 目录*/
 @property (nonatomic, strong) NSArray<IRTocRefrence *> *tableOfContents;
+@property (nonatomic, strong) NSArray<IRTocRefrence *> *flatTableOfContents;
 
 @property (nonatomic, strong) IRContainer   *container;
 @property (nonatomic, strong) IROpfMetadata *opfMetadata;

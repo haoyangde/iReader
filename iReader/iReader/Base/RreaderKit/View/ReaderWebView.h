@@ -6,8 +6,8 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import <WebKit/WebKit.h>
+#import <UIKit/UIKit.h>
 
-@interface ReaderWebView : WKWebView
+@interface ReaderWebView : UIWebView
 
 @end

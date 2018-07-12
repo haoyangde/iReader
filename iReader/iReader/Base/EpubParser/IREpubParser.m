@@ -160,12 +160,41 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     
     // Table of contents
     book.tableOfContents = [self readTableOfContentsWithBook:book error:error];
+    book.flatTableOfContents = [self readFlatTableOfContentsWithBook:book];
     
     // Spine
     GDataXMLElement *opfSpineDoc = [package elementsForName:@"spine"].firstObject;
     if (opfSpineDoc) {
         book.opfSpine = [self readOpfSpineWithXMLElement:opfSpineDoc book:book error:error];
     }
+}
+
+- (NSArray *)readFlatTableOfContentsWithBook:(IREpubBook *)book
+{
+    NSMutableArray *flat = [NSMutableArray array];
+    for (IRTocRefrence *tocRefrence in book.tableOfContents) {
+        if (tocRefrence.childen.count) {
+            [flat addObjectsFromArray:[self countOfTocRefrence:tocRefrence]];
+        } else {
+            [flat addObject:tocRefrence];
+        }
+    }
+    
+    return flat.count ? flat : nil;
+}
+
+- (NSArray *)countOfTocRefrence:(IRTocRefrence *)tocRefrence
+{
+    NSMutableArray *all = [NSMutableArray array];
+    for (IRTocRefrence *toc in tocRefrence.childen) {
+        if (toc.childen.count) {
+            [all addObjectsFromArray:[self countOfTocRefrence:toc]];
+        } else {
+            [all addObject:toc];
+        }
+    }
+    
+    return all;
 }
 
 - (IROpfSpine *)readOpfSpineWithXMLElement:(GDataXMLElement *)spineElement book:(IREpubBook *)book error:(NSError **)error

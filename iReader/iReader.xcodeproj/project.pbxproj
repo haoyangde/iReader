@@ -10,6 +10,7 @@
 		81154F5020F65027008A15E8 /* ReaderMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81154F4F20F65027008A15E8 /* ReaderMainViewController.m */; };
 		81154F5320F65135008A15E8 /* ReaderWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81154F5220F65135008A15E8 /* ReaderWebView.m */; };
 		8145189520F307E000DC5F3D /* IREpubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189420F307E000DC5F3D /* IREpubBook.m */; };
+		81A0DF5F20F7A82F00CDB4B0 /* ReaderPageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 81A0DF5E20F7A82F00CDB4B0 /* ReaderPageViewCell.m */; };
 		81E2886A20F34700006DB29B /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2886920F34700006DB29B /* GDataXMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		81E2886E20F35295006DB29B /* IRFileUtilites.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2886D20F35295006DB29B /* IRFileUtilites.m */; };
 		81E2887920F38C4E006DB29B /* IRContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2887820F38C4E006DB29B /* IRContainer.m */; };
@@ -68,6 +69,8 @@
 		81154F5220F65135008A15E8 /* ReaderWebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReaderWebView.m; sourceTree = "<group>"; };
 		8145189320F307E000DC5F3D /* IREpubBook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubBook.h; sourceTree = "<group>"; };
 		8145189420F307E000DC5F3D /* IREpubBook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IREpubBook.m; sourceTree = "<group>"; };
+		81A0DF5D20F7A82F00CDB4B0 /* ReaderPageViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderPageViewCell.h; sourceTree = "<group>"; };
+		81A0DF5E20F7A82F00CDB4B0 /* ReaderPageViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReaderPageViewCell.m; sourceTree = "<group>"; };
 		81D3402720EC6D0A0082725B /* iReader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iReader.pch; sourceTree = "<group>"; };
 		81E2886820F34700006DB29B /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataXMLNode.h; sourceTree = "<group>"; };
 		81E2886920F34700006DB29B /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataXMLNode.m; sourceTree = "<group>"; };
@@ -169,12 +172,22 @@
 		81154F4D20F64F9F008A15E8 /* RreaderKit */ = {
 			isa = PBXGroup;
 			children = (
+				81A0DF5C20F7A66300CDB4B0 /* View */,
 				81154F4E20F65027008A15E8 /* ReaderMainViewController.h */,
 				81154F4F20F65027008A15E8 /* ReaderMainViewController.m */,
-				81154F5120F65135008A15E8 /* ReaderWebView.h */,
-				81154F5220F65135008A15E8 /* ReaderWebView.m */,
 			);
 			path = RreaderKit;
+			sourceTree = "<group>";
+		};
+		81A0DF5C20F7A66300CDB4B0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				81154F5120F65135008A15E8 /* ReaderWebView.h */,
+				81154F5220F65135008A15E8 /* ReaderWebView.m */,
+				81A0DF5D20F7A82F00CDB4B0 /* ReaderPageViewCell.h */,
+				81A0DF5E20F7A82F00CDB4B0 /* ReaderPageViewCell.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		81D3402420EC6BB70082725B /* Books */ = {
@@ -302,8 +315,6 @@
 				DFDC3BF82056673300E40E27 /* App */,
 				DFDC3C1920567E4400E40E27 /* Base */,
 				DFDC3C0C205668B400E40E27 /* Main */,
-				DFDC3C1020566A3A00E40E27 /* MyBooks */,
-				DFDC3C1420566AA300E40E27 /* Discovery */,
 				DFDC3C042056688400E40E27 /* Resource */,
 				81D3402620EC6CCD0082725B /* Other */,
 				DFDC3BD4205665E100E40E27 /* Info.plist */,
@@ -362,6 +373,8 @@
 			children = (
 				DFDC3C0D2056690000E40E27 /* MainViewController.h */,
 				DFDC3C0E2056690000E40E27 /* MainViewController.m */,
+				DFDC3C1020566A3A00E40E27 /* MyBooks */,
+				DFDC3C1420566AA300E40E27 /* Discovery */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -422,22 +435,14 @@
 		DFDC3C3A205A4A4300E40E27 /* EpubParser */ = {
 			isa = PBXGroup;
 			children = (
-				DFDC3C44205A611900E40E27 /* Model */,
+				81E2888320F454CF006DB29B /* Book */,
+				81E2887F20F44F9E006DB29B /* OPF-INF */,
+				81E2887E20F44F57006DB29B /* META-INF */,
 				DFDC3C3B205A5A0A00E40E27 /* IREpubParser.h */,
 				DFDC3C3C205A5A0A00E40E27 /* IREpubParser.m */,
 				81E288A920F63116006DB29B /* IREpubHeaders.h */,
 			);
 			path = EpubParser;
-			sourceTree = "<group>";
-		};
-		DFDC3C44205A611900E40E27 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				81E2888320F454CF006DB29B /* Book */,
-				81E2887F20F44F9E006DB29B /* OPF-INF */,
-				81E2887E20F44F57006DB29B /* META-INF */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -630,6 +635,7 @@
 				DFDC3C2320567EFC00E40E27 /* IERouter.m in Sources */,
 				DFDC3C1320566A5C00E40E27 /* MyBooksViewController.m in Sources */,
 				81154F5020F65027008A15E8 /* ReaderMainViewController.m in Sources */,
+				81A0DF5F20F7A82F00CDB4B0 /* ReaderPageViewCell.m in Sources */,
 				DFDC3C3D205A5A0A00E40E27 /* IREpubParser.m in Sources */,
 				81E288A220F5F45D006DB29B /* IRSpine.m in Sources */,
 				81E2887C20F391C5006DB29B /* IRCommonUtilites.m in Sources */,
@@ -786,6 +792,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5F24R2G835;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iReader/Other/iReader.pch;
 				HEADER_SEARCH_PATHS = (
@@ -826,6 +833,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5F24R2G835;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iReader/Other/iReader.pch;
 				HEADER_SEARCH_PATHS = (
