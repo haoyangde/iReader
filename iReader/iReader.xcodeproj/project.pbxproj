@@ -11,6 +11,10 @@
 		81154F5320F65135008A15E8 /* ReaderWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81154F5220F65135008A15E8 /* ReaderWebView.m */; };
 		8145189520F307E000DC5F3D /* IREpubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189420F307E000DC5F3D /* IREpubBook.m */; };
 		81A0DF5F20F7A82F00CDB4B0 /* ReaderPageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 81A0DF5E20F7A82F00CDB4B0 /* ReaderPageViewCell.m */; };
+		81B3747520F8AABB00D86F5C /* IRCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 81B3747420F8AABB00D86F5C /* IRCollectionViewCell.m */; };
+		81E2851A20F857D700348253 /* IRNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2851920F857D700348253 /* IRNavigationController.m */; };
+		81E2851D20F8592B00348253 /* BookChapterListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2851C20F8592B00348253 /* BookChapterListController.m */; };
+		81E2852020F85A3B00348253 /* BookChapterListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2851F20F85A3B00348253 /* BookChapterListCell.m */; };
 		81E2886A20F34700006DB29B /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2886920F34700006DB29B /* GDataXMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		81E2886E20F35295006DB29B /* IRFileUtilites.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2886D20F35295006DB29B /* IRFileUtilites.m */; };
 		81E2887920F38C4E006DB29B /* IRContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2887820F38C4E006DB29B /* IRContainer.m */; };
@@ -71,7 +75,15 @@
 		8145189420F307E000DC5F3D /* IREpubBook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IREpubBook.m; sourceTree = "<group>"; };
 		81A0DF5D20F7A82F00CDB4B0 /* ReaderPageViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderPageViewCell.h; sourceTree = "<group>"; };
 		81A0DF5E20F7A82F00CDB4B0 /* ReaderPageViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReaderPageViewCell.m; sourceTree = "<group>"; };
+		81B3747320F8AABB00D86F5C /* IRCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCollectionViewCell.h; sourceTree = "<group>"; };
+		81B3747420F8AABB00D86F5C /* IRCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRCollectionViewCell.m; sourceTree = "<group>"; };
 		81D3402720EC6D0A0082725B /* iReader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iReader.pch; sourceTree = "<group>"; };
+		81E2851820F857D700348253 /* IRNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRNavigationController.h; sourceTree = "<group>"; };
+		81E2851920F857D700348253 /* IRNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRNavigationController.m; sourceTree = "<group>"; };
+		81E2851B20F8592B00348253 /* BookChapterListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BookChapterListController.h; sourceTree = "<group>"; };
+		81E2851C20F8592B00348253 /* BookChapterListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BookChapterListController.m; sourceTree = "<group>"; };
+		81E2851E20F85A3B00348253 /* BookChapterListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BookChapterListCell.h; sourceTree = "<group>"; };
+		81E2851F20F85A3B00348253 /* BookChapterListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BookChapterListCell.m; sourceTree = "<group>"; };
 		81E2886820F34700006DB29B /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataXMLNode.h; sourceTree = "<group>"; };
 		81E2886920F34700006DB29B /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataXMLNode.m; sourceTree = "<group>"; };
 		81E2886C20F35295006DB29B /* IRFileUtilites.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRFileUtilites.h; sourceTree = "<group>"; };
@@ -172,6 +184,7 @@
 		81154F4D20F64F9F008A15E8 /* RreaderKit */ = {
 			isa = PBXGroup;
 			children = (
+				81E2851720F8550100348253 /* ChapterList */,
 				81A0DF5C20F7A66300CDB4B0 /* View */,
 				81154F4E20F65027008A15E8 /* ReaderMainViewController.h */,
 				81154F4F20F65027008A15E8 /* ReaderMainViewController.m */,
@@ -186,6 +199,23 @@
 				81154F5220F65135008A15E8 /* ReaderWebView.m */,
 				81A0DF5D20F7A82F00CDB4B0 /* ReaderPageViewCell.h */,
 				81A0DF5E20F7A82F00CDB4B0 /* ReaderPageViewCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		81B3747120F8AA6200D86F5C /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				81B3747220F8AA6B00D86F5C /* View */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		81B3747220F8AA6B00D86F5C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				81B3747320F8AABB00D86F5C /* IRCollectionViewCell.h */,
+				81B3747420F8AABB00D86F5C /* IRCollectionViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -207,6 +237,25 @@
 			path = Other;
 			sourceTree = "<group>";
 		};
+		81E2851720F8550100348253 /* ChapterList */ = {
+			isa = PBXGroup;
+			children = (
+				81E2851E20F85A3B00348253 /* BookChapterListCell.h */,
+				81E2851F20F85A3B00348253 /* BookChapterListCell.m */,
+				81E2851B20F8592B00348253 /* BookChapterListController.h */,
+				81E2851C20F8592B00348253 /* BookChapterListController.m */,
+			);
+			path = ChapterList;
+			sourceTree = "<group>";
+		};
+		81E2852520F8868900348253 /* ThirdParty */ = {
+			isa = PBXGroup;
+			children = (
+				81E2886720F34408006DB29B /* GDataXML */,
+			);
+			path = ThirdParty;
+			sourceTree = "<group>";
+		};
 		81E2886720F34408006DB29B /* GDataXML */ = {
 			isa = PBXGroup;
 			children = (
@@ -216,7 +265,7 @@
 			path = GDataXML;
 			sourceTree = "<group>";
 		};
-		81E2886B20F35248006DB29B /* IRUtilites */ = {
+		81E2886B20F35248006DB29B /* Utilites */ = {
 			isa = PBXGroup;
 			children = (
 				81E2886F20F353E2006DB29B /* IRUtilites.h */,
@@ -226,7 +275,7 @@
 				81E2887A20F391C5006DB29B /* IRCommonUtilites.h */,
 				81E2887B20F391C5006DB29B /* IRCommonUtilites.m */,
 			);
-			path = IRUtilites;
+			path = Utilites;
 			sourceTree = "<group>";
 		};
 		81E2887E20F44F57006DB29B /* META-INF */ = {
@@ -373,6 +422,8 @@
 			children = (
 				DFDC3C0D2056690000E40E27 /* MainViewController.h */,
 				DFDC3C0E2056690000E40E27 /* MainViewController.m */,
+				81E2851820F857D700348253 /* IRNavigationController.h */,
+				81E2851920F857D700348253 /* IRNavigationController.m */,
 				DFDC3C1020566A3A00E40E27 /* MyBooks */,
 				DFDC3C1420566AA300E40E27 /* Discovery */,
 			);
@@ -401,12 +452,13 @@
 		DFDC3C1920567E4400E40E27 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				81B3747120F8AA6200D86F5C /* Common */,
 				81154F4D20F64F9F008A15E8 /* RreaderKit */,
-				81E2886B20F35248006DB29B /* IRUtilites */,
-				81E2886720F34408006DB29B /* GDataXML */,
+				81E2886B20F35248006DB29B /* Utilites */,
 				DFDC3C3A205A4A4300E40E27 /* EpubParser */,
 				DFDC3C1F20567EFC00E40E27 /* Router */,
 				DFDC3C1A20567E5100E40E27 /* Category */,
+				81E2852520F8868900348253 /* ThirdParty */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -621,6 +673,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81E2851D20F8592B00348253 /* BookChapterListController.m in Sources */,
+				81E2851A20F857D700348253 /* IRNavigationController.m in Sources */,
 				DFDC3C53205A647500E40E27 /* IRMediaType.m in Sources */,
 				DFDC3C1D20567E8900E40E27 /* UIView+Extension.m in Sources */,
 				81E288AD20F631CD006DB29B /* MyBookCell.m in Sources */,
@@ -646,7 +700,9 @@
 				DFDC3C47205A613600E40E27 /* IRAuthor.m in Sources */,
 				DFDC3BC8205665E100E40E27 /* AppDelegate.m in Sources */,
 				DFDC3C1720566ACD00E40E27 /* DiscoveryViewController.m in Sources */,
+				81B3747520F8AABB00D86F5C /* IRCollectionViewCell.m in Sources */,
 				DFDC3C2720567F5000E40E27 /* NSString+Extension.m in Sources */,
+				81E2852020F85A3B00348253 /* BookChapterListCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

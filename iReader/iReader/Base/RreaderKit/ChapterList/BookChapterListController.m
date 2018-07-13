@@ -1,24 +1,22 @@
 //
-//  ReaderMainViewController.m
+//  BookChapterListController.m
 //  iReader
 //
-//  Created by zzyong on 2018/7/11.
+//  Created by zzyong on 2018/7/13.
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "ReaderMainViewController.h"
-#import "ReaderPageViewCell.h"
-#import "IREpubHeaders.h"
+#import "BookChapterListCell.h"
 #import "BookChapterListController.h"
+#import "IREpubHeaders.h"
 
-@interface ReaderMainViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
+@interface BookChapterListController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, strong) NSArray<IRTocRefrence *> *chapters;
 
 @end
 
-@implementation ReaderMainViewController
+@implementation BookChapterListController
 
 - (void)viewDidLoad
 {
@@ -39,19 +37,6 @@
 {
     self.view.backgroundColor = [UIColor whiteColor];
     [self setupCollectionView];
-    
-    UIBarButtonItem *chapterItem = [[UIBarButtonItem alloc] initWithTitle:@"目录"
-                                                                   style:UIBarButtonItemStylePlain
-                                                                  target:self
-                                                                  action:@selector(onChapterItemClicked)];
-    self.navigationItem.rightBarButtonItem = chapterItem;
-}
-
-- (void)onChapterItemClicked
-{
-    BookChapterListController *chapterVc = [[BookChapterListController alloc] init];
-    chapterVc.chapterList = self.book.flatTableOfContents;
-    [self.navigationController pushViewController:chapterVc animated:YES];
 }
 
 - (void)setupCollectionView
@@ -59,14 +44,13 @@
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.minimumLineSpacing = 0;
     flowLayout.minimumInteritemSpacing = 0;
-    flowLayout.scrollDirection =  UICollectionViewScrollDirectionHorizontal;
     UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds
                                                           collectionViewLayout:flowLayout];
     collectionView.dataSource = self;
     collectionView.delegate   = self;
     collectionView.pagingEnabled = YES;
     collectionView.backgroundColor = [UIColor whiteColor];
-    collectionView.alwaysBounceHorizontal = YES;
+    collectionView.alwaysBounceVertical = YES;
     collectionView.showsVerticalScrollIndicator = NO;
     collectionView.showsHorizontalScrollIndicator = NO;
     
@@ -74,7 +58,7 @@
         collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }
     
-    [collectionView registerClass:[ReaderPageViewCell class] forCellWithReuseIdentifier:@"ReaderPageViewCell"];
+    [collectionView registerClass:[BookChapterListCell class] forCellWithReuseIdentifier:@"BookChapterListCell"];
     
     [self.view addSubview:collectionView];
     self.collectionView = collectionView;
@@ -84,36 +68,32 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.chapters.count;
+    return self.chapterList.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    ReaderPageViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ReaderPageViewCell" forIndexPath:indexPath];
-    [cell setChapter:[self.chapters objectAtIndex:indexPath.row]];
-    
+    BookChapterListCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BookChapterListCell" forIndexPath:indexPath];
+    cell.chapter = [self.chapterList objectAtIndex:indexPath.row];
     return cell;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return collectionView.size;
+    IRTocRefrence *chapter = [self.chapterList objectAtIndex:indexPath.row];
+    CGSize titleSize = [chapter.title sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:kChapterListCellFontSize]}];
+    CGFloat cellHeight = ceil(titleSize.height) * ceil(titleSize.width / (collectionView.width - 20));
+    return CGSizeMake(collectionView.width - 20, cellHeight + 20);
+}
+                                                       
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(0, 10, 0, 10);
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
-}
-
-#pragma mark - Public
-
-- (void)setBook:(IREpubBook *)book
-{
-    _book = book;
-    
-    self.chapters = book.tableOfContents;
-    self.title = book.name;
-    [self.collectionView reloadData];
 }
 
 @end
