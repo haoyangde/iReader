@@ -40,22 +40,19 @@
 
 - (void)parseBooks
 {
-    NSArray *books = @[@"The Silver Chair",@"《故事会》2006全年精选合集"];
+    NSArray *books = @[@"The Silver Chair", @"细说明朝"];
     
-    [[IREpubParser sharedInstance] asyncReadEpubWithEpubName:books[0] completion:^(IREpubBook *book, NSError *error) {
-        if (book) {
-            [self.myBooks addObject:book];
-        }
-    }];
-    
-    [[IREpubParser sharedInstance] asyncReadEpubWithEpubName:books[1] completion:^(IREpubBook *book, NSError *error) {
-        
-        if (book) {
-            [self.myBooks addObject:book];
-        }
-
-        [self.collectionView reloadData];
-    }];
+    for (NSString *bookName in books) {
+        [[IREpubParser sharedInstance] asyncReadEpubWithEpubName:bookName completion:^(IREpubBook *book, NSError *error) {
+            if (book) {
+                [self.myBooks addObject:book];
+            }
+            
+            if ([books indexOfObject:bookName] == books.count - 1) {
+                [self.collectionView reloadData];
+            }
+        }];
+    }
 }
 
 - (void)setupCollectionView

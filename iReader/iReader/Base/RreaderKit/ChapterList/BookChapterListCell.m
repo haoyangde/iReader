@@ -32,7 +32,7 @@ CGFloat const kChapterListCellFontSize = 13;
 {
     [super layoutSubviews];
     
-    self.chapterLabel.frame = self.contentView.bounds;
+    self.chapterLabel.frame = CGRectMake(10, 0, self.contentView.width - 20, self.contentView.height);
 }
 
 - (void)setupSubviews
@@ -51,9 +51,9 @@ CGFloat const kChapterListCellFontSize = 13;
     self.chapterLabel.text = chapter.title;
     
     if (chapter.childen.count) {
-        self.chapterLabel.backgroundColor = [UIColor colorWithRed:118/255 green:150/255 blue:210/255 alpha:1];
+        self.contentView.backgroundColor = [UIColor ir_colorWithRed:128 green:167 blue:94];
     } else {
-        self.chapterLabel.backgroundColor = [UIColor whiteColor];
+        self.contentView.backgroundColor = [UIColor whiteColor];
     }
     
     [self setNeedsLayout];

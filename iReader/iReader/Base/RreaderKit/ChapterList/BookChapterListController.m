@@ -48,7 +48,6 @@
                                                           collectionViewLayout:flowLayout];
     collectionView.dataSource = self;
     collectionView.delegate   = self;
-    collectionView.pagingEnabled = YES;
     collectionView.backgroundColor = [UIColor whiteColor];
     collectionView.alwaysBounceVertical = YES;
     collectionView.showsVerticalScrollIndicator = NO;
@@ -83,12 +82,12 @@
     IRTocRefrence *chapter = [self.chapterList objectAtIndex:indexPath.row];
     CGSize titleSize = [chapter.title sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:kChapterListCellFontSize]}];
     CGFloat cellHeight = ceil(titleSize.height) * ceil(titleSize.width / (collectionView.width - 20));
-    return CGSizeMake(collectionView.width - 20, cellHeight + 20);
+    return CGSizeMake(collectionView.width, cellHeight + 20);
 }
                                                        
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(0, 10, 0, 10);
+    return UIEdgeInsetsZero;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath

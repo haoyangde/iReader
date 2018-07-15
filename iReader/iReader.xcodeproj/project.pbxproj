@@ -26,9 +26,9 @@
 		81E2889A20F4D924006DB29B /* IRTocRefrence.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2889920F4D924006DB29B /* IRTocRefrence.m */; };
 		81E2889F20F5F42B006DB29B /* IROpfSpine.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2889E20F5F42B006DB29B /* IROpfSpine.m */; };
 		81E288A220F5F45D006DB29B /* IRSpine.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E288A120F5F45D006DB29B /* IRSpine.m */; };
-		81E288A820F62BAF006DB29B /* 《故事会》2006全年精选合集.epub in Resources */ = {isa = PBXBuildFile; fileRef = 81E288A720F62BAF006DB29B /* 《故事会》2006全年精选合集.epub */; };
 		81E288AD20F631CD006DB29B /* MyBookCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E288AC20F631CD006DB29B /* MyBookCell.m */; };
 		CC9EB8FE7CDD1B0D1AF79B38 /* libPods-iReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D886AB0BE345FE472D2E28 /* libPods-iReader.a */; };
+		DF92E84020FAFC3A008285C1 /* 细说明朝.epub in Resources */ = {isa = PBXBuildFile; fileRef = DF92E83F20FAFC3A008285C1 /* 细说明朝.epub */; };
 		DFDC3BC8205665E100E40E27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BC7205665E100E40E27 /* AppDelegate.m */; };
 		DFDC3BD6205665E100E40E27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BD5205665E100E40E27 /* main.m */; };
 		DFDC3BE0205665E100E40E27 /* iReaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BDF205665E100E40E27 /* iReaderTests.m */; };
@@ -45,6 +45,7 @@
 		DFDC3C3D205A5A0A00E40E27 /* IREpubParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3C3C205A5A0A00E40E27 /* IREpubParser.m */; };
 		DFDC3C47205A613600E40E27 /* IRAuthor.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3C46205A613600E40E27 /* IRAuthor.m */; };
 		DFDC3C53205A647500E40E27 /* IRMediaType.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3C52205A647500E40E27 /* IRMediaType.m */; };
+		DFEADB8620FB82B100BB4F97 /* UIColor+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = DFEADB8520FB82B100BB4F97 /* UIColor+Extension.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,11 +108,11 @@
 		81E2889E20F5F42B006DB29B /* IROpfSpine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IROpfSpine.m; sourceTree = "<group>"; };
 		81E288A020F5F45D006DB29B /* IRSpine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSpine.h; sourceTree = "<group>"; };
 		81E288A120F5F45D006DB29B /* IRSpine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRSpine.m; sourceTree = "<group>"; };
-		81E288A720F62BAF006DB29B /* 《故事会》2006全年精选合集.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "《故事会》2006全年精选合集.epub"; sourceTree = "<group>"; };
 		81E288A920F63116006DB29B /* IREpubHeaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubHeaders.h; sourceTree = "<group>"; };
 		81E288AB20F631CD006DB29B /* MyBookCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyBookCell.h; sourceTree = "<group>"; };
 		81E288AC20F631CD006DB29B /* MyBookCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyBookCell.m; sourceTree = "<group>"; };
 		B2035DF92994DB586CB903BD /* Pods-iReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iReader/Pods-iReader.debug.xcconfig"; sourceTree = "<group>"; };
+		DF92E83F20FAFC3A008285C1 /* 细说明朝.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "细说明朝.epub"; sourceTree = "<group>"; };
 		DFDC3BC3205665E100E40E27 /* iReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFDC3BC6205665E100E40E27 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DFDC3BC7205665E100E40E27 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -144,6 +145,8 @@
 		DFDC3C46205A613600E40E27 /* IRAuthor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRAuthor.m; sourceTree = "<group>"; };
 		DFDC3C51205A647500E40E27 /* IRMediaType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRMediaType.h; sourceTree = "<group>"; };
 		DFDC3C52205A647500E40E27 /* IRMediaType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRMediaType.m; sourceTree = "<group>"; };
+		DFEADB8420FB82B100BB4F97 /* UIColor+Extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+Extension.h"; sourceTree = "<group>"; };
+		DFEADB8520FB82B100BB4F97 /* UIColor+Extension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Extension.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -223,8 +226,8 @@
 		81D3402420EC6BB70082725B /* Books */ = {
 			isa = PBXGroup;
 			children = (
+				DF92E83F20FAFC3A008285C1 /* 细说明朝.epub */,
 				81E2889620F4A99F006DB29B /* The Silver Chair.epub */,
-				81E288A720F62BAF006DB29B /* 《故事会》2006全年精选合集.epub */,
 			);
 			path = Books;
 			sourceTree = "<group>";
@@ -470,6 +473,8 @@
 				DFDC3C2520567F5000E40E27 /* NSString+Extension.m */,
 				DFDC3C1C20567E8900E40E27 /* UIView+Extension.h */,
 				DFDC3C1B20567E8900E40E27 /* UIView+Extension.m */,
+				DFEADB8420FB82B100BB4F97 /* UIColor+Extension.h */,
+				DFEADB8520FB82B100BB4F97 /* UIColor+Extension.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -605,11 +610,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81E288A820F62BAF006DB29B /* 《故事会》2006全年精选合集.epub in Resources */,
 				DFDC3C0B2056688400E40E27 /* Assets.xcassets in Resources */,
 				DFDC3C0A2056688400E40E27 /* Main.storyboard in Resources */,
 				81E2889720F4A99F006DB29B /* The Silver Chair.epub in Resources */,
 				DFDC3C2420567EFC00E40E27 /* RouterBlockList.plist in Resources */,
+				DF92E84020FAFC3A008285C1 /* 细说明朝.epub in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -695,6 +700,7 @@
 				81E2887C20F391C5006DB29B /* IRCommonUtilites.m in Sources */,
 				81E2887920F38C4E006DB29B /* IRContainer.m in Sources */,
 				81E2886E20F35295006DB29B /* IRFileUtilites.m in Sources */,
+				DFEADB8620FB82B100BB4F97 /* UIColor+Extension.m in Sources */,
 				DFDC3C0F2056690000E40E27 /* MainViewController.m in Sources */,
 				8145189520F307E000DC5F3D /* IREpubBook.m in Sources */,
 				DFDC3C47205A613600E40E27 /* IRAuthor.m in Sources */,

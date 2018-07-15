@@ -39,6 +39,7 @@
 {
     _readerWebView = [[ReaderWebView alloc] init];
     _readerWebView.scrollView.pagingEnabled = YES;
+    _readerWebView.dataDetectorTypes = UIDataDetectorTypeLink;
     _readerWebView.scrollView.alwaysBounceHorizontal = NO;
     _readerWebView.scrollView.alwaysBounceVertical   = NO;
     _readerWebView.paginationMode = UIWebPaginationModeLeftToRight;
@@ -56,14 +57,15 @@
     
     NSError *error = nil;
     _chapterHtmlStr = [NSString stringWithContentsOfFile:chapter.resource.fullHref
-                                                  encoding:NSUTF8StringEncoding
-                                                     error:&error];
+                                                encoding:NSUTF8StringEncoding
+                                                   error:&error];
     if (error) {
         IRDebugLog(@"[ReaderPageViewCell] Read chapter resource failed, error: %@", error);
         return;
     }
     
-    [self.readerWebView loadHTMLString:_chapterHtmlStr baseURL:nil];
+    NSString *base = [chapter.resource.fullHref stringByDeletingLastPathComponent];
+    [self.readerWebView loadHTMLString:_chapterHtmlStr baseURL:[NSURL URLWithString:base]];
 }
 
 @end

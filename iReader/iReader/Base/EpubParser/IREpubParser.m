@@ -185,7 +185,8 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
 
 - (NSArray *)countOfTocRefrence:(IRTocRefrence *)tocRefrence
 {
-    NSMutableArray *all = [NSMutableArray array];
+    NSMutableArray *all = [NSMutableArray arrayWithObject:tocRefrence];
+    
     for (IRTocRefrence *toc in tocRefrence.childen) {
         if (toc.childen.count) {
             [all addObjectsFromArray:[self countOfTocRefrence:toc]];
