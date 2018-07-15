@@ -272,7 +272,6 @@
 			isa = PBXGroup;
 			children = (
 				81E2886F20F353E2006DB29B /* IRUtilites.h */,
-				81E2887D20F393C3006DB29B /* IRCommonDefines.h */,
 				81E2886C20F35295006DB29B /* IRFileUtilites.h */,
 				81E2886D20F35295006DB29B /* IRFileUtilites.m */,
 				81E2887A20F391C5006DB29B /* IRCommonUtilites.h */,
@@ -456,6 +455,7 @@
 			isa = PBXGroup;
 			children = (
 				81B3747120F8AA6200D86F5C /* Common */,
+				DFEADB8720FB8F3000BB4F97 /* Macros */,
 				81154F4D20F64F9F008A15E8 /* RreaderKit */,
 				81E2886B20F35248006DB29B /* Utilites */,
 				DFDC3C3A205A4A4300E40E27 /* EpubParser */,
@@ -500,6 +500,14 @@
 				81E288A920F63116006DB29B /* IREpubHeaders.h */,
 			);
 			path = EpubParser;
+			sourceTree = "<group>";
+		};
+		DFEADB8720FB8F3000BB4F97 /* Macros */ = {
+			isa = PBXGroup;
+			children = (
+				81E2887D20F393C3006DB29B /* IRCommonDefines.h */,
+			);
+			path = Macros;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
