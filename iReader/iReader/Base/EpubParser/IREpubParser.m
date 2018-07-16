@@ -361,7 +361,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
         resource.itemId = [[element attributeForName:@"id"] stringValue];
         resource.properties = [[element attributeForName:@"properties"] stringValue];
         resource.href = [[element attributeForName:@"href"] stringValue];
-        resource.fullHref = [self.resourcesBasePath stringByAppendingPathComponent:resource.href];
+        resource.fullHref = [[self.resourcesBasePath stringByAppendingPathComponent:resource.href] stringByRemovingPercentEncoding];
         resource.mediaType = [IRMediaType mediaTypeWithName:[[element attributeForName:@"media-type"] stringValue]
                                                    fileName:resource.href];
         [manifestOfHrefs setValue:resource.href forKey:resource.itemId];

@@ -10,7 +10,7 @@
 #import "ReaderWebView.h"
 #import "IREpubHeaders.h"
 
-@interface ReaderPageViewCell ()
+@interface ReaderPageViewCell () <UIWebViewDelegate>
 
 @property (nonatomic, strong) ReaderWebView *readerWebView;
 @property (nonatomic, strong) NSString *chapterHtmlStr;
@@ -38,6 +38,7 @@
 - (void)setupSubviews
 {
     _readerWebView = [[ReaderWebView alloc] init];
+    _readerWebView.delegate = self;
     _readerWebView.scrollView.pagingEnabled = YES;
     _readerWebView.dataDetectorTypes = UIDataDetectorTypeLink;
     _readerWebView.scrollView.alwaysBounceHorizontal = NO;
@@ -64,8 +65,25 @@
         return;
     }
     
-    NSString *base = [chapter.resource.fullHref stringByDeletingLastPathComponent];
+    NSString *base = [NSString stringWithFormat:@"%@/", [chapter.resource.fullHref stringByDeletingLastPathComponent]];
+    base = [base stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
     [self.readerWebView loadHTMLString:_chapterHtmlStr baseURL:[NSURL URLWithString:base]];
+}
+
+#pragma mark - UIWebViewDelegate
+
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    if (![webView isKindOfClass:[ReaderWebView class]]) {
+        return;
+    }
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    if (![webView isKindOfClass:[ReaderWebView class]]) {
+        return;
+    }
 }
 
 @end
