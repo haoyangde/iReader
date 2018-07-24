@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		810089932107640D00C05391 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 810089922107640D00C05391 /* GTMNSString+HTML.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		810089962107641600C05391 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 810089942107641500C05391 /* NSString+HTML.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		81154F5020F65027008A15E8 /* ReaderMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81154F4F20F65027008A15E8 /* ReaderMainViewController.m */; };
 		81154F5320F65135008A15E8 /* ReaderWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81154F5220F65135008A15E8 /* ReaderWebView.m */; };
 		8145189520F307E000DC5F3D /* IREpubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189420F307E000DC5F3D /* IREpubBook.m */; };
@@ -68,6 +70,11 @@
 /* Begin PBXFileReference section */
 		1F5255C12A7E313323610965 /* Pods-iReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iReader.release.xcconfig"; path = "Pods/Target Support Files/Pods-iReader/Pods-iReader.release.xcconfig"; sourceTree = "<group>"; };
 		42D886AB0BE345FE472D2E28 /* libPods-iReader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-iReader.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		810089902107640600C05391 /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
+		810089912107640C00C05391 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
+		810089922107640D00C05391 /* GTMNSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GTMNSString+HTML.m"; sourceTree = "<group>"; };
+		810089942107641500C05391 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
+		810089952107641500C05391 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
 		81154F4E20F65027008A15E8 /* ReaderMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderMainViewController.h; sourceTree = "<group>"; };
 		81154F4F20F65027008A15E8 /* ReaderMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReaderMainViewController.m; sourceTree = "<group>"; };
 		81154F5120F65135008A15E8 /* ReaderWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderWebView.h; sourceTree = "<group>"; };
@@ -184,6 +191,18 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		8100898F210763EC00C05391 /* GTMHtml */ = {
+			isa = PBXGroup;
+			children = (
+				810089902107640600C05391 /* GTMDefines.h */,
+				810089912107640C00C05391 /* GTMNSString+HTML.h */,
+				810089922107640D00C05391 /* GTMNSString+HTML.m */,
+				810089952107641500C05391 /* NSString+HTML.h */,
+				810089942107641500C05391 /* NSString+HTML.m */,
+			);
+			path = GTMHtml;
+			sourceTree = "<group>";
+		};
 		81154F4D20F64F9F008A15E8 /* RreaderKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -254,6 +273,7 @@
 		81E2852520F8868900348253 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				8100898F210763EC00C05391 /* GTMHtml */,
 				81E2886720F34408006DB29B /* GDataXML */,
 			);
 			path = ThirdParty;
@@ -699,6 +719,7 @@
 				81E2888D20F48A46006DB29B /* IRResource.m in Sources */,
 				81154F5320F65135008A15E8 /* ReaderWebView.m in Sources */,
 				DFDC3BD6205665E100E40E27 /* main.m in Sources */,
+				810089932107640D00C05391 /* GTMNSString+HTML.m in Sources */,
 				DFDC3C2320567EFC00E40E27 /* IERouter.m in Sources */,
 				DFDC3C1320566A5C00E40E27 /* MyBooksViewController.m in Sources */,
 				81154F5020F65027008A15E8 /* ReaderMainViewController.m in Sources */,
@@ -710,6 +731,7 @@
 				81E2886E20F35295006DB29B /* IRFileUtilites.m in Sources */,
 				DFEADB8620FB82B100BB4F97 /* UIColor+Extension.m in Sources */,
 				DFDC3C0F2056690000E40E27 /* MainViewController.m in Sources */,
+				810089962107641600C05391 /* NSString+HTML.m in Sources */,
 				8145189520F307E000DC5F3D /* IREpubBook.m in Sources */,
 				DFDC3C47205A613600E40E27 /* IRAuthor.m in Sources */,
 				DFDC3BC8205665E100E40E27 /* AppDelegate.m in Sources */,

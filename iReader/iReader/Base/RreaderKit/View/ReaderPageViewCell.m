@@ -9,6 +9,7 @@
 #import "ReaderPageViewCell.h"
 #import "ReaderWebView.h"
 #import "IREpubHeaders.h"
+#import "NSString+HTML.h"
 
 @interface ReaderPageViewCell () <UIWebViewDelegate>
 
@@ -56,6 +57,8 @@
     
     _chapter = chapter;
     
+    IRDebugLog(@"Chapter name: %@", chapter.title);
+    
     NSError *error = nil;
     _chapterHtmlStr = [NSString stringWithContentsOfFile:chapter.resource.fullHref
                                                 encoding:NSUTF8StringEncoding
@@ -64,6 +67,10 @@
         IRDebugLog(@"[ReaderPageViewCell] Read chapter resource failed, error: %@", error);
         return;
     }
+    
+    IRDebugLog(@"Chapter HTML content: %@", _chapterHtmlStr);
+    
+    IRDebugLog(@"Chapter string content: %@", [_chapterHtmlStr stringByConvertingHTMLToPlainText]);
     
     NSString *base = [NSString stringWithFormat:@"%@/", [chapter.resource.fullHref stringByDeletingLastPathComponent]];
     base = [base stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
