@@ -20,7 +20,7 @@
 #pragma mark - Custom Debug Log
 
 #ifdef DEBUG
-#define IRDebugLog(...) NSLog(__VA_ARGS__)
+#define IRDebugLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
 #define IRDebugLog(...)
 #endif
