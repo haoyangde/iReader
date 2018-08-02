@@ -18,7 +18,6 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
 @property (nonatomic, strong) IREpubBook *book;
 @property (nonatomic, strong) dispatch_queue_t ir_epub_parser_queue;
 @property (nonatomic, strong) NSFileManager *fileManager;
-@property (nonatomic, strong) NSString *resourcesBasePath;
 
 @end
 
@@ -100,7 +99,6 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     }
     
     GDataXMLDocument *xmlDoc = [[GDataXMLDocument alloc] initWithData:containerData options:0 error:error];
-    IRDebugLog(@"[IREpubParser] containerXML: %@", xmlDoc.rootElement);
     
     if (!xmlDoc && *error) {
         IRDebugLog(@"[IREpubParser] Container XML parse error: %@", *error);
@@ -112,8 +110,8 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     IRMediaType *mediaType = [IRMediaType mediaTypeWithName:[[rootfile attributeForName:@"media-type"] stringValue] fileName:nil];
     book.container = [IRContainer containerWithFullPath:[[rootfile attributeForName:@"full-path"] stringValue]
                                               mediaType:mediaType];
-    self.resourcesBasePath = [unzipPath stringByAppendingPathComponent:[book.container.fullPath stringByDeletingLastPathComponent]];
-    IRDebugLog(@"[IREpubParser] Resources base path: %@", self.resourcesBasePath);
+    book.resourcesBasePath = [unzipPath stringByAppendingPathComponent:[book.container.fullPath stringByDeletingLastPathComponent]];
+    IRDebugLog(@"[IREpubParser] Resources base path: %@", book.resourcesBasePath);
 }
 
 - (void)readOpfWithUnzipPath:(NSString *)unzipPath book:(IREpubBook *)book error:(NSError **)error
@@ -215,7 +213,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
         if (!idref.length) {
             continue;
         }
-        IRDebugLog(@"[IREpubParser] Spine idref: %@", idref);
+        
         NSString *linear = [[element attributeForName:@"linear"] stringValue];
         NSString *resourceId = [book.opfManifest.manifestOfHrefs objectForKey:idref];
         [tempSpines addObject:[IRSpine spineWithResource:[book.opfManifest.resources objectForKey:resourceId ?: @""]
@@ -296,7 +294,6 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
         toc.fragmentId = srcSplit.count > 1 ? srcSplit.firstObject : @"";
         toc.resource = [book.opfManifest.resources objectForKey:srcSplit.firstObject];
         toc.title = [[[tocElement elementsForName:@"navLabel"].firstObject elementsForName:@"text"].firstObject stringValue];
-        IRDebugLog(@"[IREpubParser] Toc title: %@", toc.title);
         
         // Recursively find child
         NSArray *navPoints = [tocElement elementsForName:@"navPoint"];
@@ -361,11 +358,10 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
         resource.itemId = [[element attributeForName:@"id"] stringValue];
         resource.properties = [[element attributeForName:@"properties"] stringValue];
         resource.href = [[element attributeForName:@"href"] stringValue];
-        resource.fullHref = [[self.resourcesBasePath stringByAppendingPathComponent:resource.href] stringByRemovingPercentEncoding];
+        resource.fullHref = [[book.resourcesBasePath stringByAppendingPathComponent:resource.href] stringByRemovingPercentEncoding];
         resource.mediaType = [IRMediaType mediaTypeWithName:[[element attributeForName:@"media-type"] stringValue]
                                                    fileName:resource.href];
         [manifestOfHrefs setValue:resource.href forKey:resource.itemId];
-        IRDebugLog(@"[IREpubParser] Manifest id: %@ href: %@", resource.itemId, resource.href );
         
         if ([resource.mediaType.name isEqualToString:@"text/css"]) {
             [cssResources addObject:resource];
@@ -398,8 +394,6 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
         if (![element isKindOfClass:[GDataXMLElement class]]) {
             continue;
         }
-        
-        IRDebugLog(@"[IREpubParser] OPF metadata element: [%@] %@", element.name, [element stringValue]);
         
         if ([element.name isEqualToString:@"dc:title"]) {
             opfMetadata.title = [element stringValue];

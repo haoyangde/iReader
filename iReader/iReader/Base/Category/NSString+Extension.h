@@ -30,6 +30,10 @@
 
 @interface NSString (NE_AttributedString)
 
+- (NSAttributedString *)attributedStringWithBoldFontSize:(CGFloat)fontSize;
+
+- (NSAttributedString *)attributedStringWithFontSize:(CGFloat)fontSize;
+
 - (NSAttributedString *)attributedStringWithFontSize:(CGFloat)fontSize textColor:(UIColor *)color;
 
 @end

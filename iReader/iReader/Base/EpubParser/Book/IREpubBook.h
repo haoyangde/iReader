@@ -25,6 +25,7 @@
 @property (nonatomic, strong) NSArray<IRTocRefrence *> *tableOfContents;
 @property (nonatomic, strong) NSArray<IRTocRefrence *> *flatTableOfContents;
 
+@property (nonatomic, strong) NSString *resourcesBasePath;
 @property (nonatomic, strong) IRContainer   *container;
 @property (nonatomic, strong) IROpfMetadata *opfMetadata;
 @property (nonatomic, strong) IROpfManifest *opfManifest;

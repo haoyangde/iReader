@@ -49,12 +49,30 @@
 
 @implementation NSString (NE_AttributedString)
 
-- (NSAttributedString *)attributedStringWithFontSize:(CGFloat)fontSize textColor:(UIColor *)color
+- (NSAttributedString *)attributedStringWithBoldFontSize:(CGFloat)fontSize
 {
     if (!self.length) {
         return nil;
     }
     
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[UIColor blackColor], NSForegroundColorAttributeName,
+                                                                          [UIFont boldSystemFontOfSize:fontSize], NSFontAttributeName, nil];
+    
+    return [[NSMutableAttributedString alloc] initWithString:self attributes:attributes];
+}
+
+- (NSAttributedString *)attributedStringWithFontSize:(CGFloat)fontSize
+{
+    return [self attributedStringWithFontSize:fontSize textColor:[UIColor blackColor]];
+}
+
+- (NSAttributedString *)attributedStringWithFontSize:(CGFloat)fontSize textColor:(UIColor *)color
+{
+    if (!self.length) {
+        return nil;
+    }
+//    NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
+//    paragraph.lineSpacing = 3.0;
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:color, NSForegroundColorAttributeName, [UIFont systemFontOfSize:fontSize], NSFontAttributeName, nil];
     
     return [[NSMutableAttributedString alloc] initWithString:self attributes:attributes];
