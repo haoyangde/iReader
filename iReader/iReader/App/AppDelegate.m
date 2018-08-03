@@ -6,9 +6,17 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
+#ifdef DEBUG
+#import <FLEX.h>
+#endif
+
 #import "AppDelegate.h"
 
 @interface AppDelegate ()
+
+#ifdef DEBUG
+@property (nonatomic, strong) UIWindow *flexWindow;
+#endif
 
 @end
 
@@ -18,9 +26,48 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window.backgroundColor = [UIColor whiteColor];
+    
+#ifdef DEBUG
+    [self addFLEX];
+#endif
+    
     return YES;
 }
 
+#ifdef DEBUG
+
+- (void)addFLEX
+{
+    UIButton *flexBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    flexBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+    flexBtn.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.2];
+    [flexBtn setTitle:@"FLEX" forState:UIControlStateNormal];
+    [flexBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [flexBtn addTarget:self action:@selector(showFlexSettingView) forControlEvents:UIControlEventTouchUpInside];
+    [flexBtn sizeToFit];
+    
+    UIWindow *window = [[UIWindow alloc] init];
+    window.backgroundColor = [UIColor clearColor];
+    window.rootViewController = [[UIViewController alloc] init];
+    window.windowLevel = UIWindowLevelStatusBar + 50;
+    window.size = flexBtn.size;
+    CGFloat centerY = 0;
+    if (@available(iOS 11.0, *)) {
+        centerY = self.window.safeAreaInsets.top;
+    }
+    window.center = CGPointMake(([UIScreen mainScreen].bounds.size.width) * 0.5, centerY);
+    [window makeKeyAndVisible];
+    self.flexWindow = window;
+    
+    [window addSubview:flexBtn];
+}
+
+-(void)showFlexSettingView
+{
+    [[FLEXManager sharedManager] showExplorer];
+}
+
+#endif
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
