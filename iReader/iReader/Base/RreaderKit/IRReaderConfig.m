@@ -47,8 +47,8 @@
     
     if (!(pageSize.width && pageSize.height)) {
         CGRect rect = [UIScreen mainScreen].bounds;
-        CGFloat width  = MIN(CGRectGetWidth(rect), CGRectGetHeight(rect));
-        CGFloat height = MAX(CGRectGetWidth(rect), CGRectGetHeight(rect));
+        CGFloat width  = MIN(CGRectGetWidth(rect), CGRectGetHeight(rect)) - 20;
+        CGFloat height = MAX(CGRectGetWidth(rect), CGRectGetHeight(rect)) - 20;
         pageSize = CGSizeMake(width, height);
     }
     

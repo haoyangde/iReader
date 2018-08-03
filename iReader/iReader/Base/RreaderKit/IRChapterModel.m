@@ -33,16 +33,16 @@
                 contentAtt = [(NSString *)obj attributedStringWithFontSize:[IR_READER_CONFIG commonFontSize]];
             }
             else if ([key isEqualToString:@"h"]) {
-                contentAtt = [(NSString *)obj attributedStringWithBoldFontSize:[IR_READER_CONFIG commonFontSize]];
+                contentAtt = [(NSString *)obj attributedStringWithBoldFontSize:[IR_READER_CONFIG commonFontSize] textAlignment:NSTextAlignmentCenter];
             }
             else if ([key isEqualToString:@"h1"]) {
-                contentAtt = [(NSString *)obj attributedStringWithBoldFontSize:[IR_READER_CONFIG H1FontSize]];
+                contentAtt = [(NSString *)obj attributedStringWithBoldFontSize:[IR_READER_CONFIG H1FontSize] textAlignment:NSTextAlignmentCenter];
             }
             else if ([key isEqualToString:@"h2"]) {
-                contentAtt = [(NSString *)obj attributedStringWithBoldFontSize:[IR_READER_CONFIG H2FontSize]];
+                contentAtt = [(NSString *)obj attributedStringWithBoldFontSize:[IR_READER_CONFIG H2FontSize] textAlignment:NSTextAlignmentCenter];
             }
             else if ([key isEqualToString:@"h3"]) {
-                contentAtt = [(NSString *)obj attributedStringWithBoldFontSize:[IR_READER_CONFIG H3FontSize]];
+                contentAtt = [(NSString *)obj attributedStringWithBoldFontSize:[IR_READER_CONFIG H3FontSize] textAlignment:NSTextAlignmentCenter];
             }
             else if ([key isEqualToString:@"img"]) {
                 

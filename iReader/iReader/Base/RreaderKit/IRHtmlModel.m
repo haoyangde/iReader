@@ -59,6 +59,7 @@
                 // Tag - remove and replace with space unless it's
                 if ([scanner scanString:@"/p" intoString:NULL]) {
                     if (result.length) {
+                        [result appendString:@"\n"];
                         [contents addObject:@{@"p" : [result copy]}];
                         needResetResult = YES;
                     }
@@ -85,22 +86,26 @@
                 
                 if ([scanner scanString:@"/h1" intoString:NULL]) {
                     if (result.length) {
+                        [result appendString:@"\n"];
                         [contents addObject:@{@"h1" : [result copy]}];
                         needResetResult = YES;
                     }
                 } else if ([scanner scanString:@"/h2" intoString:NULL]) {
                     if (result.length) {
+                        [result appendString:@"\n"];
                         [contents addObject:@{@"h2" : [result copy]}];
                         needResetResult = YES;
                     }
                     
                 } else if ([scanner scanString:@"/h3" intoString:NULL]) {
                     if (result.length) {
+                        [result appendString:@"\n"];
                         [contents addObject:@{@"h3" : [result copy]}];
                         needResetResult = YES;
                     }
                 } else if ([scanner scanString:@"/h" intoString:NULL]) {
                     if (result.length) {
+                        [result appendString:@"\n"];
                         [contents addObject:@{@"h" : [result copy]}];
                         needResetResult = YES;
                     }

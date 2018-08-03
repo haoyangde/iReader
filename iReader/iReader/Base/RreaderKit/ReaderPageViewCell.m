@@ -12,6 +12,7 @@
 #import "IRChapterModel.h"
 #import <YYLabel.h>
 #import "IRPageModel.h"
+#import "IRReaderConfig.h"
 
 @interface ReaderPageViewCell ()
 
@@ -41,8 +42,9 @@
 - (void)setupSubviews
 {
     _readerPage = [[YYLabel alloc] init];
+    _readerPage.numberOfLines = 0;
     _readerPage.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.2];
-    _readerPage.textAlignment = NSTextAlignmentLeft;
+    _readerPage.textAlignment = NSTextAlignmentJustified;
     _readerPage.displaysAsynchronously = YES;
     [self.contentView addSubview:_readerPage];
 }
@@ -67,8 +69,10 @@
     }
     
     IRChapterModel *chapterModel = [IRChapterModel modelWithHtmlModel:[IRHtmlModel modelWithHtmlString:_chapterHtmlStr]];
+    YYTextContainer *container = [YYTextContainer containerWithSize:[IR_READER_CONFIG pageSize] insets:UIEdgeInsetsMake(10, 10, 10, 10)];
     
-    _readerPage.attributedText = chapterModel.contents.firstObject.content;
+    YYTextLayout *textLayout = [YYTextLayout layoutWithContainer:container text:chapterModel.contents.firstObject.content];
+    _readerPage.textLayout = textLayout;
     
     [self setNeedsLayout];
 }
