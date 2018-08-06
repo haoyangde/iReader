@@ -63,6 +63,11 @@
 
 #pragma mark - privte
 
++ (UINavigationController *)navigationController
+{
+    return (UINavigationController *)[UIApplication sharedApplication].delegate.window.rootViewController;
+}
+
 #ifdef DEBUG
 
 - (void)addFLEX

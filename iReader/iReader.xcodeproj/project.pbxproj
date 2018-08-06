@@ -15,7 +15,6 @@
 		810688B721181FC70038B94A /* IRChapterViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688B621181FC70038B94A /* IRChapterViewCell.m */; };
 		810688BA21181FD80038B94A /* IRPageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688B921181FD80038B94A /* IRPageViewCell.m */; };
 		810688BD21182BB20038B94A /* IRReaderNavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688BC21182BB20038B94A /* IRReaderNavigationView.m */; };
-		81154F5020F65027008A15E8 /* ReaderMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81154F4F20F65027008A15E8 /* ReaderMainViewController.m */; };
 		8145189520F307E000DC5F3D /* IREpubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189420F307E000DC5F3D /* IREpubBook.m */; };
 		81A0DF5F20F7A82F00CDB4B0 /* ReaderPageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 81A0DF5E20F7A82F00CDB4B0 /* ReaderPageViewCell.m */; };
 		81B3747520F8AABB00D86F5C /* IRCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 81B3747420F8AABB00D86F5C /* IRCollectionViewCell.m */; };
@@ -91,8 +90,6 @@
 		810688B921181FD80038B94A /* IRPageViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRPageViewCell.m; sourceTree = "<group>"; };
 		810688BB21182BB20038B94A /* IRReaderNavigationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRReaderNavigationView.h; sourceTree = "<group>"; };
 		810688BC21182BB20038B94A /* IRReaderNavigationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRReaderNavigationView.m; sourceTree = "<group>"; };
-		81154F4E20F65027008A15E8 /* ReaderMainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderMainViewController.h; sourceTree = "<group>"; };
-		81154F4F20F65027008A15E8 /* ReaderMainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReaderMainViewController.m; sourceTree = "<group>"; };
 		8145189320F307E000DC5F3D /* IREpubBook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubBook.h; sourceTree = "<group>"; };
 		8145189420F307E000DC5F3D /* IREpubBook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IREpubBook.m; sourceTree = "<group>"; };
 		81A0DF5D20F7A82F00CDB4B0 /* ReaderPageViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderPageViewCell.h; sourceTree = "<group>"; };
@@ -211,8 +208,6 @@
 				81E2851720F8550100348253 /* ChapterList */,
 				81A0DF5D20F7A82F00CDB4B0 /* ReaderPageViewCell.h */,
 				81A0DF5E20F7A82F00CDB4B0 /* ReaderPageViewCell.m */,
-				81154F4E20F65027008A15E8 /* ReaderMainViewController.h */,
-				81154F4F20F65027008A15E8 /* ReaderMainViewController.m */,
 				8100899721084D3700C05391 /* IRChapterModel.h */,
 				8100899821084D3700C05391 /* IRChapterModel.m */,
 				810089A021084EA100C05391 /* IRHtmlModel.h */,
@@ -732,7 +727,6 @@
 				DFDC3BD6205665E100E40E27 /* main.m in Sources */,
 				DFDC3C2320567EFC00E40E27 /* IERouter.m in Sources */,
 				DFDC3C1320566A5C00E40E27 /* MyBooksViewController.m in Sources */,
-				81154F5020F65027008A15E8 /* ReaderMainViewController.m in Sources */,
 				810089A221084EA100C05391 /* IRHtmlModel.m in Sources */,
 				81A0DF5F20F7A82F00CDB4B0 /* ReaderPageViewCell.m in Sources */,
 				DFDC3C3D205A5A0A00E40E27 /* IREpubParser.m in Sources */,

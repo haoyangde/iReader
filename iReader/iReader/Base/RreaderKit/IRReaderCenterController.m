@@ -7,6 +7,7 @@
 //
 
 #import "IRReaderCenterController.h"
+#import "BookChapterListController.h"
 
 // view
 #import "IRChapterViewCell.h"
@@ -15,6 +16,9 @@
 // model
 #import "IRTocRefrence.h"
 #import "IREpubBook.h"
+
+// other
+#import "AppDelegate.h"
 
 @interface IRReaderCenterController ()
 <
@@ -27,6 +31,7 @@ IRReaderNavigationViewDelegate
 @property (nonatomic, strong) NSArray<IRTocRefrence *> *chapters;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
 @property (nonatomic, strong) IRReaderNavigationView *readerNavigationView;
+@property (nonatomic, assign) BOOL hadHideStatusBarOnce;
 
 @end
 
@@ -37,6 +42,17 @@ IRReaderNavigationViewDelegate
     [super viewDidLoad];
 
     [self commonInit];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (!self.hadHideStatusBarOnce) {
+        self.hadHideStatusBarOnce = YES;
+        self.shouldHideStatusBar = YES;
+        [self setNeedsStatusBarAppearanceUpdate];
+    }
 }
 
 - (void)viewDidLayoutSubviews
@@ -68,9 +84,9 @@ IRReaderNavigationViewDelegate
 - (void)onSingleTap:(UIGestureRecognizer *)recognizer
 {
     self.shouldHideStatusBar = !self.shouldHideStatusBar;
-    CGFloat navbarH = 40;
-    CGFloat navbarBeginY = self.shouldHideStatusBar ? 60 : -navbarH;
-    CGFloat navbarEndY = self.shouldHideStatusBar ? -navbarH : 60;
+    CGFloat navbarH = 46;
+    CGFloat navbarBeginY = self.shouldHideStatusBar ? 20 : -navbarH;
+    CGFloat navbarEndY = self.shouldHideStatusBar ? -navbarH : 20;
     self.readerNavigationView.frame = CGRectMake(0, navbarBeginY, self.view.width, navbarH);
     
     [UIView animateWithDuration:0.25 animations:^{
@@ -83,7 +99,8 @@ IRReaderNavigationViewDelegate
 
 - (void)commonInit
 {
-    self.shouldHideStatusBar = YES;
+    self.shouldHideStatusBar = NO;
+    self.hadHideStatusBarOnce = NO;
     [self setupCollectionView];
     [self setupGestures];
 }
@@ -127,6 +144,13 @@ IRReaderNavigationViewDelegate
 
 #pragma mark - IRReaderNavigationViewDelegate
 
+- (void)readerNavigationViewDidClickChapterListButton:(IRReaderNavigationView *)aView
+{
+    BookChapterListController *chapterVc = [[BookChapterListController alloc] init];
+    chapterVc.chapterList = self.book.flatTableOfContents;
+    [self presentViewController:chapterVc animated:YES completion:nil];
+}
+
 - (void)readerNavigationViewDidClickCloseButton:(IRReaderNavigationView *)aView
 {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -142,7 +166,7 @@ IRReaderNavigationViewDelegate
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     IRChapterViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRChapterViewCell" forIndexPath:indexPath];
-    cell.backgroundColor = IR_RANDOM_COLOR;
+//    cell.backgroundColor = IR_RANDOM_COLOR;
     return cell;
 }
 
