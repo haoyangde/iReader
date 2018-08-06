@@ -14,10 +14,6 @@
 
 @interface AppDelegate ()
 
-#ifdef DEBUG
-@property (nonatomic, strong) UIWindow *flexWindow;
-#endif
-
 @end
 
 @implementation AppDelegate
@@ -33,36 +29,6 @@
     
     return YES;
 }
-
-#ifdef DEBUG
-
-- (void)addFLEX
-{
-    UIButton *flexBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    flexBtn.titleLabel.font = [UIFont systemFontOfSize:12];    [flexBtn setTitle:@"FLEX" forState:UIControlStateNormal];
-    [flexBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [flexBtn addTarget:self action:@selector(showFlexSettingView) forControlEvents:UIControlEventTouchUpInside];
-    [flexBtn sizeToFit];
-    
-    UIWindow *window = [[UIWindow alloc] init];
-    window.backgroundColor = [UIColor clearColor];
-    window.rootViewController = [[UIViewController alloc] init];
-    window.windowLevel = UIWindowLevelStatusBar + 50;
-    CGFloat windowY = CGRectGetMaxY([UIApplication sharedApplication].statusBarFrame);
-    window.frame = CGRectMake(0.5 * (self.window.width - 30), windowY, 30, 13);
-    flexBtn.frame = window.bounds;
-    [window makeKeyAndVisible];
-    self.flexWindow = window;
-    
-    [window addSubview:flexBtn];
-}
-
--(void)showFlexSettingView
-{
-    [[FLEXManager sharedManager] showExplorer];
-}
-
-#endif
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -95,5 +61,35 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark - privte
+
+#ifdef DEBUG
+
+- (void)addFLEX
+{
+    static UIWindow *flexWindow;
+    flexWindow = [[UIWindow alloc] init];
+    flexWindow.backgroundColor = [UIColor clearColor];
+    flexWindow.rootViewController = [[UIViewController alloc] init];
+    flexWindow.windowLevel = UIWindowLevelStatusBar + 50;
+    CGFloat windowY = CGRectGetMaxY([UIApplication sharedApplication].statusBarFrame);
+    flexWindow.frame = CGRectMake(0.5 * ([UIScreen mainScreen].bounds.size.width - 30), windowY, 30, 13);
+    [flexWindow makeKeyAndVisible];
+    
+    UIButton *flexBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    flexBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+    [flexBtn setTitle:@"FLEX" forState:UIControlStateNormal];
+    [flexBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [flexBtn addTarget:self action:@selector(showFlexSettingView) forControlEvents:UIControlEventTouchUpInside];
+    flexBtn.frame = flexWindow.bounds;
+    [flexWindow addSubview:flexBtn];
+}
+
+-(void)showFlexSettingView
+{
+    [[FLEXManager sharedManager] showExplorer];
+}
+
+#endif
 
 @end
