@@ -8,7 +8,7 @@
 
 // Controller
 #import "MyBooksViewController.h"
-#import "ReaderMainViewController.h"
+#import "IRReaderCenterController.h"
 
 // View
 #import "MyBookCell.h"
@@ -125,9 +125,10 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    ReaderMainViewController *mainVc = [[ReaderMainViewController alloc] init];
+    IRReaderCenterController *mainVc = [[IRReaderCenterController alloc] init];
+//    mainVc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     mainVc.book = [self.myBooks objectAtIndex:indexPath.row];
-    [self.navigationController pushViewController:mainVc animated:YES];
+    [self presentViewController:mainVc animated:YES completion:nil];
 }
 
 @end

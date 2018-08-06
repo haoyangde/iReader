@@ -120,7 +120,7 @@
                     NSString *imgString = nil;
                     if ([scanner scanUpToCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"\"\'"] intoString:&imgString]) {
                         if (imgString.length) {
-                            [contents addObject:@{@"imag" : [imgString copy]}];
+                            [contents addObject:@{@"img" : [imgString copy]}];
                         }
                     }
                 }

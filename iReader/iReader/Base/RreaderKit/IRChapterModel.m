@@ -54,7 +54,6 @@
             if (contentAtt.string.length) {
                 layout = [YYTextLayout layoutWithContainerSize:[IR_READER_CONFIG pageSize] text:contentAtt];
                 [pageContent appendAttributedString:contentAtt];
-//                [pageContent appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
                 textHeight += layout.textBoundingSize.height;
             }
             

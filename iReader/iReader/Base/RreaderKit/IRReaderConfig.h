@@ -14,6 +14,8 @@
 
 + (instancetype)sharedInstance;
 
+@property (nonatomic, strong) UIColor *readerCenterBackgroundColor;
+
 /// 阅读页尺寸
 - (CGSize)pageSize;
 /// 通用文字大小

@@ -10,6 +10,10 @@
 
 @implementation UIColor (Extension)
 
++ (UIColor *)ir_randomColor
+{
+    return [self ir_colorWithRed:(arc4random() % 255) green:(arc4random() % 255) blue:(arc4random() % 255)];
+}
 
 + (UIColor *)ir_colorWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue
 {
