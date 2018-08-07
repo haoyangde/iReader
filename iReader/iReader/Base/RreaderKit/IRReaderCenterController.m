@@ -16,6 +16,9 @@
 // model
 #import "IRTocRefrence.h"
 #import "IREpubBook.h"
+#import "IRChapterModel.h"
+#import "IRResource.h"
+#import "IRHtmlModel.h"
 
 // other
 #import "AppDelegate.h"
@@ -28,9 +31,10 @@ IRReaderNavigationViewDelegate
 >
 
 @property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, strong) NSArray<IRTocRefrence *> *chapters;
+@property (nonatomic, strong) NSArray<IRChapterModel *> *chapters;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
 @property (nonatomic, strong) IRReaderNavigationView *readerNavigationView;
+@property (nonatomic, strong) UINavigationBar *orilNavigationBar;
 @property (nonatomic, assign) BOOL hadHideStatusBarOnce;
 
 @end
@@ -44,6 +48,13 @@ IRReaderNavigationViewDelegate
     [self commonInit];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.readerNavigationView shouldHideAllCustomViews:NO];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -55,6 +66,13 @@ IRReaderNavigationViewDelegate
     }
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self.readerNavigationView shouldHideAllCustomViews:YES];
+}
+
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
@@ -63,6 +81,11 @@ IRReaderNavigationViewDelegate
 }
 
 #pragma mark - StatusBarHidden
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleDefault;
+}
 
 - (BOOL)prefersStatusBarHidden
 {
@@ -86,15 +109,10 @@ IRReaderNavigationViewDelegate
 - (void)onSingleTap:(UIGestureRecognizer *)recognizer
 {
     self.shouldHideStatusBar = !self.shouldHideStatusBar;
-    CGFloat navbarH = 46;
-    CGFloat navbarBeginY = self.shouldHideStatusBar ? [IRUIUtilites appStatusBarMaxY] : -navbarH;
-    CGFloat navbarEndY = self.shouldHideStatusBar ? -navbarH : [IRUIUtilites appStatusBarMaxY];
-    self.readerNavigationView.frame = CGRectMake(0, navbarBeginY, self.view.width, navbarH);
-    
     [UIView animateWithDuration:0.25 animations:^{
         [self setNeedsStatusBarAppearanceUpdate];
-        self.readerNavigationView.y = navbarEndY;
     }];
+    [self.navigationController setNavigationBarHidden:self.shouldHideStatusBar animated:YES];
 }
 
 #pragma mark - Private
@@ -104,7 +122,17 @@ IRReaderNavigationViewDelegate
     self.shouldHideStatusBar = NO;
     self.hadHideStatusBarOnce = NO;
     [self setupCollectionView];
+    [self setupNavigationbar];
     [self setupGestures];
+}
+
+- (void)setupNavigationbar
+{
+    if ([self.navigationController respondsToSelector:@selector(navigationBar)]) {
+        [self.navigationController setValue:self.readerNavigationView forKeyPath:@"navigationBar"];
+    } else {
+        NSAssert(NO, @"UINavigationController does not recognize selector : navigationBar");
+    }
 }
 
 - (void)setupCollectionView
@@ -137,8 +165,7 @@ IRReaderNavigationViewDelegate
 {
     if (_readerNavigationView == nil) {
         _readerNavigationView = [[IRReaderNavigationView alloc] init];
-        _readerNavigationView.delegate = self;
-        [self.view addSubview:_readerNavigationView];
+        _readerNavigationView.actionDelegate = self;
     }
     
     return _readerNavigationView;
@@ -150,7 +177,7 @@ IRReaderNavigationViewDelegate
 {
     BookChapterListController *chapterVc = [[BookChapterListController alloc] init];
     chapterVc.chapterList = self.book.flatTableOfContents;
-    [self presentViewController:chapterVc animated:YES completion:nil];
+    [self.navigationController pushViewController:chapterVc animated:YES];
 }
 
 - (void)readerNavigationViewDidClickCloseButton:(IRReaderNavigationView *)aView
@@ -168,7 +195,7 @@ IRReaderNavigationViewDelegate
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     IRChapterViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRChapterViewCell" forIndexPath:indexPath];
-//    cell.backgroundColor = IR_RANDOM_COLOR;
+    cell.chapterModel = [self.chapters safeObjectAtIndex:indexPath.row];
     return cell;
 }
 
@@ -188,7 +215,22 @@ IRReaderNavigationViewDelegate
 {
     _book = book;
     
-    self.chapters = book.tableOfContents;
+    __block NSMutableArray *tempChapters = [NSMutableArray arrayWithCapacity:book.tableOfContents.count];
+    [book.tableOfContents enumerateObjectsUsingBlock:^(IRTocRefrence * _Nonnull toc, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSError *error = nil;
+        NSString *chapterHtmlStr = [NSString stringWithContentsOfFile:toc.resource.fullHref
+                                                    encoding:NSUTF8StringEncoding
+                                                       error:&error];
+        if (error) {
+            IRDebugLog(@"[ReaderPageViewCell] Read chapter resource failed, error: %@", error);
+            return;
+        }
+        
+        IRChapterModel *chapterModel = [IRChapterModel modelWithHtmlModel:[IRHtmlModel modelWithHtmlString:chapterHtmlStr]];
+        [tempChapters addObject:chapterModel];
+    }];
+    
+    self.chapters = tempChapters;
     [self.collectionView reloadData];
 }
 

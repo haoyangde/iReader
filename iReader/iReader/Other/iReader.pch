@@ -17,6 +17,8 @@
 #import "UIView+Extension.h"
 #import "IRUtilites.h"
 #import "UIColor+Extension.h"
+#import "NSArray+Safe.h"
+#import "NSDictionary+Safe.h"
 
 #endif
 

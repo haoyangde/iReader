@@ -10,7 +10,7 @@
 
 @class IRReaderNavigationView;
 
-@protocol IRReaderNavigationViewDelegate <UINavigationBarDelegate>
+@protocol IRReaderNavigationViewDelegate <NSObject>
 
 @optional
 - (void)readerNavigationViewDidClickCloseButton:(IRReaderNavigationView *)aView;
@@ -20,6 +20,8 @@
 
 @interface IRReaderNavigationView : UINavigationBar
 
-@property (nonatomic, weak) id<IRReaderNavigationViewDelegate> delegate;
+@property (nonatomic, weak) id<IRReaderNavigationViewDelegate> actionDelegate;
+
+- (void)shouldHideAllCustomViews:(BOOL)hidden;
 
 @end

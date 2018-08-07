@@ -126,9 +126,11 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     IRReaderCenterController *mainVc = [[IRReaderCenterController alloc] init];
-    mainVc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     mainVc.book = [self.myBooks objectAtIndex:indexPath.row];
-    [self presentViewController:mainVc animated:YES completion:nil];
+    UINavigationController *containerNav = [[UINavigationController alloc] initWithRootViewController:mainVc];
+    containerNav.navigationBarHidden = YES;
+    containerNav.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self presentViewController:containerNav animated:YES completion:nil];
 }
 
 @end

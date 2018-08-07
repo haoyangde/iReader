@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class IRChapterModel;
+
 @interface IRChapterViewCell : UICollectionViewCell
+
+@property (nonatomic, strong) IRChapterModel *chapterModel;
 
 @end

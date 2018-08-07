@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class IRPageModel;
+
 @interface IRPageViewCell : UICollectionViewCell
+
+@property (nonatomic, strong) IRPageModel *pageModel;
 
 @end

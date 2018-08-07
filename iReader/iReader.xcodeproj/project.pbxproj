@@ -16,6 +16,8 @@
 		810688BA21181FD80038B94A /* IRPageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688B921181FD80038B94A /* IRPageViewCell.m */; };
 		810688BD21182BB20038B94A /* IRReaderNavigationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688BC21182BB20038B94A /* IRReaderNavigationView.m */; };
 		810688C021192E330038B94A /* IRUIUtilites.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688BF21192E330038B94A /* IRUIUtilites.m */; };
+		810688C6211939180038B94A /* NSDictionary+Safe.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688C3211939180038B94A /* NSDictionary+Safe.m */; };
+		810688C9211939240038B94A /* NSArray+Safe.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688C8211939240038B94A /* NSArray+Safe.m */; };
 		8145189520F307E000DC5F3D /* IREpubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189420F307E000DC5F3D /* IREpubBook.m */; };
 		81A0DF5F20F7A82F00CDB4B0 /* ReaderPageViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 81A0DF5E20F7A82F00CDB4B0 /* ReaderPageViewCell.m */; };
 		81B3747520F8AABB00D86F5C /* IRCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 81B3747420F8AABB00D86F5C /* IRCollectionViewCell.m */; };
@@ -93,6 +95,10 @@
 		810688BC21182BB20038B94A /* IRReaderNavigationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRReaderNavigationView.m; sourceTree = "<group>"; };
 		810688BE21192E330038B94A /* IRUIUtilites.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRUIUtilites.h; sourceTree = "<group>"; };
 		810688BF21192E330038B94A /* IRUIUtilites.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRUIUtilites.m; sourceTree = "<group>"; };
+		810688C2211939170038B94A /* NSDictionary+Safe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Safe.h"; sourceTree = "<group>"; };
+		810688C3211939180038B94A /* NSDictionary+Safe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Safe.m"; sourceTree = "<group>"; };
+		810688C7211939240038B94A /* NSArray+Safe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Safe.h"; sourceTree = "<group>"; };
+		810688C8211939240038B94A /* NSArray+Safe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Safe.m"; sourceTree = "<group>"; };
 		8145189320F307E000DC5F3D /* IREpubBook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubBook.h; sourceTree = "<group>"; };
 		8145189420F307E000DC5F3D /* IREpubBook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IREpubBook.m; sourceTree = "<group>"; };
 		81A0DF5D20F7A82F00CDB4B0 /* ReaderPageViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderPageViewCell.h; sourceTree = "<group>"; };
@@ -496,6 +502,10 @@
 		DFDC3C1A20567E5100E40E27 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				810688C7211939240038B94A /* NSArray+Safe.h */,
+				810688C8211939240038B94A /* NSArray+Safe.m */,
+				810688C2211939170038B94A /* NSDictionary+Safe.h */,
+				810688C3211939180038B94A /* NSDictionary+Safe.m */,
 				DFDC3C2620567F5000E40E27 /* NSString+Extension.h */,
 				DFDC3C2520567F5000E40E27 /* NSString+Extension.m */,
 				DFDC3C1C20567E8900E40E27 /* UIView+Extension.h */,
@@ -735,7 +745,9 @@
 				DFDC3C1320566A5C00E40E27 /* MyBooksViewController.m in Sources */,
 				810089A221084EA100C05391 /* IRHtmlModel.m in Sources */,
 				81A0DF5F20F7A82F00CDB4B0 /* ReaderPageViewCell.m in Sources */,
+				810688C9211939240038B94A /* NSArray+Safe.m in Sources */,
 				DFDC3C3D205A5A0A00E40E27 /* IREpubParser.m in Sources */,
+				810688C6211939180038B94A /* NSDictionary+Safe.m in Sources */,
 				81E288A220F5F45D006DB29B /* IRSpine.m in Sources */,
 				81E2887C20F391C5006DB29B /* IRCommonUtilites.m in Sources */,
 				81E2887920F38C4E006DB29B /* IRContainer.m in Sources */,

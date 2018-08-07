@@ -11,6 +11,7 @@
 
 @interface IRReaderNavigationView ()
 
+@property (nonatomic, strong) UIView *customContentView;
 @property (nonatomic, strong) UIButton *closeBtn;
 @property (nonatomic, strong) UIButton *fontBtn;
 @property (nonatomic, strong) UIButton *shareBtn;
@@ -37,8 +38,8 @@
 
 - (void)onCloseButtonClicked
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(readerNavigationViewDidClickCloseButton:)]) {
-        [self.delegate readerNavigationViewDidClickCloseButton:self];
+    if (self.actionDelegate && [self.actionDelegate respondsToSelector:@selector(readerNavigationViewDidClickCloseButton:)]) {
+        [self.actionDelegate readerNavigationViewDidClickCloseButton:self];
     }
 }
 
@@ -49,8 +50,8 @@
 
 - (void)onChapterListClicked
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(readerNavigationViewDidClickChapterListButton:)]) {
-        [self.delegate readerNavigationViewDidClickChapterListButton:self];
+    if (self.actionDelegate && [self.actionDelegate respondsToSelector:@selector(readerNavigationViewDidClickChapterListButton:)]) {
+        [self.actionDelegate readerNavigationViewDidClickChapterListButton:self];
     }
 }
 
@@ -58,8 +59,14 @@
 
 - (void)setupSubviews
 {
+    self.customContentView = [[UIView alloc] init];
+    [self addSubview:self.customContentView];
+    [self.customContentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self);
+    }];
+    
     self.closeBtn = [self commonButtonWithImageName:@"navbar_close" action:@selector(onCloseButtonClicked)];
-    [self addSubview:self.closeBtn];
+    [self.customContentView addSubview:self.closeBtn];
     [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.mas_equalTo(17);
         make.left.equalTo(self).offset(15);
@@ -67,7 +74,7 @@
     }];
     
     self.shareBtn = [self commonButtonWithImageName:@"navbar_share" action:@selector(onShareButtonClicked)];
-    [self addSubview:self.shareBtn];
+    [self.customContentView addSubview:self.shareBtn];
     [self.shareBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(17);
         make.height.mas_equalTo(23);
@@ -76,7 +83,7 @@
     }];
     
     self.chapterListBtn = [self commonButtonWithImageName:@"navbar_chapter_list" action:@selector(onChapterListClicked)];
-    [self addSubview:self.chapterListBtn];
+    [self.customContentView addSubview:self.chapterListBtn];
     [self.chapterListBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(22);
         make.height.mas_equalTo(14);
@@ -91,6 +98,13 @@
     [btn addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
     [btn setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     return btn;
+}
+
+#pragma mark - Public
+
+- (void)shouldHideAllCustomViews:(BOOL)hidden
+{
+    self.customContentView.hidden = hidden;
 }
 
 @end
