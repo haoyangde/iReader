@@ -19,7 +19,12 @@
     [super viewDidLoad];
     
     self.navigationBar.translucent = NO;
+    [IRUIUtilites appStatusBarMaxY];
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
+}
 
 @end

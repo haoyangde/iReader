@@ -62,6 +62,8 @@ IRReaderNavigationViewDelegate
     self.collectionView.frame = self.view.bounds;
 }
 
+#pragma mark - StatusBarHidden
+
 - (BOOL)prefersStatusBarHidden
 {
     return self.shouldHideStatusBar;
@@ -85,8 +87,8 @@ IRReaderNavigationViewDelegate
 {
     self.shouldHideStatusBar = !self.shouldHideStatusBar;
     CGFloat navbarH = 46;
-    CGFloat navbarBeginY = self.shouldHideStatusBar ? 20 : -navbarH;
-    CGFloat navbarEndY = self.shouldHideStatusBar ? -navbarH : 20;
+    CGFloat navbarBeginY = self.shouldHideStatusBar ? [IRUIUtilites appStatusBarMaxY] : -navbarH;
+    CGFloat navbarEndY = self.shouldHideStatusBar ? -navbarH : [IRUIUtilites appStatusBarMaxY];
     self.readerNavigationView.frame = CGRectMake(0, navbarBeginY, self.view.width, navbarH);
     
     [UIView animateWithDuration:0.25 animations:^{

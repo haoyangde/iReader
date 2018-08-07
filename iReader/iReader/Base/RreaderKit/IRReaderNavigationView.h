@@ -10,7 +10,7 @@
 
 @class IRReaderNavigationView;
 
-@protocol IRReaderNavigationViewDelegate <UIToolbarDelegate>
+@protocol IRReaderNavigationViewDelegate <UINavigationBarDelegate>
 
 @optional
 - (void)readerNavigationViewDidClickCloseButton:(IRReaderNavigationView *)aView;
@@ -18,7 +18,7 @@
 
 @end
 
-@interface IRReaderNavigationView : UIToolbar
+@interface IRReaderNavigationView : UINavigationBar
 
 @property (nonatomic, weak) id<IRReaderNavigationViewDelegate> delegate;
 

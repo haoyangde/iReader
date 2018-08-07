@@ -14,6 +14,7 @@
 #import "IRFileUtilites.h"
 #import "IRCommonUtilites.h"
 #import "IRCommonDefines.h"
+#import "IRUIUtilites.h"
 
 #endif
 
