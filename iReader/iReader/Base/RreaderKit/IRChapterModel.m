@@ -23,6 +23,7 @@
     __block NSUInteger pages = 0;
     __block NSMutableArray *contents = [[NSMutableArray alloc] init];
     __block NSMutableAttributedString *pageContent = [[NSMutableAttributedString alloc] init];
+    __block NSMutableAttributedString *nextPageContent = nil;
     
     [htmlMode.contents enumerateObjectsUsingBlock:^(NSDictionary<NSString *,NSObject *> * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [obj enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSObject * _Nonnull obj, BOOL * _Nonnull stop) {
@@ -51,18 +52,42 @@
                 
             }
             
+            BOOL shouldAddPage = NO;
             if (contentAtt.string.length) {
                 layout = [YYTextLayout layoutWithContainerSize:[IR_READER_CONFIG pageSize] text:contentAtt];
-                [pageContent appendAttributedString:contentAtt];
                 textHeight += layout.textBoundingSize.height;
+                
+                if (textHeight > [IR_READER_CONFIG pageSize].height) {
+                    CGFloat offset = textHeight - [IR_READER_CONFIG pageSize].height + 3;
+                    NSArray<YYTextLine *> *lines = layout.lines;
+                    YYTextLine *line = lines.firstObject;
+                    NSUInteger visibleRows = (int)(offset / (line.height + 3));
+                    YYTextLine *maxLine = [lines objectAtIndex:visibleRows];
+                    NSAttributedString *subAtt = [contentAtt attributedSubstringFromRange:NSMakeRange(0, maxLine.range.location + maxLine.range.length)];
+                    [pageContent appendAttributedString:subAtt];
+                    nextPageContent = [[contentAtt attributedSubstringFromRange:NSMakeRange(maxLine.range.location, contentAtt.string.length - subAtt.string.length)] mutableCopy];
+                    shouldAddPage = YES;
+                } else {
+                    [pageContent appendAttributedString:contentAtt];
+                    textHeight += 10;
+                    if (textHeight >= [IR_READER_CONFIG pageSize].height) {
+                        shouldAddPage = YES;
+                        nextPageContent = [[NSMutableAttributedString alloc] init];
+                    }
+                }
             }
             
-            if (textHeight >= [IR_READER_CONFIG pageSize].height || idx == htmlMode.contents.count - 1) {
+            if (idx == htmlMode.contents.count - 1) {
+                shouldAddPage = YES;
+            }
+            
+            if (shouldAddPage) {
                 textHeight = 0;
                 pages++;
                 IRPageModel *page = [IRPageModel modelWithContent:pageContent];
                 [contents addObject:page];
-                pageContent = [[NSMutableAttributedString alloc] init];
+                pageContent = nextPageContent;
+                nextPageContent = nil;
             }
         }];
     }];

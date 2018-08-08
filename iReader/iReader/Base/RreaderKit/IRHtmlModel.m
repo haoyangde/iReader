@@ -23,7 +23,6 @@
     
     NSUInteger bodyLocation = bodyBegin.location + bodyBegin.length;
     NSString *htmlBody = [htmlString substringWithRange:NSMakeRange(bodyLocation, bodyEnd.location - bodyLocation)];
-    IRDebugLog(@"HTML Body: %@", htmlBody);
     
     NSCharacterSet *stopCharacters = [NSCharacterSet characterSetWithCharactersInString:[NSString stringWithFormat:@"< \t\n\r%C%C%C%C", 0x0085, 0x000C, 0x2028, 0x2029]];
     NSCharacterSet *newLineAndWhitespaceCharacters = [NSCharacterSet characterSetWithCharactersInString:[NSString stringWithFormat:@" \t\n\r%C%C%C%C", 0x0085, 0x000C, 0x2028, 0x2029]];
@@ -168,8 +167,6 @@
             }
         }
     }
-    
-    IRDebugLog(@"HTML model parse result: %@", contents);
     
     if (contents.count) {
         htmlModel = [[IRHtmlModel alloc] init];

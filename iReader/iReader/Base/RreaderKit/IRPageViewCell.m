@@ -38,6 +38,7 @@
 {
     _readerPage = [[YYLabel alloc] init];
     _readerPage.numberOfLines = 0;
+    _readerPage.textVerticalAlignment = YYTextVerticalAlignmentTop;
     _readerPage.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.2];
     _readerPage.textAlignment = NSTextAlignmentJustified;
     _readerPage.displaysAsynchronously = YES;
@@ -50,7 +51,8 @@
     
     CGFloat top = [IRUIUtilites isIPhoneX] ? 40 : 10;
     CGFloat bottom = [IRUIUtilites isIPhoneX] ? 30 : 10;
-    YYTextContainer *container = [YYTextContainer containerWithSize:self.contentView.size insets:UIEdgeInsetsMake(top, 10, bottom, 10)];
+    YYTextContainer *container = [YYTextContainer containerWithSize:self.contentView.size
+                                                             insets:UIEdgeInsetsMake(top, 10, bottom, 10)];
     YYTextLayout *textLayout = [YYTextLayout layoutWithContainer:container text:pageModel.content];
     _readerPage.textLayout = textLayout;
     

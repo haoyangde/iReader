@@ -60,7 +60,7 @@
     if (alignment != NSTextAlignmentCenter) {
         paragraph.firstLineHeadIndent = 10;
     }
-    paragraph.paragraphSpacing = 20;
+    paragraph.paragraphSpacing = 10;
     paragraph.alignment = alignment;
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName : [UIColor blackColor],
