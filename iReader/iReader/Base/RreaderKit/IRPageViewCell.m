@@ -48,7 +48,9 @@
 {
     _pageModel = pageModel;
     
-    YYTextContainer *container = [YYTextContainer containerWithSize:self.contentView.size insets:UIEdgeInsetsMake(10, 10, 10, 10)];
+    CGFloat top = [IRUIUtilites isIPhoneX] ? 40 : 10;
+    CGFloat bottom = [IRUIUtilites isIPhoneX] ? 30 : 10;
+    YYTextContainer *container = [YYTextContainer containerWithSize:self.contentView.size insets:UIEdgeInsetsMake(top, 10, bottom, 10)];
     YYTextLayout *textLayout = [YYTextLayout layoutWithContainer:container text:pageModel.content];
     _readerPage.textLayout = textLayout;
     

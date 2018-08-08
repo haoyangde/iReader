@@ -20,4 +20,29 @@
     return appStatusBarMaxY;
 }
 
++ (CGFloat)UIScreenMinWidth
+{
+    static CGFloat UIScreenMinWidth;
+    if (!UIScreenMinWidth) {
+        UIScreenMinWidth = MIN([[UIScreen mainScreen] bounds].size.height, [[UIScreen mainScreen] bounds].size.width);
+    }
+    
+    return UIScreenMinWidth;
+}
+
++ (CGFloat)UIScreenMaxHeight
+{
+    static CGFloat UIScreenMaxHeight;
+    if (!UIScreenMaxHeight) {
+        UIScreenMaxHeight = MAX([[UIScreen mainScreen] bounds].size.height, [[UIScreen mainScreen] bounds].size.width);
+    }
+    
+    return UIScreenMaxHeight;
+}
+
++ (BOOL)isIPhoneX
+{
+    return [self UIScreenMaxHeight] == 812;
+}
+
 @end

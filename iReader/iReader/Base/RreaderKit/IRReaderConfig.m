@@ -46,9 +46,10 @@
     static CGSize pageSize;
     
     if (!(pageSize.width && pageSize.height)) {
-        CGRect rect = [UIScreen mainScreen].bounds;
-        CGFloat width  = MIN(CGRectGetWidth(rect), CGRectGetHeight(rect)) - 20;
-        CGFloat height = MAX(CGRectGetWidth(rect), CGRectGetHeight(rect)) - 20;
+        
+        CGFloat edgeInset = [IRUIUtilites isIPhoneX] ? 70 : 20;
+        CGFloat width  = [IRUIUtilites UIScreenMinWidth] - 20;
+        CGFloat height = [IRUIUtilites UIScreenMaxHeight] - edgeInset;
         pageSize = CGSizeMake(width, height);
     }
     

@@ -12,4 +12,10 @@
 
 + (CGFloat)appStatusBarMaxY;
 
++ (CGFloat)UIScreenMinWidth;
+
++ (CGFloat)UIScreenMaxHeight;
+
++ (BOOL)isIPhoneX;
+
 @end
