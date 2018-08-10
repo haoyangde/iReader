@@ -28,67 +28,40 @@
     [htmlMode.contents enumerateObjectsUsingBlock:^(NSDictionary<NSString *,NSObject *> * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         [obj enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSObject * _Nonnull obj, BOOL * _Nonnull stop) {
             
-            YYTextLayout *layout = nil;
+            YYTextLayout *textLayout = nil;
             NSAttributedString *contentAtt = nil;
-            if ([key isEqualToString:@"p"]) {
-                contentAtt = [(NSString *)obj attributedStringWithFontSize:[IR_READER_CONFIG commonFontSize]];
-            }
-            else if ([key isEqualToString:@"h"]) {
-                contentAtt = [(NSString *)obj attributedStringWithBoldFontSize:[IR_READER_CONFIG commonFontSize] textAlignment:NSTextAlignmentCenter];
-            }
-            else if ([key isEqualToString:@"h1"]) {
-                contentAtt = [(NSString *)obj attributedStringWithBoldFontSize:[IR_READER_CONFIG H1FontSize] textAlignment:NSTextAlignmentCenter];
-            }
-            else if ([key isEqualToString:@"h2"]) {
-                contentAtt = [(NSString *)obj attributedStringWithBoldFontSize:[IR_READER_CONFIG H2FontSize] textAlignment:NSTextAlignmentCenter];
-            }
-            else if ([key isEqualToString:@"h3"]) {
-                contentAtt = [(NSString *)obj attributedStringWithBoldFontSize:[IR_READER_CONFIG H3FontSize] textAlignment:NSTextAlignmentCenter];
-            }
-            else if ([key isEqualToString:@"img"]) {
+            if ([key isEqualToString:@"img"]) {
                 
-            }
-            else if ([key isEqualToString:@"a"]) {
+            } else if ([key isEqualToString:@"a"]) {
                 
+            } else {
+                NSDictionary *textAttributes = nil;
+                if ([key isEqualToString:@"p"]) {
+                    textAttributes = [self textAttributesWithAlignment:NSTextAlignmentJustified bold:NO];
+                } else {
+                    textAttributes = [self textAttributesWithAlignment:NSTextAlignmentCenter bold:YES];
+                }
+                contentAtt = [[NSAttributedString alloc] initWithString:(NSString *)obj
+                                                             attributes:textAttributes];
             }
             
-            BOOL shouldAddPage = NO;
             if (contentAtt.string.length) {
-                layout = [YYTextLayout layoutWithContainerSize:[IR_READER_CONFIG pageSize] text:contentAtt];
-                textHeight += layout.textBoundingSize.height;
-                
-                if (textHeight > [IR_READER_CONFIG pageSize].height) {
-                    CGFloat offset = textHeight - [IR_READER_CONFIG pageSize].height + 3;
-                    NSArray<YYTextLine *> *lines = layout.lines;
-                    YYTextLine *line = lines.firstObject;
-                    NSUInteger visibleRows = (int)(offset / (line.height + 3));
-                    YYTextLine *maxLine = [lines objectAtIndex:visibleRows];
-                    NSAttributedString *subAtt = [contentAtt attributedSubstringFromRange:NSMakeRange(0, maxLine.range.location + maxLine.range.length)];
-                    [pageContent appendAttributedString:subAtt];
-                    nextPageContent = [[contentAtt attributedSubstringFromRange:NSMakeRange(maxLine.range.location, contentAtt.string.length - subAtt.string.length)] mutableCopy];
-                    shouldAddPage = YES;
-                } else {
-                    [pageContent appendAttributedString:contentAtt];
-                    textHeight += 10;
-                    if (textHeight >= [IR_READER_CONFIG pageSize].height) {
-                        shouldAddPage = YES;
-                        nextPageContent = [[NSMutableAttributedString alloc] init];
-                    }
-                }
+                [pageContent appendAttributedString:contentAtt];
             }
             
             if (idx == htmlMode.contents.count - 1) {
-                shouldAddPage = YES;
+                textLayout = [YYTextLayout layoutWithContainerSize:CGSizeMake([IR_READER_CONFIG pageSize].width, CGFLOAT_MAX) text:pageContent];
+                NSUInteger linesOfPage = [textLayout.lines firstObject].height;
             }
             
-            if (shouldAddPage) {
-                textHeight = 0;
-                pages++;
-                IRPageModel *page = [IRPageModel modelWithContent:pageContent];
-                [contents addObject:page];
-                pageContent = nextPageContent;
-                nextPageContent = nil;
-            }
+//            if (shouldAddPage) {
+//                textHeight = 0;
+//                pages++;
+//                IRPageModel *page = [IRPageModel modelWithContent:pageContent];
+//                [contents addObject:page];
+//                pageContent = nextPageContent;
+//                nextPageContent = nil;
+//            }
         }];
     }];
     
@@ -98,4 +71,27 @@
     return model;
 }
 
++ (NSDictionary *)textAttributesWithAlignment:(NSTextAlignment)alignment bold:(BOOL)isBlod
+{
+    NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
+    paragraph.lineSpacing = 3.0;
+    if (alignment != NSTextAlignmentCenter) {
+        paragraph.firstLineHeadIndent = 10;
+    }
+    paragraph.paragraphSpacing = 10;
+    paragraph.alignment = alignment;
+    
+    UIFont *textFont = nil;
+    if (isBlod) {
+        textFont = [UIFont boldSystemFontOfSize:[IR_READER_CONFIG textFontSize]];
+    } else {
+        textFont = [UIFont systemFontOfSize:[IR_READER_CONFIG textFontSize]];
+    }
+    
+    return @{
+             NSForegroundColorAttributeName : [UIColor blackColor],
+             NSFontAttributeName : textFont,
+             NSParagraphStyleAttributeName : paragraph
+             };
+}
 @end

@@ -30,8 +30,6 @@
 
 @interface NSString (NE_AttributedString)
 
-- (NSAttributedString *)attributedStringWithBoldFontSize:(CGFloat)fontSize textAlignment:(NSTextAlignment)alignment;
-
 - (NSAttributedString *)attributedStringWithFontSize:(CGFloat)fontSize;
 
 - (NSAttributedString *)attributedStringWithFontSize:(CGFloat)fontSize textColor:(UIColor *)color;

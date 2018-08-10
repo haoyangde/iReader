@@ -18,13 +18,7 @@
 
 /// 阅读页尺寸
 - (CGSize)pageSize;
-/// 通用文字大小
-- (CGFloat)commonFontSize;
-/// h1标签字体大小
-- (CGFloat)H1FontSize;
-/// h2标签字体大小
-- (CGFloat)H2FontSize;
-/// h3标签字体大小
-- (CGFloat)H3FontSize;
+/// 文字大小
+- (CGFloat)textFontSize;
 
 @end

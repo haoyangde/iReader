@@ -49,28 +49,6 @@
 
 @implementation NSString (NE_AttributedString)
 
-- (NSAttributedString *)attributedStringWithBoldFontSize:(CGFloat)fontSize textAlignment:(NSTextAlignment)alignment
-{
-    if (!self.length) {
-        return nil;
-    }
-    
-    NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
-    paragraph.lineSpacing = 3.0;
-    if (alignment != NSTextAlignmentCenter) {
-        paragraph.firstLineHeadIndent = 10;
-    }
-    paragraph.paragraphSpacing = 10;
-    paragraph.alignment = alignment;
-    NSDictionary *attributes = @{
-                                 NSForegroundColorAttributeName : [UIColor blackColor],
-                                 NSFontAttributeName : [UIFont boldSystemFontOfSize:fontSize],
-                                 NSParagraphStyleAttributeName : paragraph
-                                 };
-    
-    return [[NSMutableAttributedString alloc] initWithString:self attributes:attributes];
-}
-
 - (NSAttributedString *)attributedStringWithFontSize:(CGFloat)fontSize
 {
     return [self attributedStringWithFontSize:fontSize textColor:[UIColor blackColor]];
@@ -82,15 +60,9 @@
         return nil;
     }
 
-    NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
-    paragraph.lineSpacing = 3.0;
-    paragraph.firstLineHeadIndent = 20;
-    paragraph.paragraphSpacing = 10;
-    paragraph.alignment = NSTextAlignmentJustified;
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName : [UIColor blackColor],
                                  NSFontAttributeName : [UIFont systemFontOfSize:fontSize],
-                                 NSParagraphStyleAttributeName : paragraph
                                  };
     
     return [[NSMutableAttributedString alloc] initWithString:self attributes:attributes];

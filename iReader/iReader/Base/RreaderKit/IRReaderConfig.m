@@ -21,24 +21,9 @@
     return sharedInstance;
 }
 
-- (CGFloat)commonFontSize
+- (CGFloat)textFontSize
 {
     return 15;
-}
-
-- (CGFloat)H1FontSize
-{
-    return 24;
-}
-
-- (CGFloat)H2FontSize
-{
-    return 22;
-}
-
-- (CGFloat)H3FontSize
-{
-    return 20;
 }
 
 - (CGSize)pageSize
