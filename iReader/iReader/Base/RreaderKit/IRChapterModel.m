@@ -14,9 +14,9 @@
 #import "IRTocRefrence.h"
 #import "IRResource.h"
 
-#import <DTCoreText/NSAttributedString+HTML.h>
-#import <DTCoreText/DTCoreTextLayouter.h>
-#import <DTCoreText/DTCoreTextConstants.h>
+#import <NSAttributedString+HTML.h>
+#import <DTCoreTextLayouter.h>
+#import <DTCoreTextConstants.h>
 
 @implementation IRChapterModel
 
@@ -33,9 +33,9 @@
                               DTDefaultFontFamily : @"Times New Roman",
                               DTDefaultLinkColor  : @"purple",
                               NSTextSizeMultiplierDocumentOption : @1.0,
-                              DTDefaultFontSize   : @14,
+                              DTDefaultFontSize   : @24,
                               DTDefaultLineHeightMultiplier : @2,
-                              DTDefaultTextAlignment : @0,
+                              DTDefaultTextAlignment : @(NSTextAlignmentLeft),
                               DTDefaultHeadIndent : @0,
 //                              NSBaseURLDocumentOption : tocRefrence.resource.fullHref,
                               DTMaxImageSize      : [NSValue valueWithCGSize:[IR_READER_CONFIG pageSize]]

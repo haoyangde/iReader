@@ -8,7 +8,6 @@
 
 #import "IRPageViewCell.h"
 #import "IRPageModel.h"
-#import <YYLabel.h>
 #import <DTCoreText/DTAttributedTextView.h>
 
 @interface IRPageViewCell ()

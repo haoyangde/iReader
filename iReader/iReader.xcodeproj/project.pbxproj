@@ -35,7 +35,6 @@
 		81E2889F20F5F42B006DB29B /* IROpfSpine.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2889E20F5F42B006DB29B /* IROpfSpine.m */; };
 		81E288A220F5F45D006DB29B /* IRSpine.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E288A120F5F45D006DB29B /* IRSpine.m */; };
 		81E288AD20F631CD006DB29B /* MyBookCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E288AC20F631CD006DB29B /* MyBookCell.m */; };
-		81FD54D921230291005AA7AF /* DTCoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81FD54D821230291005AA7AF /* DTCoreText.framework */; };
 		CC9EB8FE7CDD1B0D1AF79B38 /* libPods-iReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D886AB0BE345FE472D2E28 /* libPods-iReader.a */; };
 		DF92E84020FAFC3A008285C1 /* 细说明朝.epub in Resources */ = {isa = PBXBuildFile; fileRef = DF92E83F20FAFC3A008285C1 /* 细说明朝.epub */; };
 		DFDC3BC8205665E100E40E27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BC7205665E100E40E27 /* AppDelegate.m */; };
@@ -136,7 +135,6 @@
 		81E288A920F63116006DB29B /* IREpubHeaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubHeaders.h; sourceTree = "<group>"; };
 		81E288AB20F631CD006DB29B /* MyBookCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyBookCell.h; sourceTree = "<group>"; };
 		81E288AC20F631CD006DB29B /* MyBookCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyBookCell.m; sourceTree = "<group>"; };
-		81FD54D821230291005AA7AF /* DTCoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DTCoreText.framework; sourceTree = "<group>"; };
 		B2035DF92994DB586CB903BD /* Pods-iReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iReader/Pods-iReader.debug.xcconfig"; sourceTree = "<group>"; };
 		DF92E83F20FAFC3A008285C1 /* 细说明朝.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "细说明朝.epub"; sourceTree = "<group>"; };
 		DFDC3BC3205665E100E40E27 /* iReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,7 +178,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81FD54D921230291005AA7AF /* DTCoreText.framework in Frameworks */,
 				CC9EB8FE7CDD1B0D1AF79B38 /* libPods-iReader.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,7 +280,6 @@
 		81E2852520F8868900348253 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
-				81FD54D721230257005AA7AF /* DTCoreText */,
 				81E2886720F34408006DB29B /* GDataXML */,
 			);
 			path = ThirdParty;
@@ -360,14 +356,6 @@
 				81E288AC20F631CD006DB29B /* MyBookCell.m */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		81FD54D721230257005AA7AF /* DTCoreText */ = {
-			isa = PBXGroup;
-			children = (
-				81FD54D821230291005AA7AF /* DTCoreText.framework */,
-			);
-			path = DTCoreText;
 			sourceTree = "<group>";
 		};
 		9042A5057239B9FDD6473889 /* Frameworks */ = {
@@ -916,10 +904,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5F24R2G835;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/iReader/Base/ThirdParty/DTCoreText",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iReader/Other/iReader.pch;
 				HEADER_SEARCH_PATHS = (
@@ -962,10 +947,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5F24R2G835;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/iReader/Base/ThirdParty/DTCoreText",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iReader/Other/iReader.pch;
 				HEADER_SEARCH_PATHS = (
