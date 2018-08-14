@@ -8,13 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@class IRHtmlModel, IRPageModel;
+@class IRHtmlModel, IRPageModel, IRTocRefrence;
 
 @interface IRChapterModel : NSObject
 
-@property (nonatomic, strong) NSArray<IRPageModel *> *contents;
-@property (nonatomic, assign) NSUInteger pages;
+@property (nonatomic, strong) NSArray<IRPageModel *> *pages;
+@property (nonatomic, assign) NSUInteger pageCount;
 
 + (instancetype)modelWithHtmlModel:(IRHtmlModel *)htmlModel;
++ (instancetype)modelWithTocRefrence:(IRTocRefrence *)tocRefrence;
 
 @end

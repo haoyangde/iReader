@@ -42,13 +42,13 @@ UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.chapterModel.contents.count;
+    return self.chapterModel.pages.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     IRPageViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRPageViewCell" forIndexPath:indexPath];
-    cell.pageModel = [self.chapterModel.contents safeObjectAtIndex:indexPath.row];
+    cell.pageModel = [self.chapterModel.pages safeObjectAtIndex:indexPath.row];
     return cell;
 }
 

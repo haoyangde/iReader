@@ -217,16 +217,8 @@ IRReaderNavigationViewDelegate
     
     __block NSMutableArray *tempChapters = [NSMutableArray arrayWithCapacity:book.tableOfContents.count];
     [book.tableOfContents enumerateObjectsUsingBlock:^(IRTocRefrence * _Nonnull toc, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSError *error = nil;
-        NSString *chapterHtmlStr = [NSString stringWithContentsOfFile:toc.resource.fullHref
-                                                    encoding:NSUTF8StringEncoding
-                                                       error:&error];
-        if (error) {
-            IRDebugLog(@"[ReaderPageViewCell] Read chapter resource failed, error: %@", error);
-            return;
-        }
         
-        IRChapterModel *chapterModel = [IRChapterModel modelWithHtmlModel:[IRHtmlModel modelWithHtmlString:chapterHtmlStr]];
+        IRChapterModel *chapterModel = [IRChapterModel modelWithTocRefrence:toc];
         [tempChapters addObject:chapterModel];
     }];
     

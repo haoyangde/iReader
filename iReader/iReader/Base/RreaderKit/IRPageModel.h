@@ -11,7 +11,7 @@
 @interface IRPageModel : NSObject
 
 @property (nonatomic, strong) NSAttributedString *content;
-@property (nonatomic, assign) CGSize *contentSize;
+@property (nonatomic, assign) NSUInteger pageIndex;
 
 + (instancetype)modelWithContent:(NSAttributedString *)content;
 
