@@ -28,19 +28,23 @@
 + (instancetype)modelWithTocRefrence:(IRTocRefrence *)tocRefrence
 {
     IRChapterModel *model = [[self alloc] init];
-    NSData *htmlData = [NSData dataWithContentsOfFile:tocRefrence.resource.fullHref];
+    NSURL *baseUrl = [[NSURL alloc] initFileURLWithPath:tocRefrence.resource.fullHref];
+    NSData *htmlData = [NSData dataWithContentsOfURL:baseUrl];
+    NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
+    paragraph.paragraphSpacing = 20;
     NSDictionary *options = @{
                               DTDefaultFontFamily : @"Times New Roman",
                               DTDefaultLinkColor  : @"purple",
                               NSTextSizeMultiplierDocumentOption : @1.0,
-                              DTDefaultFontSize   : @24,
+                              DTDefaultFontSize   : @15,
                               DTDefaultLineHeightMultiplier : @2,
                               DTDefaultTextAlignment : @(NSTextAlignmentLeft),
+                              NSBaseURLDocumentOption : baseUrl,
                               DTDefaultHeadIndent : @0,
-//                              NSBaseURLDocumentOption : tocRefrence.resource.fullHref,
+                              DTDefaultFirstLineHeadIndent : @20,
+                              DTCustomAttributesAttribute : @{NSParagraphStyleAttributeName : paragraph},
                               DTMaxImageSize      : [NSValue valueWithCGSize:[IR_READER_CONFIG pageSize]]
                             };
-    
     
     NSAttributedString *chapter = [[NSAttributedString alloc] initWithHTMLData:htmlData options:options documentAttributes:nil];
     DTCoreTextLayouter *textLayout = [[DTCoreTextLayouter alloc] initWithAttributedString:chapter];
@@ -52,6 +56,7 @@
     NSMutableArray *pages = [[NSMutableArray alloc] init];
     
     while (pageOffset <= chapter.length && pageOffset != 0) {
+        
         IRPageModel *pageModel = [[IRPageModel alloc] init];
         pageModel.content = [chapter attributedSubstringFromRange:visibleRange];
         pageModel.pageIndex = pageCount - 1;

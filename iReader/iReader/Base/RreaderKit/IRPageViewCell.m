@@ -8,11 +8,11 @@
 
 #import "IRPageViewCell.h"
 #import "IRPageModel.h"
-#import <DTCoreText/DTAttributedTextView.h>
+#import <DTAttributedLabel.h>
 
 @interface IRPageViewCell ()
 
-@property (nonatomic, strong) DTAttributedTextView *textView;
+@property (nonatomic, strong) DTAttributedLabel *pageLabel;
 
 @end
 
@@ -31,22 +31,24 @@
 {
     [super layoutSubviews];
     
-    CGFloat textViewY = [IRUIUtilites isIPhoneX] ? 40 : 10;
-    CGFloat bottomInset = [IRUIUtilites isIPhoneX] ? 30 : 10;
-    self.textView.frame = CGRectMake(10, textViewY, self.contentView.width - 20, self.contentView.height - bottomInset - textViewY);
+    self.pageLabel.frame = self.contentView.bounds;
 }
 
 - (void)setupSubviews
 {
-    self.textView = [[DTAttributedTextView alloc] init];
-    [self.contentView addSubview:self.textView];
+    self.pageLabel = [[DTAttributedLabel alloc] init];
+    CGFloat top = [IRUIUtilites isIPhoneX] ? 40 : 10;
+    CGFloat bottom = [IRUIUtilites isIPhoneX] ? 30 : 10;
+    self.pageLabel.edgeInsets = UIEdgeInsetsMake(top, 10, bottom, 10);
+    self.pageLabel.numberOfLines = 0;
+    [self.contentView addSubview:self.pageLabel];
 }
 
 - (void)setPageModel:(IRPageModel *)pageModel
 {
     _pageModel = pageModel;
     
-    self.textView.attributedString = pageModel.content;
+    self.pageLabel.attributedString = pageModel.content;
     
     [self setNeedsLayout];
 }

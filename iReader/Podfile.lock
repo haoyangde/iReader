@@ -10,11 +10,11 @@ PODS:
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.12)
-  - DTFoundation/DTAnimatedGIF (1.7.12)
-  - DTFoundation/DTHTMLParser (1.7.12):
+  - DTFoundation/Core (1.7.13)
+  - DTFoundation/DTAnimatedGIF (1.7.13)
+  - DTFoundation/DTHTMLParser (1.7.13):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.12):
+  - DTFoundation/UIKit (1.7.13):
     - DTFoundation/Core
   - FLEX (2.4.0)
   - Masonry (0.5.3)
@@ -39,7 +39,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   DTCoreText: 51904f2374af443e0d270d6fdc76035ab6f9ef8a
-  DTFoundation: 26a164ef510877387906fb92bff524a792db4bf8
+  DTFoundation: f03be9fd786f11e505bb8fc44e2a3732bf0917df
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   Masonry: 9f515466afe48632562342a40a1c224071a1a022
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
