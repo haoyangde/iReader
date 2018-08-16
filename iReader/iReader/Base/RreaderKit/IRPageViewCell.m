@@ -9,6 +9,8 @@
 #import "IRPageViewCell.h"
 #import "IRPageModel.h"
 #import <DTAttributedLabel.h>
+#import <DTCoreTextLayouter.h>
+#import "IRReaderConfig.h"
 
 @interface IRPageViewCell ()
 
@@ -22,6 +24,7 @@
 {
     if (self = [super initWithFrame:frame]) {
         [self setupSubviews];
+        
     }
     
     return self;
@@ -33,6 +36,8 @@
     
     self.pageLabel.frame = self.contentView.bounds;
 }
+
+#pragma mark - Private
 
 - (void)setupSubviews
 {

@@ -216,7 +216,7 @@ IRReaderNavigationViewDelegate
     _book = book;
     
     __block NSMutableArray *tempChapters = [NSMutableArray arrayWithCapacity:book.tableOfContents.count];
-    [book.tableOfContents enumerateObjectsUsingBlock:^(IRTocRefrence * _Nonnull toc, NSUInteger idx, BOOL * _Nonnull stop) {
+    [book.flatTableOfContents enumerateObjectsUsingBlock:^(IRTocRefrence * _Nonnull toc, NSUInteger idx, BOOL * _Nonnull stop) {
         
         IRChapterModel *chapterModel = [IRChapterModel modelWithTocRefrence:toc];
         [tempChapters addObject:chapterModel];

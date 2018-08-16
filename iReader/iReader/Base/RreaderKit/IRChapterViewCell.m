@@ -31,6 +31,12 @@ UICollectionViewDataSource
     return self;
 }
 
+- (void)prepareForReuse
+{
+    [super prepareForReuse];
+    self.collectionView.contentOffset = CGPointZero;
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];

@@ -17,6 +17,7 @@
 #import <NSAttributedString+HTML.h>
 #import <DTCoreTextLayouter.h>
 #import <DTCoreTextConstants.h>
+#import <DTCoreTextParagraphStyle.h>
 
 @implementation IRChapterModel
 
@@ -30,37 +31,41 @@
     IRChapterModel *model = [[self alloc] init];
     NSURL *baseUrl = [[NSURL alloc] initFileURLWithPath:tocRefrence.resource.fullHref];
     NSData *htmlData = [NSData dataWithContentsOfURL:baseUrl];
-    NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
-    paragraph.paragraphSpacing = 20;
+    DTCoreTextParagraphStyle *paragraph = [DTCoreTextParagraphStyle defaultParagraphStyle];
+    paragraph.headIndent = 30;
+    paragraph.paragraphSpacing = 80;
+    paragraph.firstLineHeadIndent = 30;
+
     NSDictionary *options = @{
-                              DTDefaultFontFamily : @"Times New Roman",
-                              DTDefaultLinkColor  : @"purple",
-                              NSTextSizeMultiplierDocumentOption : @1.0,
-                              DTDefaultFontSize   : @15,
-                              DTDefaultLineHeightMultiplier : @2,
-                              DTDefaultTextAlignment : @(NSTextAlignmentLeft),
+                              DTProcessCustomHTMLAttributes : @(YES),
+                              DTCustomAttributesAttribute : paragraph,
+//                              DTDefaultFontFamily : @"Times New Roman",
+//                              DTDefaultLinkColor  : @"purple",
+//                              NSTextSizeMultiplierDocumentOption : @1.0,
+//                              DTDefaultFontSize   : @15,
+//                              DTDefaultLineHeightMultiplier : @2,
+//                              DTDefaultTextAlignment : @(NSTextAlignmentJustified),
                               NSBaseURLDocumentOption : baseUrl,
-                              DTDefaultHeadIndent : @0,
-                              DTDefaultFirstLineHeadIndent : @20,
-                              DTCustomAttributesAttribute : @{NSParagraphStyleAttributeName : paragraph},
-                              DTMaxImageSize      : [NSValue valueWithCGSize:[IR_READER_CONFIG pageSize]]
+//                              DTDefaultHeadIndent : @0,
+//                              DTMaxImageSize      : [NSValue valueWithCGSize:[IR_READER_CONFIG pageSize]]
                             };
     
-    NSAttributedString *chapter = [[NSAttributedString alloc] initWithHTMLData:htmlData options:options documentAttributes:nil];
-    DTCoreTextLayouter *textLayout = [[DTCoreTextLayouter alloc] initWithAttributedString:chapter];
+    NSAttributedString *htmlString = [[NSAttributedString alloc] initWithHTMLData:htmlData options:options documentAttributes:nil];
+    
+    DTCoreTextLayouter *textLayout = [[DTCoreTextLayouter alloc] initWithAttributedString:htmlString];
     CGRect rect = CGRectMake(0, 0, [IR_READER_CONFIG pageSize].width, [IR_READER_CONFIG pageSize].height);
-    DTCoreTextLayoutFrame *layoutFrame = [textLayout layoutFrameWithRect:rect range:NSMakeRange(0, chapter.length)];
+    DTCoreTextLayoutFrame *layoutFrame = [textLayout layoutFrameWithRect:rect range:NSMakeRange(0, htmlString.length)];
     NSRange visibleRange = layoutFrame.visibleStringRange;
     CGFloat pageOffset = visibleRange.location + visibleRange.length;
     NSUInteger pageCount = 1;
     NSMutableArray *pages = [[NSMutableArray alloc] init];
     
-    while (pageOffset <= chapter.length && pageOffset != 0) {
+    while (pageOffset <= htmlString.length && pageOffset != 0) {
         
         IRPageModel *pageModel = [[IRPageModel alloc] init];
-        pageModel.content = [chapter attributedSubstringFromRange:visibleRange];
+        pageModel.content = [htmlString attributedSubstringFromRange:visibleRange];
         pageModel.pageIndex = pageCount - 1;
-        layoutFrame = [textLayout layoutFrameWithRect:rect range:NSMakeRange(pageOffset, chapter.length - pageOffset)];
+        layoutFrame = [textLayout layoutFrameWithRect:rect range:NSMakeRange(pageOffset, htmlString.length - pageOffset)];
         visibleRange = layoutFrame.visibleStringRange;
         if (visibleRange.location == NSNotFound) {
             pageOffset = 0;
