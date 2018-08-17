@@ -8,9 +8,10 @@
 
 #import "IRReaderCenterController.h"
 #import "BookChapterListController.h"
+#import "IRPageViewController.h"
+#import "IRReadingViewController.h"
 
 // view
-#import "IRChapterViewCell.h"
 #import "IRReaderNavigationView.h"
 
 // model
@@ -25,17 +26,20 @@
 
 @interface IRReaderCenterController ()
 <
-UICollectionViewDelegateFlowLayout,
-UICollectionViewDataSource,
+UIPageViewControllerDataSource,
+UIPageViewControllerDelegate,
 IRReaderNavigationViewDelegate
 >
 
-@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) IRPageViewController *pageViewController;
 @property (nonatomic, strong) NSArray<IRChapterModel *> *chapters;
+@property (nonatomic, strong) IRChapterModel *currentChapter;
+@property (nonatomic, strong) IRPageModel *currentPageModel;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
 @property (nonatomic, strong) IRReaderNavigationView *readerNavigationView;
 @property (nonatomic, strong) UINavigationBar *orilNavigationBar;
 @property (nonatomic, assign) BOOL hadHideStatusBarOnce;
+@property (nonatomic, strong) NSMutableArray<IRReadingViewController *> *childViewControllersCache;
 
 @end
 
@@ -53,6 +57,11 @@ IRReaderNavigationViewDelegate
     [super viewWillAppear:animated];
     
     [self.readerNavigationView shouldHideAllCustomViews:NO];
+    
+    [self.pageViewController setViewControllers:@[[self readingViewControllerWithPageModel:self.currentPageModel creatIfNoExist:YES]]
+                                      direction:UIPageViewControllerNavigationDirectionForward
+                                       animated:YES
+                                     completion:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -77,7 +86,7 @@ IRReaderNavigationViewDelegate
 {
     [super viewDidLayoutSubviews];
     
-    self.collectionView.frame = self.view.bounds;
+    self.pageViewController.view.frame = self.view.bounds;
 }
 
 #pragma mark - StatusBarHidden
@@ -121,7 +130,7 @@ IRReaderNavigationViewDelegate
 {
     self.shouldHideStatusBar = NO;
     self.hadHideStatusBarOnce = NO;
-    [self setupCollectionView];
+    [self setupPageViewController];
     [self setupNavigationbar];
     [self setupGestures];
 }
@@ -135,30 +144,16 @@ IRReaderNavigationViewDelegate
     }
 }
 
-- (void)setupCollectionView
+- (void)setupPageViewController
 {
-    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.minimumLineSpacing = 0;
-    flowLayout.minimumInteritemSpacing = 0;
-    flowLayout.scrollDirection =  UICollectionViewScrollDirectionHorizontal;
-    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds
-                                                          collectionViewLayout:flowLayout];
-    collectionView.dataSource = self;
-    collectionView.delegate   = self;
-    collectionView.pagingEnabled = YES;
-    collectionView.backgroundColor = [UIColor whiteColor];
-    collectionView.alwaysBounceHorizontal = YES;
-    collectionView.showsVerticalScrollIndicator = NO;
-    collectionView.showsHorizontalScrollIndicator = NO;
-    
-    if (@available(iOS 11.0, *)) {
-        collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-    }
-    
-    [collectionView registerClass:[IRChapterViewCell class] forCellWithReuseIdentifier:@"IRChapterViewCell"];
-    
-    [self.view addSubview:collectionView];
-    self.collectionView = collectionView;
+    IRPageViewController *pageViewController = [[IRPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:@{UIPageViewControllerOptionSpineLocationKey : @(UIPageViewControllerSpineLocationNone)}];
+    pageViewController.delegate = self;
+    pageViewController.dataSource = self;
+    [self addChildViewController:pageViewController];
+    [pageViewController didMoveToParentViewController:self];
+    [self.view addSubview:pageViewController.view];
+    self.pageViewController = pageViewController;
+    self.childViewControllersCache = [[NSMutableArray alloc] init];
 }
 
 - (IRReaderNavigationView *)readerNavigationView
@@ -169,6 +164,33 @@ IRReaderNavigationViewDelegate
     }
     
     return _readerNavigationView;
+}
+
+- (void)cacheReadingViewController:(UIViewController *)readingVc
+{
+    if ([readingVc isKindOfClass:[IRReadingViewController class]]) {
+        [self.childViewControllersCache addObject:(IRReadingViewController *)readingVc];
+    }
+}
+
+- (IRReadingViewController *)readingViewControllerWithPageModel:(IRPageModel *)pageModel creatIfNoExist:(BOOL)flag
+{
+    IRReadingViewController *readVc = nil;
+    if (self.childViewControllersCache.count) {
+        readVc = self.childViewControllersCache.lastObject;
+        [self.childViewControllersCache removeLastObject];
+    } else {
+        if (flag) {
+            readVc = [[IRReadingViewController alloc] init];
+        }
+    }
+    
+    if (readVc) {
+        readVc.view.frame = self.pageViewController.view.bounds;
+        readVc.pageModel = pageModel;
+    }
+    
+    return readVc;
 }
 
 #pragma mark - IRReaderNavigationViewDelegate
@@ -185,28 +207,65 @@ IRReaderNavigationViewDelegate
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - UICollectionView
+#pragma mark - UIPageViewController
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers
 {
-    return self.chapters.count;
+    self.pageViewController.currentVcDidFinishDisplaying = NO;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed
 {
-    IRChapterViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRChapterViewCell" forIndexPath:indexPath];
-    cell.chapterModel = [self.chapters safeObjectAtIndex:indexPath.row];
-    return cell;
-}
-
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    return collectionView.size;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
+    if (completed && previousViewControllers.count) {
+         [self cacheReadingViewController:previousViewControllers.firstObject];
+    }
     
+    self.pageViewController.currentVcDidFinishDisplaying = YES;
+}
+
+- (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
+{
+    NSUInteger pageIndex = [self.currentChapter.pages indexOfObject:self.currentPageModel];
+    if (pageIndex > 0) {
+        pageIndex--;
+        self.currentPageModel = [self.currentChapter.pages safeObjectAtIndex:pageIndex];
+    } else {
+        NSUInteger chapterIndex = [self.chapters indexOfObject:self.currentChapter];
+        if (chapterIndex > 0) {
+            chapterIndex--;
+            self.currentChapter = [self.chapters safeObjectAtIndex:chapterIndex];
+            self.currentPageModel = self.currentChapter.pages.lastObject;
+        } else {
+            return nil;
+        }
+    }
+    
+    return [self readingViewControllerWithPageModel:self.currentPageModel creatIfNoExist:YES];
+}
+
+
+- (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
+{
+    NSUInteger pageIndex = [self.currentChapter.pages indexOfObject:self.currentPageModel];
+    if (pageIndex < self.currentChapter.pages.count) {
+        if (pageIndex == self.currentChapter.pages.count - 1) {
+            NSUInteger chapterIndex = [self.chapters indexOfObject:self.currentChapter];
+            if (chapterIndex < self.chapters.count) {
+                if (chapterIndex == self.chapters.count - 1) {
+                    return nil;
+                } else {
+                    chapterIndex++;
+                    self.currentChapter = [self.chapters safeObjectAtIndex:chapterIndex];
+                    self.currentPageModel = self.currentChapter.pages.firstObject;
+                }
+            }
+        } else {
+            pageIndex = pageIndex + 1;
+            self.currentPageModel = [self.currentChapter.pages safeObjectAtIndex:pageIndex];
+        }
+    }
+    
+    return [self readingViewControllerWithPageModel:self.currentPageModel creatIfNoExist:YES];
 }
 
 #pragma mark - Public
@@ -223,7 +282,8 @@ IRReaderNavigationViewDelegate
     }];
     
     self.chapters = tempChapters;
-    [self.collectionView reloadData];
+    self.currentChapter = tempChapters.firstObject;
+    self.currentPageModel = self.currentChapter.pages.firstObject;
 }
 
 @end

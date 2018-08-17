@@ -1,40 +1,39 @@
 //
-//  IRPageViewCell.m
+//  IRReadingViewController.m
 //  iReader
 //
-//  Created by zzyong on 2018/8/6.
+//  Created by zzyong on 2018/8/17.
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "IRPageViewCell.h"
-#import "IRPageModel.h"
+#import "IRReadingViewController.h"
 #import <DTAttributedLabel.h>
-#import <DTCoreTextLayouter.h>
-#import "IRReaderConfig.h"
+#import "IRPageModel.h"
 
-@interface IRPageViewCell ()
+@interface IRReadingViewController ()
 
 @property (nonatomic, strong) DTAttributedLabel *pageLabel;
 
 @end
 
-@implementation IRPageViewCell
+@implementation IRReadingViewController
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (void)viewDidLoad
 {
-    if (self = [super initWithFrame:frame]) {
-        [self setupSubviews];
-        
-    }
-    
-    return self;
+    [super viewDidLoad];
+    [self setupSubviews];
 }
 
-- (void)layoutSubviews
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super layoutSubviews];
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
     
-    self.pageLabel.frame = self.contentView.bounds;
+    self.pageLabel.frame = self.view.bounds;
 }
 
 #pragma mark - Private
@@ -46,7 +45,7 @@
     CGFloat bottom = [IRUIUtilites isIPhoneX] ? 30 : 10;
     self.pageLabel.edgeInsets = UIEdgeInsetsMake(top, 10, bottom, 10);
     self.pageLabel.numberOfLines = 0;
-    [self.contentView addSubview:self.pageLabel];
+    [self.view addSubview:self.pageLabel];
 }
 
 - (void)setPageModel:(IRPageModel *)pageModel
@@ -54,8 +53,6 @@
     _pageModel = pageModel;
     
     self.pageLabel.attributedString = pageModel.content;
-    
-    [self setNeedsLayout];
 }
 
 @end

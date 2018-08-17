@@ -1,8 +1,8 @@
 //
-//  IRPageViewCell.h
+//  IRReadingViewController.h
 //  iReader
 //
-//  Created by zzyong on 2018/8/6.
+//  Created by zzyong on 2018/8/17.
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 @class IRPageModel;
 
-@interface IRPageViewCell : UICollectionViewCell
+@interface IRReadingViewController : UIViewController
 
 @property (nonatomic, strong) IRPageModel *pageModel;
 

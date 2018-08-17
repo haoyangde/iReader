@@ -31,23 +31,17 @@
     IRChapterModel *model = [[self alloc] init];
     NSURL *baseUrl = [[NSURL alloc] initFileURLWithPath:tocRefrence.resource.fullHref];
     NSData *htmlData = [NSData dataWithContentsOfURL:baseUrl];
-    DTCoreTextParagraphStyle *paragraph = [DTCoreTextParagraphStyle defaultParagraphStyle];
-    paragraph.headIndent = 30;
-    paragraph.paragraphSpacing = 80;
-    paragraph.firstLineHeadIndent = 30;
 
     NSDictionary *options = @{
-                              DTProcessCustomHTMLAttributes : @(YES),
-                              DTCustomAttributesAttribute : paragraph,
-//                              DTDefaultFontFamily : @"Times New Roman",
-//                              DTDefaultLinkColor  : @"purple",
-//                              NSTextSizeMultiplierDocumentOption : @1.0,
-//                              DTDefaultFontSize   : @15,
-//                              DTDefaultLineHeightMultiplier : @2,
-//                              DTDefaultTextAlignment : @(NSTextAlignmentJustified),
+                              DTDefaultFontFamily : @"Times New Roman",
+                              DTDefaultLinkColor  : @"purple",
+                              NSTextSizeMultiplierDocumentOption : @1.0,
+                              DTDefaultFontSize   : @15,
+                              DTDefaultLineHeightMultiplier : @2,
+                              DTDefaultTextAlignment : @(NSTextAlignmentJustified),
                               NSBaseURLDocumentOption : baseUrl,
-//                              DTDefaultHeadIndent : @0,
-//                              DTMaxImageSize      : [NSValue valueWithCGSize:[IR_READER_CONFIG pageSize]]
+                              DTDefaultHeadIndent : @0,
+                              DTMaxImageSize      : [NSValue valueWithCGSize:[IR_READER_CONFIG pageSize]]
                             };
     
     NSAttributedString *htmlString = [[NSAttributedString alloc] initWithHTMLData:htmlData options:options documentAttributes:nil];
