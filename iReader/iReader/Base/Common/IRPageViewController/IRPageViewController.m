@@ -8,15 +8,11 @@
 
 #import "IRPageViewController.h"
 
-@interface IRPageViewController ()
-<
-UIGestureRecognizerDelegate,
-UIScrollViewDelegate
->
+@interface IRPageViewController () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, weak) UIScrollView *irQueuingScrollView;
-@property (nonatomic, assign) CGPoint beginOffset;
-@property (nonatomic, assign) BOOL scrollNextPage;
+@property (nonatomic, weak) UIScrollView *scrollView;
+@property (nonatomic, weak) UITapGestureRecognizer *tapGesture;
+@property (nonatomic, weak) UIPanGestureRecognizer *panGesture;
 
 @end
 
@@ -26,61 +22,57 @@ UIScrollViewDelegate
 {
     [super viewDidLoad];
     
-    self.currentVcDidFinishDisplaying = YES;
+    self.gestureRecognizerShouldBegin = YES;
 }
 
-- (void)viewWillAppear:(BOOL)animated
+#pragma mark - Public
+
+- (UITapGestureRecognizer *)tapGesture
 {
-    [super viewWillAppear:animated];
+    if (!_tapGesture && self.gestureRecognizers.count) {
+        [self.gestureRecognizers enumerateObjectsUsingBlock:^(__kindof UIGestureRecognizer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj isKindOfClass:[UITapGestureRecognizer class]]) {
+                _tapGesture = obj;
+                *stop = YES;
+            }
+        }];
+    }
     
-    [self setScrollViewDelegateForSelf];
-    IRDebugLog(@"Gestures: %@", self.gestureRecognizers);
+    return _tapGesture;
 }
 
-#pragma mark - Private
-
-- (void)setScrollViewDelegateForSelf
+- (UIPanGestureRecognizer *)panGesture
 {
-    NSArray<UIView *> *subviews = self.view.subviews;
-    for (UIView *subview in subviews) {
-        if ([subview isKindOfClass:[UIScrollView class]]) {
-            UIScrollView *scrollView = (UIScrollView *)subview;
-            scrollView.delegate = self;
-            self.irQueuingScrollView = scrollView;
-            break;
+    if (!_panGesture && self.gestureRecognizers.count) {
+        [self.gestureRecognizers enumerateObjectsUsingBlock:^(__kindof UIGestureRecognizer * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([obj isKindOfClass:[UIPanGestureRecognizer class]]) {
+                _panGesture = obj;
+                *stop = YES;
+            }
+        }];
+    }
+    
+    return _panGesture;
+}
+
+- (UIScrollView *)scrollView
+{
+    if (!_scrollView && (self.transitionStyle == UIPageViewControllerTransitionStyleScroll)) {
+        for (UIView *subview in self.view.subviews) {
+            if ([subview isKindOfClass:[UIScrollView class]]) {
+                _scrollView = (UIScrollView *)subview;
+                break;
+            }
         }
     }
+    return _scrollView;
 }
 
 #pragma mark - UIGestureRecognizerDelegate
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
-    IRDebugLog(@"");
-    return self.currentVcDidFinishDisplaying;
-}
-
-#pragma mark - UIScrollViewDelegate
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    self.beginOffset = scrollView.contentOffset;
-    IRDebugLog(@"%@", NSStringFromCGPoint(scrollView.contentOffset));
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if (scrollView.contentOffset.x > self.beginOffset.x) {
-        self.scrollNextPage = YES;
-    } else if (scrollView.contentOffset.x < self.beginOffset.x){
-        self.scrollNextPage = NO;
-    } else {
-        // Do nothing
-    }
-    
-    if ([self.irDelegate respondsToSelector:@selector(pageViewController:didScrollingToNextPage:)]) {
-        [self.irDelegate pageViewController:self didScrollingToNextPage:self.scrollNextPage];
-    }
+    return self.gestureRecognizerShouldBegin;
 }
 
 @end

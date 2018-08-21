@@ -15,7 +15,6 @@
 @property (nonatomic, strong) NSArray<IRPageModel *> *pages;
 @property (nonatomic, assign) NSUInteger pageCount;
 
-+ (instancetype)modelWithHtmlModel:(IRHtmlModel *)htmlModel;
-+ (instancetype)modelWithTocRefrence:(IRTocRefrence *)tocRefrence;
++ (instancetype)modelWithTocRefrence:(IRTocRefrence *)tocRefrence chapterIndex:(NSUInteger)chapterIndex;
 
 @end

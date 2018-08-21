@@ -7,13 +7,11 @@
 //
 
 #import "IRChapterModel.h"
-#import "IRHtmlModel.h"
 #import "IRPageModel.h"
 #import "NSString+Extension.h"
 #import "IRReaderConfig.h"
 #import "IRTocRefrence.h"
 #import "IRResource.h"
-
 #import <NSAttributedString+HTML.h>
 #import <DTCoreTextLayouter.h>
 #import <DTCoreTextConstants.h>
@@ -21,12 +19,7 @@
 
 @implementation IRChapterModel
 
-+ (instancetype)modelWithHtmlModel:(IRHtmlModel *)htmlMode
-{
-    return nil;
-}
-
-+ (instancetype)modelWithTocRefrence:(IRTocRefrence *)tocRefrence
++ (instancetype)modelWithTocRefrence:(IRTocRefrence *)tocRefrence chapterIndex:(NSUInteger)chapterIndex
 {
     IRChapterModel *model = [[self alloc] init];
     NSURL *baseUrl = [[NSURL alloc] initFileURLWithPath:tocRefrence.resource.fullHref];
@@ -59,6 +52,7 @@
         IRPageModel *pageModel = [[IRPageModel alloc] init];
         pageModel.content = [htmlString attributedSubstringFromRange:visibleRange];
         pageModel.pageIndex = pageCount - 1;
+        pageModel.chapterIndex = chapterIndex;
         layoutFrame = [textLayout layoutFrameWithRect:rect range:NSMakeRange(pageOffset, htmlString.length - pageOffset)];
         visibleRange = layoutFrame.visibleStringRange;
         if (visibleRange.location == NSNotFound) {

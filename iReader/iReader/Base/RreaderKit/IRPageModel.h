@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSAttributedString *content;
 @property (nonatomic, assign) NSUInteger pageIndex;
+@property (nonatomic, assign) NSUInteger chapterIndex;
 
 + (instancetype)modelWithContent:(NSAttributedString *)content;
 

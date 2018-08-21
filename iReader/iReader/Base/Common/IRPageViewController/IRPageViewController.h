@@ -8,19 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class IRPageViewController;
-
-@protocol IRPageViewControllerDelegate <NSObject>
-
-@optional
-- (void)pageViewController:(IRPageViewController *)pageViewController didScrollingToNextPage:(BOOL)isNext;
-
-@end
-
 @interface IRPageViewController : UIPageViewController
 
-@property (nonatomic, weak) id<IRPageViewControllerDelegate> irDelegate;
-
-@property (nonatomic, assign) BOOL currentVcDidFinishDisplaying;
+@property (nonatomic, weak, readonly) UIScrollView *scrollView;
+@property (nonatomic, weak, readonly) UITapGestureRecognizer *tapGesture;
+@property (nonatomic, weak, readonly) UIPanGestureRecognizer *panGesture;
+/// defalut YES
+@property (nonatomic, assign) BOOL gestureRecognizerShouldBegin;
 
 @end
