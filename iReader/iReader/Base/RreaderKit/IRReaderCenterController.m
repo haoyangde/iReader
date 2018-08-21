@@ -27,6 +27,7 @@
 @interface IRReaderCenterController ()
 <
 UIPageViewControllerDataSource,
+IRPageViewControllerDelegate,
 UIPageViewControllerDelegate,
 IRReaderNavigationViewDelegate
 >
@@ -35,6 +36,7 @@ IRReaderNavigationViewDelegate
 @property (nonatomic, strong) NSArray<IRChapterModel *> *chapters;
 @property (nonatomic, strong) IRChapterModel *currentChapter;
 @property (nonatomic, strong) IRPageModel *currentPageModel;
+@property (nonatomic, assign) BOOL scrollNextPage;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
 @property (nonatomic, strong) IRReaderNavigationView *readerNavigationView;
 @property (nonatomic, strong) UINavigationBar *orilNavigationBar;
@@ -58,7 +60,9 @@ IRReaderNavigationViewDelegate
     
     [self.readerNavigationView shouldHideAllCustomViews:NO];
     
-    [self.pageViewController setViewControllers:@[[self readingViewControllerWithPageModel:self.currentPageModel creatIfNoExist:YES]]
+    IRReadingViewController *readVc = [self readingViewControllerCreatIfNoExist:YES];
+    readVc.pageModel = self.currentPageModel;
+    [self.pageViewController setViewControllers:@[readVc]
                                       direction:UIPageViewControllerNavigationDirectionForward
                                        animated:YES
                                      completion:nil];
@@ -130,6 +134,7 @@ IRReaderNavigationViewDelegate
 {
     self.shouldHideStatusBar = NO;
     self.hadHideStatusBarOnce = NO;
+    self.scrollNextPage = YES;
     [self setupPageViewController];
     [self setupNavigationbar];
     [self setupGestures];
@@ -149,6 +154,7 @@ IRReaderNavigationViewDelegate
     IRPageViewController *pageViewController = [[IRPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:@{UIPageViewControllerOptionSpineLocationKey : @(UIPageViewControllerSpineLocationNone)}];
     pageViewController.delegate = self;
     pageViewController.dataSource = self;
+    pageViewController.irDelegate = self;
     [self addChildViewController:pageViewController];
     [pageViewController didMoveToParentViewController:self];
     [self.view addSubview:pageViewController.view];
@@ -173,7 +179,7 @@ IRReaderNavigationViewDelegate
     }
 }
 
-- (IRReadingViewController *)readingViewControllerWithPageModel:(IRPageModel *)pageModel creatIfNoExist:(BOOL)flag
+- (IRReadingViewController *)readingViewControllerCreatIfNoExist:(BOOL)flag
 {
     IRReadingViewController *readVc = nil;
     if (self.childViewControllersCache.count) {
@@ -187,7 +193,6 @@ IRReaderNavigationViewDelegate
     
     if (readVc) {
         readVc.view.frame = self.pageViewController.view.bounds;
-        readVc.pageModel = pageModel;
     }
     
     return readVc;
@@ -209,9 +214,54 @@ IRReaderNavigationViewDelegate
 
 #pragma mark - UIPageViewController
 
+- (void)pageViewController:(IRPageViewController *)pageViewController didScrollingToNextPage:(BOOL)isNext
+{
+    self.scrollNextPage = isNext;
+}
+
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers
 {
     self.pageViewController.currentVcDidFinishDisplaying = NO;
+    
+    IRReadingViewController *readVc = (IRReadingViewController *)pendingViewControllers.firstObject;
+    if (![readVc isKindOfClass:[IRReadingViewController class]]) {
+        return;
+    }
+    
+    NSUInteger pageIndex = [self.currentChapter.pages indexOfObject:self.currentPageModel];
+    if (self.scrollNextPage) {
+        
+        if (pageIndex < self.currentChapter.pages.count) {
+            if (pageIndex == self.currentChapter.pages.count - 1) {
+                NSUInteger chapterIndex = [self.chapters indexOfObject:self.currentChapter];
+                if (chapterIndex < self.chapters.count) {
+                    if (chapterIndex != self.chapters.count - 1) {
+                        chapterIndex++;
+                        self.currentChapter = [self.chapters safeObjectAtIndex:chapterIndex];
+                        self.currentPageModel = self.currentChapter.pages.firstObject;
+                    }
+                }
+            } else {
+                pageIndex = pageIndex + 1;
+                self.currentPageModel = [self.currentChapter.pages safeObjectAtIndex:pageIndex];
+            }
+        }
+    } else {
+        
+        if (pageIndex > 0) {
+            pageIndex--;
+            self.currentPageModel = [self.currentChapter.pages safeObjectAtIndex:pageIndex];
+        } else {
+            NSUInteger chapterIndex = [self.chapters indexOfObject:self.currentChapter];
+            if (chapterIndex > 0) {
+                chapterIndex--;
+                self.currentChapter = [self.chapters safeObjectAtIndex:chapterIndex];
+                self.currentPageModel = self.currentChapter.pages.lastObject;
+            }
+        }
+    }
+    
+    readVc.pageModel = self.currentPageModel;
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed
@@ -226,21 +276,14 @@ IRReaderNavigationViewDelegate
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
     NSUInteger pageIndex = [self.currentChapter.pages indexOfObject:self.currentPageModel];
-    if (pageIndex > 0) {
-        pageIndex--;
-        self.currentPageModel = [self.currentChapter.pages safeObjectAtIndex:pageIndex];
-    } else {
+    if (pageIndex <= 0) {
         NSUInteger chapterIndex = [self.chapters indexOfObject:self.currentChapter];
-        if (chapterIndex > 0) {
-            chapterIndex--;
-            self.currentChapter = [self.chapters safeObjectAtIndex:chapterIndex];
-            self.currentPageModel = self.currentChapter.pages.lastObject;
-        } else {
+        if (chapterIndex <= 0) {
             return nil;
         }
     }
     
-    return [self readingViewControllerWithPageModel:self.currentPageModel creatIfNoExist:YES];
+    return [self readingViewControllerCreatIfNoExist:YES];
 }
 
 
@@ -253,19 +296,12 @@ IRReaderNavigationViewDelegate
             if (chapterIndex < self.chapters.count) {
                 if (chapterIndex == self.chapters.count - 1) {
                     return nil;
-                } else {
-                    chapterIndex++;
-                    self.currentChapter = [self.chapters safeObjectAtIndex:chapterIndex];
-                    self.currentPageModel = self.currentChapter.pages.firstObject;
                 }
             }
-        } else {
-            pageIndex = pageIndex + 1;
-            self.currentPageModel = [self.currentChapter.pages safeObjectAtIndex:pageIndex];
         }
     }
     
-    return [self readingViewControllerWithPageModel:self.currentPageModel creatIfNoExist:YES];
+    return [self readingViewControllerCreatIfNoExist:YES];
 }
 
 #pragma mark - Public
