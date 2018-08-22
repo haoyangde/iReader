@@ -212,6 +212,8 @@ IRReaderNavigationViewDelegate
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers
 {
     self.pageViewController.gestureRecognizerShouldBegin = NO;
+    
+    IRDebugLog(@"pendingViewControllers: %@", pendingViewControllers);
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed
@@ -221,6 +223,8 @@ IRReaderNavigationViewDelegate
     }
     
     self.pageViewController.gestureRecognizerShouldBegin = YES;
+    
+    IRDebugLog(@"previousViewControllers: %@", previousViewControllers);
 }
 
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
@@ -245,7 +249,7 @@ IRReaderNavigationViewDelegate
             return nil;
         }
     }
-    
+    IRDebugLog(@"BeforeViewController: %@", viewController);
     return [self readingViewControllerWithPageModel:beforePage creatIfNoExist:YES];
 }
 
@@ -273,7 +277,7 @@ IRReaderNavigationViewDelegate
             afterPage = [currentChapter.pages safeObjectAtIndex:pageIndex];
         }
     }
-    
+    IRDebugLog(@"AfterViewController: %@", viewController);
     return [self readingViewControllerWithPageModel:afterPage creatIfNoExist:YES];
 }
 
