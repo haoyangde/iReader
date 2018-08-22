@@ -12,6 +12,6 @@
 
 @interface IRReaderCenterController : UIViewController
 
-@property (nonatomic, strong) IREpubBook *book;
+- (instancetype)initWithBook:(IREpubBook *)book;
 
 @end

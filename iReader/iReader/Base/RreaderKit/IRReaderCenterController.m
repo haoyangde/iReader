@@ -31,12 +31,13 @@ UIPageViewControllerDelegate,
 IRReaderNavigationViewDelegate
 >
 
+@property (nonatomic, strong) IREpubBook *book;
 @property (nonatomic, strong) IRPageViewController *pageViewController;
 @property (nonatomic, strong) NSArray<IRChapterModel *> *chapters;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
 @property (nonatomic, strong) IRReaderNavigationView *readerNavigationView;
 @property (nonatomic, strong) UINavigationBar *orilNavigationBar;
-@property (nonatomic, assign) BOOL hadHideStatusBarOnce;
+@property (nonatomic, assign) BOOL hideStatusBarAtFirstAppear;
 @property (nonatomic, strong) NSMutableArray<IRReadingViewController *> *childViewControllersCache;
 
 @end
@@ -55,21 +56,14 @@ IRReaderNavigationViewDelegate
     [super viewWillAppear:animated];
     
     [self.readerNavigationView shouldHideAllCustomViews:NO];
-    
-    IRPageModel *pageModel = self.chapters.firstObject.pages.firstObject;
-    IRReadingViewController *readVc = [self readingViewControllerWithPageModel:pageModel creatIfNoExist:YES];
-    [self.pageViewController setViewControllers:@[readVc]
-                                      direction:UIPageViewControllerNavigationDirectionForward
-                                       animated:YES
-                                     completion:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    if (!self.hadHideStatusBarOnce) {
-        self.hadHideStatusBarOnce = YES;
+    if (!self.hideStatusBarAtFirstAppear) {
+        self.hideStatusBarAtFirstAppear = YES;
         self.shouldHideStatusBar = YES;
         [self setNeedsStatusBarAppearanceUpdate];
     }
@@ -129,7 +123,8 @@ IRReaderNavigationViewDelegate
 - (void)commonInit
 {
     self.shouldHideStatusBar = NO;
-    self.hadHideStatusBarOnce = NO;
+    self.hideStatusBarAtFirstAppear = NO;
+    self.childViewControllersCache = [[NSMutableArray alloc] init];
     [self setupPageViewController];
     [self setupNavigationbar];
     [self setupGestures];
@@ -152,8 +147,13 @@ IRReaderNavigationViewDelegate
     [self addChildViewController:pageViewController];
     [pageViewController didMoveToParentViewController:self];
     [self.view addSubview:pageViewController.view];
+    IRPageModel *pageModel = self.chapters.firstObject.pages.firstObject;
+    IRReadingViewController *readVc = [self readingViewControllerWithPageModel:pageModel creatIfNoExist:YES];
+    [pageViewController setViewControllers:@[readVc]
+                                 direction:UIPageViewControllerNavigationDirectionForward
+                                  animated:YES
+                                completion:nil];
     self.pageViewController = pageViewController;
-    self.childViewControllersCache = [[NSMutableArray alloc] init];
 }
 
 - (IRReaderNavigationView *)readerNavigationView
@@ -278,6 +278,15 @@ IRReaderNavigationViewDelegate
 }
 
 #pragma mark - Public
+
+- (instancetype)initWithBook:(IREpubBook *)book
+{
+    if (self = [super init]) {
+        self.book = book;
+    }
+
+    return self;
+}
 
 - (void)setBook:(IREpubBook *)book
 {
