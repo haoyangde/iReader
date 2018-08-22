@@ -28,7 +28,8 @@
 <
 UIPageViewControllerDataSource,
 UIPageViewControllerDelegate,
-IRReaderNavigationViewDelegate
+IRReaderNavigationViewDelegate,
+UIScrollViewDelegate
 >
 
 @property (nonatomic, strong) IREpubBook *book;
@@ -39,6 +40,11 @@ IRReaderNavigationViewDelegate
 @property (nonatomic, strong) UINavigationBar *orilNavigationBar;
 @property (nonatomic, assign) BOOL hideStatusBarAtFirstAppear;
 @property (nonatomic, strong) NSMutableArray<IRReadingViewController *> *childViewControllersCache;
+
+@property (nonatomic, assign) CGPoint scrollBeginOffset;
+@property (nonatomic, assign) BOOL isScrollToNext;
+@property (nonatomic, strong) IRPageModel *currentPage;
+@property (nonatomic, strong) IRPageModel *nextPage;
 
 @end
 
@@ -141,14 +147,18 @@ IRReaderNavigationViewDelegate
 
 - (void)setupPageViewController
 {
-    IRPageViewController *pageViewController = [[IRPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:@{UIPageViewControllerOptionSpineLocationKey : @(UIPageViewControllerSpineLocationNone)}];
+    IRPageViewController *pageViewController = [[IRPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     pageViewController.delegate = self;
     pageViewController.dataSource = self;
+    if (pageViewController.scrollView) {
+        pageViewController.scrollView.delegate = self;
+    }
     [self addChildViewController:pageViewController];
     [pageViewController didMoveToParentViewController:self];
     [self.view addSubview:pageViewController.view];
-    IRPageModel *pageModel = self.chapters.firstObject.pages.firstObject;
-    IRReadingViewController *readVc = [self readingViewControllerWithPageModel:pageModel creatIfNoExist:YES];
+    self.currentPage = self.chapters.firstObject.pages.firstObject;
+    IRDebugLog(@"Current chapter index: %zd page index: %zd", self.currentPage.chapterIndex, self.currentPage.pageIndex);
+    IRReadingViewController *readVc = [self readingViewControllerWithPageModel:self.currentPage creatIfNoExist:YES];
     [pageViewController setViewControllers:@[readVc]
                                  direction:UIPageViewControllerNavigationDirectionForward
                                   animated:YES
@@ -190,6 +200,7 @@ IRReaderNavigationViewDelegate
         readVc.pageModel = pageModel;
     }
     
+    IRDebugLog(@"Next readingViewController: %@", readVc);
     return readVc;
 }
 
@@ -207,13 +218,79 @@ IRReaderNavigationViewDelegate
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - UIPageViewController ScrollView
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    self.scrollBeginOffset = scrollView.contentOffset;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (!self.isScrollToNext && scrollView.contentOffset.x > self.scrollBeginOffset.x) {
+        self.isScrollToNext = YES;
+    } else if (self.isScrollToNext && scrollView.contentOffset.x < self.scrollBeginOffset.x) {
+        self.isScrollToNext = NO;
+    }
+    
+    if (!scrollView.isTracking &&
+        !self.pageViewController.gestureRecognizerShouldBegin &&
+        self.pageViewController.scrollView.userInteractionEnabled) {
+        
+        self.pageViewController.scrollView.userInteractionEnabled = NO;
+    }
+}
+
 #pragma mark - UIPageViewController
 
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers
 {
     self.pageViewController.gestureRecognizerShouldBegin = NO;
+
+    if (UIPageViewControllerTransitionStyleScroll == pageViewController.transitionStyle) {
+        
+        IRReadingViewController *pending = (IRReadingViewController *)pendingViewControllers.firstObject;
+        IRPageModel *nextPage = nil;
+        NSUInteger pageIndex  = self.currentPage.pageIndex;
+        NSUInteger chapterIndex = self.currentPage.chapterIndex;
+        
+        if (self.isScrollToNext) {
+
+            IRChapterModel *currentChapter = [self.chapters safeObjectAtIndex:chapterIndex];
+            if (pageIndex < currentChapter.pages.count - 1) {
+                pageIndex++;
+                nextPage = [currentChapter.pages safeObjectAtIndex:pageIndex];
+            } else {
+                if (chapterIndex < self.chapters.count - 1) {
+                    chapterIndex++;
+                    IRChapterModel *chapter = [self.chapters safeObjectAtIndex:chapterIndex];
+                    nextPage = chapter.pages.firstObject;
+                }
+            }
+        } else {
+
+            IRChapterModel *chapter = nil;
+            if (pageIndex > 0) {
+                pageIndex--;
+                chapter = [self.chapters safeObjectAtIndex:chapterIndex];
+                nextPage = [chapter.pages safeObjectAtIndex:pageIndex];
+            } else {
+
+                if (chapterIndex > 0) {
+                    chapterIndex--;
+                    chapter = [self.chapters safeObjectAtIndex:chapterIndex];
+                    nextPage = chapter.pages.lastObject;
+                }
+            }
+        }
+        
+        if (nextPage) {
+            self.nextPage = nextPage;
+            pending.pageModel = nextPage;
+        }
+    }
     
-    IRDebugLog(@"pendingViewControllers: %@", pendingViewControllers);
+    IRDebugLog(@"pageViewController childViewControllers: %@ pendingViewControllers: %@", pageViewController.childViewControllers, pendingViewControllers);
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed
@@ -222,6 +299,13 @@ IRReaderNavigationViewDelegate
          [self cacheReadingViewController:previousViewControllers.firstObject];
     }
     
+    if (completed && self.nextPage) {
+        self.currentPage = self.nextPage;
+    }
+    IRDebugLog(@"Current chapter index: %zd page index: %zd", self.currentPage.chapterIndex, self.currentPage.pageIndex);
+    
+    self.nextPage = nil;
+    self.pageViewController.scrollView.userInteractionEnabled = YES;
     self.pageViewController.gestureRecognizerShouldBegin = YES;
     
     IRDebugLog(@"previousViewControllers: %@", previousViewControllers);
@@ -249,6 +333,11 @@ IRReaderNavigationViewDelegate
             return nil;
         }
     }
+    
+    if (UIPageViewControllerTransitionStylePageCurl == pageViewController.transitionStyle) {
+        self.currentPage = beforePage;
+    }
+    
     IRDebugLog(@"BeforeViewController: %@", viewController);
     return [self readingViewControllerWithPageModel:beforePage creatIfNoExist:YES];
 }
@@ -277,6 +366,11 @@ IRReaderNavigationViewDelegate
             afterPage = [currentChapter.pages safeObjectAtIndex:pageIndex];
         }
     }
+    
+    if (UIPageViewControllerTransitionStylePageCurl == pageViewController.transitionStyle) {
+        self.currentPage = afterPage;
+    }
+    
     IRDebugLog(@"AfterViewController: %@", viewController);
     return [self readingViewControllerWithPageModel:afterPage creatIfNoExist:YES];
 }
