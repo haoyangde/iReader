@@ -41,9 +41,7 @@
 - (void)setupSubviews
 {
     self.pageLabel = [[DTAttributedLabel alloc] init];
-    CGFloat top = [IRUIUtilites isIPhoneX] ? 40 : 10;
-    CGFloat bottom = [IRUIUtilites isIPhoneX] ? 30 : 10;
-    self.pageLabel.edgeInsets = UIEdgeInsetsMake(top, 10, bottom, 10);
+    self.pageLabel.edgeInsets = IR_READER_CONFIG.pageInsets;
     self.pageLabel.numberOfLines = 0;
     [self.view addSubview:self.pageLabel];
 }

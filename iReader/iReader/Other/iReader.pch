@@ -19,6 +19,7 @@
 #import "UIColor+Extension.h"
 #import "NSArray+Safe.h"
 #import "NSDictionary+Safe.h"
+#import "IRReaderConfig.h"
 
 #endif
 

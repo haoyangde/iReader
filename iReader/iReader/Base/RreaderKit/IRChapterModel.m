@@ -17,6 +17,7 @@
 #import <DTCoreTextConstants.h>
 #import <DTCoreTextParagraphStyle.h>
 #import <DTCoreTextLayoutLine.h>
+#import <DTCoreTextGlyphRun.h>
 
 @implementation IRChapterModel
 
@@ -29,17 +30,12 @@
     NSDictionary *options = @{
                               DTDefaultFontFamily : @"Times New Roman",
                               DTDefaultLinkColor  : @"purple",
-                              DTDefaultFontSize   : @15,
+                              DTDefaultFontSize   : @(IR_READER_CONFIG.textFontSize),
                               NSBaseURLDocumentOption : baseUrl,
                               DTMaxImageSize      : [NSValue valueWithCGSize:[IR_READER_CONFIG pageSize]]
                             };
     
     NSMutableAttributedString *htmlString = [[[NSAttributedString alloc] initWithHTMLData:htmlData options:options documentAttributes:nil] mutableCopy];
-//    NSMutableParagraphStyle *customStyle = [[NSMutableParagraphStyle alloc] init];
-//    customStyle.lineSpacing = 5;
-//    customStyle.paragraphSpacing = 20;
-//    customStyle.lineHeightMultiple = 2;
-//    customStyle.alignment = NSTextAlignmentJustified;
     [htmlString addAttribute:NSParagraphStyleAttributeName
                        value:[self customParagraphStyleWithFirstLineHeadIndent:YES]
                        range:NSMakeRange(0, htmlString.length)];
@@ -53,12 +49,21 @@
             [htmlString addAttribute:NSParagraphStyleAttributeName
                                value:[self customParagraphStyleWithFirstLineHeadIndent:NO]
                                range:line.stringRange];
-        } else if (line.paragraphStyle) {
-            
+        } else {
+//            DTCoreTextGlyphRun *firstRun = line.glyphRuns.firstObject;
+//            UIFont *runFont = [firstRun.attributes objectForKey:@"NSFont"];
+//            if (runFont && [[runFont valueForKeyPath:@"font-size"] floatValue] > 15) {
+//                NSMutableParagraphStyle *customStyle = [[NSMutableParagraphStyle alloc] init];
+//                customStyle.lineSpacing = 5;
+//                customStyle.paragraphSpacing = 20;
+//                customStyle.lineHeightMultiple = 2;
+//                customStyle.alignment = NSTextAlignmentCenter;
+//                [htmlString addAttribute:NSParagraphStyleAttributeName
+//                                   value:customStyle
+//                                   range:line.stringRange];
+//            }
         }
-        IRDebugLog(@"%@ range: %@", line, NSStringFromRange(line.stringRange));
     }];
-    
     
     NSRange visibleRange = layoutFrame.visibleStringRange;
     CGFloat pageOffset = visibleRange.location + visibleRange.length;
@@ -71,7 +76,25 @@
         pageModel.content = [htmlString attributedSubstringFromRange:visibleRange];
         pageModel.pageIndex = pageCount - 1;
         pageModel.chapterIndex = chapterIndex;
+        
+        __block BOOL nextPageNeedFirstLineHeadIndent = YES;
+        [layoutFrame.paragraphRanges enumerateObjectsUsingBlock:^(NSValue  *_Nonnull rangeValue, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSRange range = [rangeValue rangeValue];
+            if (pageOffset > range.location && pageOffset < (range.location + range.length)) {
+                nextPageNeedFirstLineHeadIndent = NO;
+            }
+        }];
+        
         layoutFrame = [textLayout layoutFrameWithRect:rect range:NSMakeRange(pageOffset, htmlString.length - pageOffset)];
+        if (!nextPageNeedFirstLineHeadIndent) {
+            DTCoreTextLayoutLine *firstLine = layoutFrame.lines.firstObject;
+            [htmlString addAttribute:NSParagraphStyleAttributeName
+                               value:[self customParagraphStyleWithFirstLineHeadIndent:NO]
+                               range:firstLine.stringRange];
+            nextPageNeedFirstLineHeadIndent = YES;
+        }
+        
+        
         visibleRange = layoutFrame.visibleStringRange;
         if (visibleRange.location == NSNotFound) {
             pageOffset = 0;
@@ -96,7 +119,7 @@
     customStyle.paragraphSpacing = 20;
     customStyle.lineHeightMultiple = 2;
     customStyle.alignment = NSTextAlignmentJustified;
-    customStyle.firstLineHeadIndent = need ? [UIFont systemFontOfSize:15].pointSize * 2 : 0;
+    customStyle.firstLineHeadIndent = need ? [UIFont systemFontOfSize:IR_READER_CONFIG.textFontSize].pointSize * 2 : 0;
     
     return customStyle;
 }

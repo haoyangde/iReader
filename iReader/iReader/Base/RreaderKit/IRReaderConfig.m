@@ -8,6 +8,11 @@
 
 #import "IRReaderConfig.h"
 
+@interface IRReaderConfig ()
+
+
+@end
+
 @implementation IRReaderConfig
 
 + (instancetype)sharedInstance
@@ -21,24 +26,30 @@
     return sharedInstance;
 }
 
-- (CGFloat)textFontSize
+- (instancetype)init
 {
-    return 15;
-}
-
-- (CGSize)pageSize
-{
-    static CGSize pageSize;
-    
-    if (!(pageSize.width && pageSize.height)) {
-        
-        CGFloat edgeInset = [IRUIUtilites isIPhoneX] ? 70 : 20;
-        CGFloat width  = [IRUIUtilites UIScreenMinWidth] - 20;
-        CGFloat height = [IRUIUtilites UIScreenMaxHeight] - edgeInset;
-        pageSize = CGSizeMake(width, height);
+    if (self = [super init]) {
+        [self commonInit];
     }
     
-    return pageSize;
+    return self;
 }
+
+#pragma mark - Privte
+
+- (void)commonInit
+{
+    CGFloat top = [IRUIUtilites isIPhoneX] ? 40 : 20;
+    CGFloat bottom = [IRUIUtilites isIPhoneX] ? 30 : 20;
+    _pageInsets = UIEdgeInsetsMake(top, 20, bottom, 20);
+    
+    _verticalInset = _pageInsets.top + _pageInsets.bottom;
+    _horizontalInset = _pageInsets.left + _pageInsets.right;
+    _pageSize = CGSizeMake([IRUIUtilites UIScreenMinWidth] - _horizontalInset, [IRUIUtilites UIScreenMaxHeight] - _verticalInset);
+    _textFontSize = 15;
+}
+
+#pragma mark - Public
+
 
 @end

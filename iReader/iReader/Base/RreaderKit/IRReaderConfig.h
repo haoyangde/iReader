@@ -15,10 +15,12 @@
 + (instancetype)sharedInstance;
 
 @property (nonatomic, strong) UIColor *readerCenterBackgroundColor;
-
+@property (nonatomic, assign, readonly) UIEdgeInsets pageInsets;
+@property (nonatomic, assign, readonly) CGFloat verticalInset;
+@property (nonatomic, assign, readonly) CGFloat horizontalInset;
 /// 阅读页尺寸
-- (CGSize)pageSize;
-/// 文字大小
-- (CGFloat)textFontSize;
+@property (nonatomic, assign, readonly) CGSize pageSize;
+/// 文字大小 default: 15
+@property (nonatomic, assign) CGFloat textFontSize;
 
 @end
