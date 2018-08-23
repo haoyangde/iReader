@@ -24,6 +24,8 @@
 + (instancetype)modelWithTocRefrence:(IRTocRefrence *)tocRefrence chapterIndex:(NSUInteger)chapterIndex
 {
     IRChapterModel *model = [[self alloc] init];
+    model.title = tocRefrence.title;
+    model.chapterIndex = chapterIndex;
     NSURL *baseUrl = [[NSURL alloc] initFileURLWithPath:tocRefrence.resource.fullHref];
     NSData *htmlData = [NSData dataWithContentsOfURL:baseUrl];
 
@@ -39,17 +41,28 @@
     
     NSMutableAttributedString *htmlString = [[[NSAttributedString alloc] initWithHTMLData:htmlData options:options documentAttributes:nil] mutableCopy];
     [htmlString addAttribute:NSParagraphStyleAttributeName
-                       value:[self customParagraphStyleWithFirstLineHeadIndent:YES]
+                       value:[self customParagraphStyleWithFirstLineHeadIndent:YES alignment:NSTextAlignmentJustified]
                        range:NSMakeRange(0, htmlString.length)];
     
     DTCoreTextLayouter *textLayout = [[DTCoreTextLayouter alloc] initWithAttributedString:htmlString];
     CGRect rect = CGRectMake(0, 0, [IR_READER_CONFIG pageSize].width, [IR_READER_CONFIG pageSize].height);
     DTCoreTextLayoutFrame *layoutFrame = [textLayout layoutFrameWithRect:rect range:NSMakeRange(0, htmlString.length)];
     
+//    NSValue *firstRange = [layoutFrame.paragraphRanges safeObjectAtIndex:1];
+//    NSString *firstParagraphStr = [htmlString attributedSubstringFromRange:firstRange.rangeValue].string;
+//    if (firstParagraphStr.length) {
+//        IRDebugLog(@"First paragraph string: %@", firstParagraphStr);
+//        if ([firstParagraphStr isEqualToString:model.title]) {
+//            [htmlString addAttribute:NSParagraphStyleAttributeName
+//                               value:[self customParagraphStyleWithFirstLineHeadIndent:NO alignment:NSTextAlignmentCenter]
+//                               range:firstRange.rangeValue];
+//        }
+//    }
+    
     [layoutFrame.lines enumerateObjectsUsingBlock:^(DTCoreTextLayoutLine  *_Nonnull line, NSUInteger idx, BOOL * _Nonnull stop) {
         if (line.attachments.count) {
             [htmlString addAttribute:NSParagraphStyleAttributeName
-                               value:[self customParagraphStyleWithFirstLineHeadIndent:NO]
+                               value:[self customParagraphStyleWithFirstLineHeadIndent:NO alignment:NSTextAlignmentJustified]
                                range:line.stringRange];
         }
     }];
@@ -78,7 +91,7 @@
         if (!nextPageNeedFirstLineHeadIndent) {
             DTCoreTextLayoutLine *firstLine = layoutFrame.lines.firstObject;
             [htmlString addAttribute:NSParagraphStyleAttributeName
-                               value:[self customParagraphStyleWithFirstLineHeadIndent:NO]
+                               value:[self customParagraphStyleWithFirstLineHeadIndent:NO alignment:NSTextAlignmentJustified]
                                range:firstLine.stringRange];
             nextPageNeedFirstLineHeadIndent = YES;
         }
@@ -101,13 +114,13 @@
     return model;
 }
 
-+ (NSMutableParagraphStyle *)customParagraphStyleWithFirstLineHeadIndent:(BOOL)need
++ (NSMutableParagraphStyle *)customParagraphStyleWithFirstLineHeadIndent:(BOOL)need alignment:(NSTextAlignment)alignment
 {
     NSMutableParagraphStyle *customStyle = [[NSMutableParagraphStyle alloc] init];
     customStyle.lineSpacing = IR_READER_CONFIG.lineSpacing;
     customStyle.paragraphSpacing = IR_READER_CONFIG.paragraphSpacing;
     customStyle.lineHeightMultiple = 2;
-    customStyle.alignment = NSTextAlignmentJustified;
+    customStyle.alignment = alignment;
     customStyle.firstLineHeadIndent = need ? IR_READER_CONFIG.firstLineHeadIndent : 0;
     
     return customStyle;

@@ -33,19 +33,23 @@ IRReaderNavigationViewDelegate,
 UIScrollViewDelegate
 >
 
+@property (nonatomic, strong) dispatch_queue_t chapter_parse_serial_queue;
 @property (nonatomic, strong) IREpubBook *book;
 @property (nonatomic, strong) IRPageViewController *pageViewController;
-@property (nonatomic, strong) NSArray<IRChapterModel *> *chapters;
+@property (nonatomic, assign) NSUInteger chapterCount;
+@property (nonatomic, assign) NSUInteger activityIndicatorViewTag;
+@property (nonatomic, strong) NSMutableArray<IRChapterModel *> *chapters;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
 @property (nonatomic, strong) IRReaderNavigationView *readerNavigationView;
 @property (nonatomic, strong) UINavigationBar *orilNavigationBar;
 @property (nonatomic, assign) BOOL hideStatusBarAtFirstAppear;
 @property (nonatomic, strong) NSMutableArray<IRReadingViewController *> *childViewControllersCache;
-
+@property (nonatomic, assign) BOOL reloadDataIfNeeded;
 @property (nonatomic, assign) CGPoint scrollBeginOffset;
 @property (nonatomic, assign) BOOL isScrollToNext;
 @property (nonatomic, strong) IRPageModel *currentPage;
 @property (nonatomic, strong) IRPageModel *nextPage;
+@property (nonatomic, strong) UIView *chapterLoadingHUD;
 
 @end
 
@@ -88,6 +92,28 @@ UIScrollViewDelegate
     [super viewDidLayoutSubviews];
     
     self.pageViewController.view.frame = self.view.bounds;
+}
+
+#pragma mark - Setter/Getter
+
+- (NSMutableArray<IRChapterModel *> *)chapters
+{
+    if (!_chapters) {
+        _chapters = [[NSMutableArray alloc] initWithCapacity:self.chapterCount];
+    }
+    
+    return _chapters;
+}
+
+- (void)setReloadDataIfNeeded:(BOOL)reloadDataIfNeeded
+{
+    _reloadDataIfNeeded = reloadDataIfNeeded;
+    
+    if (reloadDataIfNeeded) {
+        [self showChapterLoadingHUD];
+    } else {
+        [self dismissChapterLoadingHUD];
+    }
 }
 
 #pragma mark - StatusBarHidden
@@ -136,9 +162,16 @@ UIScrollViewDelegate
 
 - (void)commonInit
 {
+    self.activityIndicatorViewTag = 999;
+    self.chapter_parse_serial_queue = dispatch_queue_create("ir_chapter_parse_serial_queue", DISPATCH_QUEUE_SERIAL);
     self.shouldHideStatusBar = NO;
     self.hideStatusBarAtFirstAppear = NO;
     self.childViewControllersCache = [[NSMutableArray alloc] init];
+    self.chapterCount = self.book.flatTableOfContents.count;
+    IR_WEAK_SELF
+    dispatch_async(self.chapter_parse_serial_queue, ^{
+        [weakSelf parseTocRefrenceToChapterModelWithTocRefrences:weakSelf.book.flatTableOfContents];
+    });
     [self setupPageViewController];
     [self setupNavigationbar];
     [self setupGestures];
@@ -165,6 +198,9 @@ UIScrollViewDelegate
     [pageViewController didMoveToParentViewController:self];
     [self.view addSubview:pageViewController.view];
     self.currentPage = self.chapters.firstObject.pages.firstObject;
+    if (!self.currentPage) {
+        self.reloadDataIfNeeded = YES;
+    }
     IRDebugLog(@"Current chapter index: %zd page index: %zd", self.currentPage.chapterIndex, self.currentPage.pageIndex);
     IRReadingViewController *readVc = [self readingViewControllerWithPageModel:self.currentPage creatIfNoExist:YES];
     [pageViewController setViewControllers:@[readVc]
@@ -210,6 +246,73 @@ UIScrollViewDelegate
     
     IRDebugLog(@"Next readingViewController: %@", readVc);
     return readVc;
+}
+
+- (void)parseTocRefrenceToChapterModelWithTocRefrences:(NSArray<IRTocRefrence *> *)tocRefrences
+{
+    [tocRefrences enumerateObjectsUsingBlock:^(IRTocRefrence * _Nonnull toc, NSUInteger idx, BOOL * _Nonnull stop) {
+        IRChapterModel *chapterModel = [IRChapterModel modelWithTocRefrence:toc chapterIndex:idx];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self parseChapterCompletedWithChater:chapterModel];
+        });
+    }];
+}
+
+- (void)parseChapterCompletedWithChater:(IRChapterModel *)chapter
+{
+    IRDebugLog(@"Chapter parse successed with index: %zd title: %@", chapter.chapterIndex, chapter.title);
+    [self.chapters addObject:chapter];
+    if (self.reloadDataIfNeeded) {
+        [self reloadDataWithChapter:chapter];
+        self.reloadDataIfNeeded = NO;
+    }
+}
+
+- (void)reloadDataWithChapter:(IRChapterModel *)chapter
+{
+    IRReadingViewController *currentVc = self.pageViewController.childViewControllers.firstObject;
+    currentVc.pageModel = chapter.pages.firstObject;
+    self.currentPage = currentVc.pageModel;
+    IRDebugLog(@"Current chapter index: %zd page index: %zd", self.currentPage.chapterIndex, self.currentPage.pageIndex);
+}
+
+#pragma mark - Loading HUD
+
+- (void)showChapterLoadingHUD
+{
+    UIActivityIndicatorView *loadingView = nil;
+    if (!self.chapterLoadingHUD) {
+        self.chapterLoadingHUD = [[UIView alloc] init];
+        self.chapterLoadingHUD.backgroundColor = [UIColor clearColor];
+        loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        loadingView.hidesWhenStopped = YES;
+        loadingView.color = [UIColor ir_colorWithRed:126 green:211 blue:33];
+        loadingView.tag = self.activityIndicatorViewTag;
+        [self.chapterLoadingHUD addSubview:loadingView];
+    }
+    
+    loadingView.frame = self.view.bounds;
+    self.chapterLoadingHUD.frame = self.view.bounds;
+    [self.view addSubview:self.chapterLoadingHUD];
+    [self.view bringSubviewToFront:self.chapterLoadingHUD];
+    [loadingView startAnimating];
+    
+    self.chapterLoadingHUD.alpha = 0;
+    [UIView animateWithDuration:0.25 animations:^{
+        self.chapterLoadingHUD.alpha = 1;
+    }];
+}
+
+- (void)dismissChapterLoadingHUD
+{
+    UIActivityIndicatorView *loadingView = [self.chapterLoadingHUD viewWithTag:self.activityIndicatorViewTag];
+    [loadingView stopAnimating];
+    [UIView animateWithDuration:0.25 animations:^{
+        self.chapterLoadingHUD.alpha = 0;
+    } completion:^(BOOL finished) {
+        [self.chapterLoadingHUD removeFromSuperview];
+        self.chapterLoadingHUD.alpha = 1;
+    }];
 }
 
 #pragma mark - IRReaderNavigationViewDelegate
@@ -269,10 +372,14 @@ UIScrollViewDelegate
                 pageIndex++;
                 nextPage = [currentChapter.pages safeObjectAtIndex:pageIndex];
             } else {
-                if (chapterIndex < self.chapters.count - 1) {
+                if (chapterIndex < self.chapterCount - 1) {
                     chapterIndex++;
-                    IRChapterModel *chapter = [self.chapters safeObjectAtIndex:chapterIndex];
-                    nextPage = chapter.pages.firstObject;
+                    if (chapterIndex > self.chapters.count - 1) {
+                        self.reloadDataIfNeeded = YES;
+                    } else {
+                        IRChapterModel *chapter = [self.chapters safeObjectAtIndex:chapterIndex];
+                        nextPage = chapter.pages.firstObject;
+                    }
                 }
             }
         } else {
@@ -303,6 +410,10 @@ UIScrollViewDelegate
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed
 {
+    if (!completed) {
+        self.reloadDataIfNeeded = NO;
+    }
+    
     if (completed && previousViewControllers.count) {
          [self cacheReadingViewController:previousViewControllers.firstObject];
     }
@@ -362,10 +473,14 @@ UIScrollViewDelegate
         pageIndex = pageIndex + 1;
         afterPage = [currentChapter.pages safeObjectAtIndex:pageIndex];
     } else {
-        if (chapterIndex < self.chapters.count - 1) {
+        if (chapterIndex < self.chapterCount - 1) {
             chapterIndex++;
-            IRChapterModel *chapter = [self.chapters safeObjectAtIndex:chapterIndex];
-            afterPage = chapter.pages.firstObject;
+            if (chapterIndex > self.chapters.count - 1) {
+                self.reloadDataIfNeeded = YES;
+            } else {
+                IRChapterModel *chapter = [self.chapters safeObjectAtIndex:chapterIndex];
+                afterPage = chapter.pages.firstObject;
+            }
         } else {
             return nil;
         }
@@ -388,20 +503,6 @@ UIScrollViewDelegate
     }
 
     return self;
-}
-
-- (void)setBook:(IREpubBook *)book
-{
-    _book = book;
-    
-    __block NSMutableArray *tempChapters = [NSMutableArray arrayWithCapacity:book.tableOfContents.count];
-    [book.flatTableOfContents enumerateObjectsUsingBlock:^(IRTocRefrence * _Nonnull toc, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        IRChapterModel *chapterModel = [IRChapterModel modelWithTocRefrence:toc chapterIndex:idx];
-        [tempChapters addObject:chapterModel];
-    }];
-    
-    self.chapters = tempChapters;
 }
 
 @end

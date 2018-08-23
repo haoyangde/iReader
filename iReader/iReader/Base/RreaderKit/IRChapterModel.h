@@ -13,7 +13,9 @@
 @interface IRChapterModel : NSObject
 
 @property (nonatomic, strong) NSArray<IRPageModel *> *pages;
+@property (nonatomic, strong) NSString *title;
 @property (nonatomic, assign) NSUInteger pageCount;
+@property (nonatomic, assign) NSUInteger chapterIndex;
 
 + (instancetype)modelWithTocRefrence:(IRTocRefrence *)tocRefrence chapterIndex:(NSUInteger)chapterIndex;
 
