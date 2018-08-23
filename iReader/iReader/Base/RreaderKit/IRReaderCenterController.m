@@ -13,6 +13,7 @@
 
 // view
 #import "IRReaderNavigationView.h"
+#import "IRReaderSettingMenuView.h"
 
 // model
 #import "IRTocRefrence.h"
@@ -118,10 +119,17 @@ UIScrollViewDelegate
 - (void)onSingleTap:(UIGestureRecognizer *)recognizer
 {
     self.shouldHideStatusBar = !self.shouldHideStatusBar;
+    
     [UIView animateWithDuration:0.25 animations:^{
         [self setNeedsStatusBarAppearanceUpdate];
     }];
+    
     [self.navigationController setNavigationBarHidden:self.shouldHideStatusBar animated:YES];
+    
+    if (!self.shouldHideStatusBar) {
+        IRReaderSettingMenuView *menuView = [IRReaderSettingMenuView readerSettingMenuView];
+        [menuView showInView:self.view animated:YES];
+    }
 }
 
 #pragma mark - Private

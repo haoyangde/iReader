@@ -17,6 +17,7 @@
 		810688C9211939240038B94A /* NSArray+Safe.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688C8211939240038B94A /* NSArray+Safe.m */; };
 		810C5054212E63F6000DA3B5 /* IRBookCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 810C5053212E63F6000DA3B5 /* IRBookCell.m */; };
 		810C5057212E6459000DA3B5 /* HomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 810C5056212E6459000DA3B5 /* HomePageViewController.m */; };
+		810C505A212E9316000DA3B5 /* IRReaderSettingMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 810C5059212E9316000DA3B5 /* IRReaderSettingMenuView.m */; };
 		8145189520F307E000DC5F3D /* IREpubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189420F307E000DC5F3D /* IREpubBook.m */; };
 		81B3747520F8AABB00D86F5C /* IRCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 81B3747420F8AABB00D86F5C /* IRCollectionViewCell.m */; };
 		81E2851A20F857D700348253 /* IRNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2851920F857D700348253 /* IRNavigationController.m */; };
@@ -96,6 +97,8 @@
 		810C5053212E63F6000DA3B5 /* IRBookCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRBookCell.m; sourceTree = "<group>"; };
 		810C5055212E6459000DA3B5 /* HomePageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageViewController.h; sourceTree = "<group>"; };
 		810C5056212E6459000DA3B5 /* HomePageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomePageViewController.m; sourceTree = "<group>"; };
+		810C5058212E9316000DA3B5 /* IRReaderSettingMenuView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRReaderSettingMenuView.h; sourceTree = "<group>"; };
+		810C5059212E9316000DA3B5 /* IRReaderSettingMenuView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRReaderSettingMenuView.m; sourceTree = "<group>"; };
 		8145189320F307E000DC5F3D /* IREpubBook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubBook.h; sourceTree = "<group>"; };
 		8145189420F307E000DC5F3D /* IREpubBook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IREpubBook.m; sourceTree = "<group>"; };
 		81B3747320F8AABB00D86F5C /* IRCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCollectionViewCell.h; sourceTree = "<group>"; };
@@ -254,6 +257,8 @@
 				810688BC21182BB20038B94A /* IRReaderNavigationView.m */,
 				81FD55372126CD22005AA7AF /* IRReadingViewController.h */,
 				81FD55382126CD22005AA7AF /* IRReadingViewController.m */,
+				810C5058212E9316000DA3B5 /* IRReaderSettingMenuView.h */,
+				810C5059212E9316000DA3B5 /* IRReaderSettingMenuView.m */,
 			);
 			path = RreaderKit;
 			sourceTree = "<group>";
@@ -766,6 +771,7 @@
 				DFDC3C47205A613600E40E27 /* IRAuthor.m in Sources */,
 				DFDC3BC8205665E100E40E27 /* AppDelegate.m in Sources */,
 				810688BD21182BB20038B94A /* IRReaderNavigationView.m in Sources */,
+				810C505A212E9316000DA3B5 /* IRReaderSettingMenuView.m in Sources */,
 				DFDC3C1720566ACD00E40E27 /* DiscoveryViewController.m in Sources */,
 				81B3747520F8AABB00D86F5C /* IRCollectionViewCell.m in Sources */,
 				DFDC3C2720567F5000E40E27 /* NSString+Extension.m in Sources */,

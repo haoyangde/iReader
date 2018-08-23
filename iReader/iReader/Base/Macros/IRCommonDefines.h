@@ -27,4 +27,6 @@
 
 #pragma mark -
 
+#define IR_WEAK_SELF __weak typeof(self) weakSelf = self;
+
 #endif /* IRCommonDefines_h */
