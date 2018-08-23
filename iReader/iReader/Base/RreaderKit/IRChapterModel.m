@@ -23,9 +23,9 @@
 
 + (instancetype)modelWithTocRefrence:(IRTocRefrence *)tocRefrence chapterIndex:(NSUInteger)chapterIndex
 {
-    IRChapterModel *model = [[self alloc] init];
-    model.title = tocRefrence.title;
-    model.chapterIndex = chapterIndex;
+    IRChapterModel *chapter = [[self alloc] init];
+    chapter.title = tocRefrence.title;
+    chapter.chapterIndex = chapterIndex;
     NSURL *baseUrl = [[NSURL alloc] initFileURLWithPath:tocRefrence.resource.fullHref];
     NSData *htmlData = [NSData dataWithContentsOfURL:baseUrl];
 
@@ -48,16 +48,22 @@
     CGRect rect = CGRectMake(0, 0, [IR_READER_CONFIG pageSize].width, [IR_READER_CONFIG pageSize].height);
     DTCoreTextLayoutFrame *layoutFrame = [textLayout layoutFrameWithRect:rect range:NSMakeRange(0, htmlString.length)];
     
-//    NSValue *firstRange = [layoutFrame.paragraphRanges safeObjectAtIndex:1];
-//    NSString *firstParagraphStr = [htmlString attributedSubstringFromRange:firstRange.rangeValue].string;
-//    if (firstParagraphStr.length) {
-//        IRDebugLog(@"First paragraph string: %@", firstParagraphStr);
-//        if ([firstParagraphStr isEqualToString:model.title]) {
-//            [htmlString addAttribute:NSParagraphStyleAttributeName
-//                               value:[self customParagraphStyleWithFirstLineHeadIndent:NO alignment:NSTextAlignmentCenter]
-//                               range:firstRange.rangeValue];
-//        }
-//    }
+    NSString *title = nil;
+    NSRange titleRange = NSMakeRange(0, 0);
+    for (NSValue *rangeValue in layoutFrame.paragraphRanges) {
+        title = [[[htmlString attributedSubstringFromRange:rangeValue.rangeValue].string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
+        if (title.length) {
+            titleRange = rangeValue.rangeValue;
+            break;
+        }
+    }
+    
+    IRDebugLog(@"First paragraph string: %@ chapter title: %@", title, chapter.title);
+    if ([title isEqualToString:[chapter.title lowercaseString]]) {
+        [htmlString addAttribute:NSParagraphStyleAttributeName
+                           value:[self customParagraphStyleWithFirstLineHeadIndent:NO alignment:NSTextAlignmentCenter]
+                           range:titleRange];
+    }
     
     [layoutFrame.lines enumerateObjectsUsingBlock:^(DTCoreTextLayoutLine  *_Nonnull line, NSUInteger idx, BOOL * _Nonnull stop) {
         if (line.attachments.count) {
@@ -108,10 +114,10 @@
         [pages addObject:pageModel];
     }
     
-    model.pages = pages;
-    model.pageCount = pageCount;
+    chapter.pages = pages;
+    chapter.pageCount = pageCount;
     
-    return model;
+    return chapter;
 }
 
 + (NSMutableParagraphStyle *)customParagraphStyleWithFirstLineHeadIndent:(BOOL)need alignment:(NSTextAlignment)alignment
