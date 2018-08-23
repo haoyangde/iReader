@@ -350,20 +350,16 @@ UIScrollViewDelegate
     NSUInteger chapterIndex = readVc.pageModel.chapterIndex;
     IRChapterModel *currentChapter = [self.chapters safeObjectAtIndex:chapterIndex];
     
-    if (pageIndex < currentChapter.pages.count) {
-        if (pageIndex == currentChapter.pages.count - 1) {
-            if (chapterIndex < self.chapters.count) {
-                if (chapterIndex == self.chapters.count - 1) {
-                    return nil;
-                } else {
-                    chapterIndex++;
-                    IRChapterModel *chapter = [self.chapters safeObjectAtIndex:chapterIndex];
-                    afterPage = chapter.pages.firstObject;
-                }
-            }
+    if (pageIndex < currentChapter.pages.count - 1) {
+        pageIndex = pageIndex + 1;
+        afterPage = [currentChapter.pages safeObjectAtIndex:pageIndex];
+    } else {
+        if (chapterIndex < self.chapters.count - 1) {
+            chapterIndex++;
+            IRChapterModel *chapter = [self.chapters safeObjectAtIndex:chapterIndex];
+            afterPage = chapter.pages.firstObject;
         } else {
-            pageIndex = pageIndex + 1;
-            afterPage = [currentChapter.pages safeObjectAtIndex:pageIndex];
+            return nil;
         }
     }
     
