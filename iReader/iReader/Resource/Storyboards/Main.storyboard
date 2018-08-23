@@ -44,10 +44,10 @@
             </objects>
             <point key="canvasLocation" x="-542" y="151"/>
         </scene>
-        <!--书架-->
+        <!--首页-->
         <scene sceneID="V6a-py-3rA">
             <objects>
-                <viewController title="书架" id="cgE-pG-mf4" customClass="MyBooksViewController" sceneMemberID="viewController">
+                <viewController title="首页" id="cgE-pG-mf4" customClass="HomePageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2XF-KA-hw3"/>
                         <viewControllerLayoutGuide type="bottom" id="FkD-d4-vLq"/>
@@ -57,7 +57,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="书架" id="pHF-Pw-tL8"/>
+                    <tabBarItem key="tabBarItem" title="首页" id="pHF-Pw-tL8"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A3J-Vh-pPj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

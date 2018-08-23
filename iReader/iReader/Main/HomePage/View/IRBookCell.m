@@ -1,20 +1,20 @@
 //
-//  MyBookCell.m
+//  IRBookCell.m
 //  iReader
 //
-//  Created by zzyong on 2018/7/11.
+//  Created by zzyong on 2018/8/23.
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "MyBookCell.h"
+#import "IRBookCell.h"
 
-@interface MyBookCell ()
+@interface IRBookCell ()
 
 @property (nonatomic, strong) UIImageView *coverImageView;
 
 @end
 
-@implementation MyBookCell
+@implementation IRBookCell
 
 - (instancetype)initWithFrame:(CGRect)frame
 {

@@ -1,29 +1,32 @@
 //
-//  MyBooksViewController.m
+//  HomePageViewController.m
 //  iReader
 //
-//  Created by zouzhiyong on 2018/3/12.
+//  Created by zzyong on 2018/8/23.
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-// Controller
-#import "MyBooksViewController.h"
+#import "HomePageViewController.h"
 #import "IRReaderCenterController.h"
 
 // View
-#import "MyBookCell.h"
+#import "IRBookCell.h"
 
 // Other
 #import "IREpubHeaders.h"
 
-@interface MyBooksViewController () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource>
+@interface HomePageViewController ()
+<
+UICollectionViewDelegateFlowLayout,
+UICollectionViewDataSource
+>
 
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSMutableArray<IREpubBook *> *myBooks;
 
 @end
 
-@implementation MyBooksViewController
+@implementation HomePageViewController
 
 - (void)viewDidLoad
 {
@@ -66,7 +69,7 @@
     collectionView.alwaysBounceVertical = YES;
     collectionView.showsVerticalScrollIndicator = NO;
     
-    [collectionView registerClass:[MyBookCell class] forCellWithReuseIdentifier:@"MyBookCell"];
+    [collectionView registerClass:[IRBookCell class] forCellWithReuseIdentifier:@"IRBookCell"];
     
     [self.view addSubview:collectionView];
     self.collectionView = collectionView;
@@ -92,7 +95,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    MyBookCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MyBookCell" forIndexPath:indexPath];
+    IRBookCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRBookCell" forIndexPath:indexPath];
     IREpubBook *book = [self.myBooks objectAtIndex:indexPath.row];
     [cell setCoverImage:[UIImage imageWithContentsOfFile:book.coverImage.fullHref]];
     
@@ -131,5 +134,6 @@
     containerNav.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     [self presentViewController:containerNav animated:YES completion:nil];
 }
+
 
 @end
