@@ -28,10 +28,12 @@
     NSData *htmlData = [NSData dataWithContentsOfURL:baseUrl];
 
     NSDictionary *options = @{
-                              DTDefaultFontFamily : @"Times New Roman",
+                              NSBaseURLDocumentOption            : baseUrl,
+                              NSTextSizeMultiplierDocumentOption : @(IR_READER_CONFIG.textSizeMultiplier),
+                              DTDefaultFontName   : IR_READER_CONFIG.fontName,
                               DTDefaultLinkColor  : @"purple",
+                              DTDefaultTextColor  : IR_READER_CONFIG.textColor,
                               DTDefaultFontSize   : @(IR_READER_CONFIG.textFontSize),
-                              NSBaseURLDocumentOption : baseUrl,
                               DTMaxImageSize      : [NSValue valueWithCGSize:[IR_READER_CONFIG pageSize]]
                             };
     
@@ -49,19 +51,6 @@
             [htmlString addAttribute:NSParagraphStyleAttributeName
                                value:[self customParagraphStyleWithFirstLineHeadIndent:NO]
                                range:line.stringRange];
-        } else {
-//            DTCoreTextGlyphRun *firstRun = line.glyphRuns.firstObject;
-//            UIFont *runFont = [firstRun.attributes objectForKey:@"NSFont"];
-//            if (runFont && [[runFont valueForKeyPath:@"font-size"] floatValue] > 15) {
-//                NSMutableParagraphStyle *customStyle = [[NSMutableParagraphStyle alloc] init];
-//                customStyle.lineSpacing = 5;
-//                customStyle.paragraphSpacing = 20;
-//                customStyle.lineHeightMultiple = 2;
-//                customStyle.alignment = NSTextAlignmentCenter;
-//                [htmlString addAttribute:NSParagraphStyleAttributeName
-//                                   value:customStyle
-//                                   range:line.stringRange];
-//            }
         }
     }];
     
@@ -115,11 +104,11 @@
 + (NSMutableParagraphStyle *)customParagraphStyleWithFirstLineHeadIndent:(BOOL)need
 {
     NSMutableParagraphStyle *customStyle = [[NSMutableParagraphStyle alloc] init];
-    customStyle.lineSpacing = 5;
-    customStyle.paragraphSpacing = 20;
+    customStyle.lineSpacing = IR_READER_CONFIG.lineSpacing;
+    customStyle.paragraphSpacing = IR_READER_CONFIG.paragraphSpacing;
     customStyle.lineHeightMultiple = 2;
     customStyle.alignment = NSTextAlignmentJustified;
-    customStyle.firstLineHeadIndent = need ? [UIFont systemFontOfSize:IR_READER_CONFIG.textFontSize].pointSize * 2 : 0;
+    customStyle.firstLineHeadIndent = need ? IR_READER_CONFIG.firstLineHeadIndent : 0;
     
     return customStyle;
 }

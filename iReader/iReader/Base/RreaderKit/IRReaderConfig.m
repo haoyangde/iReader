@@ -46,7 +46,16 @@
     _verticalInset = _pageInsets.top + _pageInsets.bottom;
     _horizontalInset = _pageInsets.left + _pageInsets.right;
     _pageSize = CGSizeMake([IRUIUtilites UIScreenMinWidth] - _horizontalInset, [IRUIUtilites UIScreenMaxHeight] - _verticalInset);
-    _textFontSize = 15;
+    _textFontSize = 16;
+    _textSizeMultiplier = 0.875;
+    _lineSpacing = 5;
+    _paragraphSpacing = 20;
+    _firstLineHeadIndent = [UIFont systemFontOfSize:_textFontSize].pointSize * 2;
+    _pageBackgroundImg = nil;
+    _pageBackgroundColor = [UIColor whiteColor];
+    _textColor  = [UIColor blackColor];
+    _fontFamily = @"Times New Roman";
+    _fontName   = @"TimesNewRomanPSMT";
 }
 
 #pragma mark - Public
