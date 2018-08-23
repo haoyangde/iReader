@@ -49,13 +49,26 @@
     DTCoreTextLayoutFrame *layoutFrame = [textLayout layoutFrameWithRect:rect range:NSMakeRange(0, htmlString.length)];
     
     NSString *title = nil;
+    NSAttributedString *paragraph = nil;
     NSRange titleRange = NSMakeRange(0, 0);
     for (NSValue *rangeValue in layoutFrame.paragraphRanges) {
-        title = [[[htmlString attributedSubstringFromRange:rangeValue.rangeValue].string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
-        if (title.length) {
-            titleRange = rangeValue.rangeValue;
-            break;
+        
+        paragraph = [htmlString attributedSubstringFromRange:rangeValue.rangeValue];
+        
+        if (!title.length) {
+            title = [[paragraph.string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
+            if (title.length) {
+                titleRange = rangeValue.rangeValue;
+                break;
+            }
         }
+        
+//        DTCoreTextLayoutFrame *paragraphLayoutFrame = [textLayout layoutFrameWithRect:rect range:rangeValue.rangeValue];
+//        if (paragraphLayoutFrame.lines.count < 2) {
+//            [htmlString addAttribute:NSParagraphStyleAttributeName
+//                               value:[self customParagraphStyleWithFirstLineHeadIndent:NO alignment:NSTextAlignmentLeft]
+//                               range:rangeValue.rangeValue];
+//        }
     }
     
     IRDebugLog(@"First paragraph string: %@ chapter title: %@", title, chapter.title);
