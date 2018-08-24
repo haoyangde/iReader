@@ -15,9 +15,14 @@
 @property (nonatomic, assign) CGFloat menuViewHeight;
 @property (nonatomic, assign) CGFloat safeAreaInsetBottom;
 
-@property (nonatomic ,strong) UIView *bottomToolView;
+@property (nonatomic ,strong) UIView *pageOrientationView;
 @property (nonatomic ,strong) UIButton *verticalBtn;
 @property (nonatomic ,strong) UIButton *horizontalBtn;
+
+@property (nonatomic ,strong) UIView *textFontControllView;
+@property (nonatomic ,strong) UIButton *fontAddBtn;
+@property (nonatomic ,strong) UIButton *fontReduceBtn;
+@property (nonatomic ,strong) UISlider *fontSlider;
 
 @end
 
@@ -31,7 +36,7 @@
         if (@available(iOS 11.0, *)) {
             self.safeAreaInsetBottom = self.safeAreaInsets.bottom;
         }
-        self.menuViewHeight = 200 + self.safeAreaInsetBottom;
+        self.menuViewHeight = 225 + self.safeAreaInsetBottom;
         [self setupSubviews];
         [self setupGestures];
     }
@@ -100,6 +105,16 @@
     }
 }
 
+- (void)onFontReduceButtonClicked:(UIButton *)btn
+{
+    
+}
+
+- (void)onFontAddButtonClicked:(UIButton *)btn
+{
+    
+}
+
 #pragma mark - Private
 
 - (void)setupSubviews
@@ -108,43 +123,78 @@
     self.menuView.backgroundColor = [UIColor whiteColor];
     [self addSubview:self.menuView];
     
-    self.bottomToolView = [[UIView alloc] init];
-    [self.menuView addSubview:self.bottomToolView];
-    [self.bottomToolView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(50);
+    [self setupPageOrientationView];
+    [self setupTextFontControllView];
+}
+
+- (void)setupTextFontControllView
+{
+    self.textFontControllView = [[UIView alloc] init];
+    [self.menuView addSubview:self.textFontControllView];
+    [self.textFontControllView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(60);
+        make.width.equalTo(self.menuView);
+        make.bottom.equalTo(self.pageOrientationView.mas_top);
+    }];
+    
+    self.fontReduceBtn = [self buttonWithTitle:nil imageName:@"icon-font-small" sel:@selector(onFontReduceButtonClicked:)];
+    [self.textFontControllView addSubview:self.fontReduceBtn];
+    [self.fontReduceBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(self.textFontControllView);
+        make.width.equalTo(self.textFontControllView.mas_height);
+        make.left.equalTo(self.textFontControllView).offset(10);
+    }];
+    
+    self.fontAddBtn = [self buttonWithTitle:nil imageName:@"icon-font-big" sel:@selector(onFontAddButtonClicked:)];
+    [self.textFontControllView addSubview:self.fontAddBtn];
+    [self.fontAddBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(self.textFontControllView);
+        make.width.equalTo(self.textFontControllView.mas_height);
+        make.right.equalTo(self.textFontControllView).offset(-10);
+    }];
+    
+    self.fontSlider = [[UISlider alloc] init];
+    self.fontSlider.minimumValue = 12;
+    self.fontSlider.maximumValue = 28;
+    self.fontSlider.thumbTintColor = IR_READER_CONFIG.appThemeColor;
+    [self.textFontControllView addSubview:self.fontSlider];
+    [self.fontSlider mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(self.textFontControllView);
+        make.left.equalTo(self.fontReduceBtn.mas_right);
+        make.right.equalTo(self.fontAddBtn.mas_left);
+    }];
+    
+    UIView *topLine = [[UIView alloc] init];
+    topLine.backgroundColor = [UIColor ir_separatorLineColor];
+    [self.textFontControllView addSubview:topLine];
+    [topLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(0.5);
+        make.top.right.left.equalTo(self.textFontControllView);
+    }];
+}
+
+- (void)setupPageOrientationView
+{
+    self.pageOrientationView = [[UIView alloc] init];
+    [self.menuView addSubview:self.pageOrientationView];
+    [self.pageOrientationView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(55);
         make.width.equalTo(self.menuView);
         make.bottom.equalTo(self.menuView).offset(-self.safeAreaInsetBottom);
     }];
     
-    UIView *bottomTopLine = [[UIView alloc] init];
-    bottomTopLine.backgroundColor = [UIColor ir_separatorLineColor];
-    [self.bottomToolView addSubview:bottomTopLine];
-    [bottomTopLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(0.5);
-        make.top.right.left.equalTo(self.bottomToolView);
-    }];
-    
-    UIView *bottomMiddleLine = [[UIView alloc] init];
-    bottomMiddleLine.backgroundColor = [UIColor ir_separatorLineColor];
-    [self.bottomToolView addSubview:bottomMiddleLine];
-    [bottomMiddleLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(30);
-        make.width.mas_equalTo(0.5);
-        make.center.equalTo(self.bottomToolView);
-    }];
-    
     self.horizontalBtn = [self buttonWithTitle:@" 横向" imageName:@"icon-menu-horizontal" sel:@selector(onHorizontalButtonClicked:)];
-    [self.bottomToolView addSubview:self.horizontalBtn];
+    [self.pageOrientationView addSubview:self.horizontalBtn];
     [self.horizontalBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.bottom.equalTo(self.bottomToolView);
-        make.right.equalTo(self.bottomToolView.mas_centerX);
+        make.left.top.bottom.equalTo(self.pageOrientationView);
+        make.right.equalTo(self.pageOrientationView.mas_centerX);
     }];
     
     self.verticalBtn = [self buttonWithTitle:@" 竖向" imageName:@"icon-menu-vertical" sel:@selector(onVerticalButtonClicked:)];
-    [self.bottomToolView addSubview:self.verticalBtn];
+    [self.pageOrientationView addSubview:self.verticalBtn];
     [self.verticalBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.top.bottom.equalTo(self.bottomToolView);
-        make.left.equalTo(self.bottomToolView.mas_centerX);
+        make.right.top.bottom.equalTo(self.pageOrientationView);
+        make.left.equalTo(self.pageOrientationView.mas_centerX);
     }];
     
     if (ReaderPageNavigationOrientationHorizontal == IR_READER_CONFIG.readerPageNavigationOrientation) {
@@ -152,6 +202,22 @@
     } else {
         self.verticalBtn.selected = YES;
     }
+    
+    UIView *topLine = [[UIView alloc] init];
+    topLine.backgroundColor = [UIColor ir_separatorLineColor];
+    [self.pageOrientationView addSubview:topLine];
+    [topLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(0.5);
+        make.top.right.left.equalTo(self.pageOrientationView);
+    }];
+    
+    UIView *middleLine = [[UIView alloc] init];
+    middleLine.backgroundColor = [UIColor ir_separatorLineColor];
+    [self.pageOrientationView addSubview:middleLine];
+    [middleLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(0.5);
+        make.center.height.equalTo(self.pageOrientationView);
+    }];
 }
 
 - (UIButton *)buttonWithTitle:(NSString *)title imageName:(NSString *)imageName sel:(SEL)sel
@@ -160,10 +226,17 @@
     btn.selected = NO;
     [btn setTitle:title forState:UIControlStateNormal];
     btn.tintColor = IR_READER_CONFIG.appThemeColor;
-    [btn setImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] forState:UIControlStateNormal];
-    [btn setImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
+    if (imageName) {
+        [btn setImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+             forState:UIControlStateNormal];
+        [btn setImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+             forState:UIControlStateSelected];
+        [btn setImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+             forState:UIControlStateHighlighted];
+    }
+    
     btn.titleLabel.font = [UIFont systemFontOfSize:13];
-    [btn setTitleColor:[UIColor colorWithWhite:0.4 alpha:1] forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [btn setTitleColor:IR_READER_CONFIG.appThemeColor forState:UIControlStateSelected];
     [btn addTarget:self action:sel forControlEvents:UIControlEventTouchUpInside];
     
