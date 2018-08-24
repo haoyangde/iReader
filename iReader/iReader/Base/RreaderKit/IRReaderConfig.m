@@ -43,6 +43,7 @@
     CGFloat bottom = [IRUIUtilites isIPhoneX] ? 30 : 20;
     _pageInsets = UIEdgeInsetsMake(top, 20, bottom, 20);
     
+    _appThemeColor = [UIColor ir_colorWithRed:126 green:211 blue:33];
     _verticalInset = _pageInsets.top + _pageInsets.bottom;
     _horizontalInset = _pageInsets.left + _pageInsets.right;
     _pageSize = CGSizeMake([IRUIUtilites UIScreenMinWidth] - _horizontalInset, [IRUIUtilites UIScreenMaxHeight] - _verticalInset);

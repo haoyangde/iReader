@@ -286,7 +286,7 @@ UIScrollViewDelegate
         self.chapterLoadingHUD.backgroundColor = [UIColor clearColor];
         loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         loadingView.hidesWhenStopped = YES;
-        loadingView.color = [UIColor ir_colorWithRed:126 green:211 blue:33];
+        loadingView.color = IR_READER_CONFIG.appThemeColor;
         loadingView.tag = self.activityIndicatorViewTag;
         [self.chapterLoadingHUD addSubview:loadingView];
     }
