@@ -12,6 +12,8 @@
 
 - (id)safeObjectAtIndex:(NSUInteger)index;
 
+- (id)safeObjectAtIndex:(NSUInteger)index returnFirst:(BOOL)returnFirst;
+
 @end
 
 @interface NSMutableArray (Safe)

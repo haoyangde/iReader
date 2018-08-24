@@ -35,6 +35,7 @@
 
 - (void)commonInit
 {
+    self.title = @"目录";
     self.view.backgroundColor = [UIColor whiteColor];
     [self setupCollectionView];
 }
@@ -53,14 +54,15 @@
     collectionView.showsVerticalScrollIndicator = NO;
     collectionView.showsHorizontalScrollIndicator = NO;
     
-    if (@available(iOS 11.0, *)) {
-        collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-    }
-    
     [collectionView registerClass:[BookChapterListCell class] forCellWithReuseIdentifier:@"BookChapterListCell"];
     
     [self.view addSubview:collectionView];
     self.collectionView = collectionView;
+    
+    if (self.collectionView.numberOfSections && [self.collectionView numberOfItemsInSection:0] > self.selectChapterIndex) {
+        
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:self.selectChapterIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredVertically animated:NO];
+    }
 }
 
 #pragma mark - UICollectionView
@@ -74,6 +76,8 @@
 {
     BookChapterListCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"BookChapterListCell" forIndexPath:indexPath];
     cell.chapter = [self.chapterList objectAtIndex:indexPath.row];
+    [cell setSelected:(indexPath.row == self.selectChapterIndex)];
+    
     return cell;
 }
 
@@ -82,7 +86,7 @@
     IRTocRefrence *chapter = [self.chapterList objectAtIndex:indexPath.row];
     CGSize titleSize = [chapter.title sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:kChapterListCellFontSize]}];
     CGFloat cellHeight = ceil(titleSize.height) * ceil(titleSize.width / (collectionView.width - 20));
-    return CGSizeMake(collectionView.width, cellHeight + 20);
+    return CGSizeMake(collectionView.width, cellHeight + 30);
 }
                                                        
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
@@ -92,7 +96,10 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    [self.navigationController popViewControllerAnimated:YES];
+    if ([self.delegate respondsToSelector:@selector(bookChapterListControllerDidSelectChapterAtIndex:)]) {
+        [self.delegate bookChapterListControllerDidSelectChapterAtIndex:indexPath.row];
+    }
 }
 
 @end

@@ -14,4 +14,7 @@
 
 - (instancetype)initWithBook:(IREpubBook *)book;
 
+- (void)selectChapterAtIndex:(NSUInteger)chapterIndex;
+- (void)selectChapterAtIndex:(NSUInteger)chapterIndex pageAtIndex:(NSUInteger)pageInadex;
+
 @end

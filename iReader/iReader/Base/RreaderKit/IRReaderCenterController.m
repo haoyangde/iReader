@@ -30,19 +30,21 @@
 UIPageViewControllerDataSource,
 UIPageViewControllerDelegate,
 IRReaderNavigationViewDelegate,
-UIScrollViewDelegate
+UIScrollViewDelegate,
+BookChapterListControllerDelegate
 >
 
 @property (nonatomic, strong) dispatch_queue_t chapter_parse_serial_queue;
 @property (nonatomic, strong) IREpubBook *book;
 @property (nonatomic, strong) IRPageViewController *pageViewController;
 @property (nonatomic, assign) NSUInteger chapterCount;
-@property (nonatomic, assign) NSUInteger activityIndicatorViewTag;
+@property (nonatomic, assign, readonly) NSUInteger activityIndicatorViewTag;
 @property (nonatomic, strong) NSMutableArray<IRChapterModel *> *chapters;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
 @property (nonatomic, strong) IRReaderNavigationView *readerNavigationView;
 @property (nonatomic, strong) UINavigationBar *orilNavigationBar;
-@property (nonatomic, assign) BOOL hideStatusBarAtFirstAppear;
+@property (nonatomic, assign) BOOL shouldUpdateSettingViewState;
+@property (nonatomic, assign) BOOL fromChapterListView;
 @property (nonatomic, strong) NSMutableArray<IRReadingViewController *> *childViewControllersCache;
 @property (nonatomic, assign) BOOL reloadDataIfNeeded;
 @property (nonatomic, assign) CGPoint scrollBeginOffset;
@@ -50,6 +52,8 @@ UIScrollViewDelegate
 @property (nonatomic, strong) IRPageModel *currentPage;
 @property (nonatomic, strong) IRPageModel *nextPage;
 @property (nonatomic, strong) UIView *chapterLoadingHUD;
+@property (nonatomic, assign) NSUInteger chapterSelectIndex;
+@property (nonatomic, assign) NSUInteger pageSelectIndex;
 
 @end
 
@@ -67,16 +71,21 @@ UIScrollViewDelegate
     [super viewWillAppear:animated];
     
     [self.readerNavigationView shouldHideAllCustomViews:NO];
+    
+    if (self.fromChapterListView) {
+        self.fromChapterListView = NO;
+        [self updateReaderSettingViewStateWithAnimated:NO completion:nil];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    if (!self.hideStatusBarAtFirstAppear) {
-        self.hideStatusBarAtFirstAppear = YES;
-        self.shouldHideStatusBar = YES;
-        [self setNeedsStatusBarAppearanceUpdate];
+    if (self.shouldUpdateSettingViewState) {
+        [self updateReaderSettingViewStateWithAnimated:YES completion:^{
+            self.shouldUpdateSettingViewState = NO;
+        }];
     }
 }
 
@@ -116,6 +125,20 @@ UIScrollViewDelegate
     }
 }
 
+- (NSUInteger)activityIndicatorViewTag
+{
+    return 999;
+}
+
+- (NSMutableArray<IRReadingViewController *> *)childViewControllersCache
+{
+    if (!_childViewControllersCache) {
+        _childViewControllersCache = [[NSMutableArray alloc] init];
+    }
+    
+    return _childViewControllersCache;
+}
+
 #pragma mark - StatusBarHidden
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -144,30 +167,19 @@ UIScrollViewDelegate
 
 - (void)onSingleTap:(UIGestureRecognizer *)recognizer
 {
-    self.shouldHideStatusBar = !self.shouldHideStatusBar;
-    
-    [UIView animateWithDuration:0.25 animations:^{
-        [self setNeedsStatusBarAppearanceUpdate];
-    }];
-    
-    [self.navigationController setNavigationBarHidden:self.shouldHideStatusBar animated:YES];
-    
-    if (!self.shouldHideStatusBar) {
-        IRReaderSettingMenuView *menuView = [IRReaderSettingMenuView readerSettingMenuView];
-        [menuView showInView:self.view animated:YES];
+    if (self.shouldUpdateSettingViewState) {
+        return;
     }
+    
+    [self updateReaderSettingViewStateWithAnimated:YES completion:nil];
 }
 
 #pragma mark - Private
 
 - (void)commonInit
 {
-    self.activityIndicatorViewTag = 999;
-    self.chapter_parse_serial_queue = dispatch_queue_create("ir_chapter_parse_serial_queue", DISPATCH_QUEUE_SERIAL);
     self.shouldHideStatusBar = NO;
-    self.hideStatusBarAtFirstAppear = NO;
-    self.childViewControllersCache = [[NSMutableArray alloc] init];
-    self.chapterCount = self.book.flatTableOfContents.count;
+    self.shouldUpdateSettingViewState = YES;
     IR_WEAK_SELF
     dispatch_async(self.chapter_parse_serial_queue, ^{
         [weakSelf parseTocRefrenceToChapterModelWithTocRefrences:weakSelf.book.flatTableOfContents];
@@ -197,7 +209,12 @@ UIScrollViewDelegate
     [self addChildViewController:pageViewController];
     [pageViewController didMoveToParentViewController:self];
     [self.view addSubview:pageViewController.view];
-    self.currentPage = self.chapters.firstObject.pages.firstObject;
+    if (self.chapterSelectIndex < self.chapters.count) {
+        IRChapterModel *selectChapter = [self.chapters safeObjectAtIndex:self.chapterSelectIndex];
+        if (selectChapter) {
+            self.currentPage = [selectChapter.pages safeObjectAtIndex:self.pageSelectIndex returnFirst:YES];
+        }
+    }
     if (!self.currentPage) {
         self.reloadDataIfNeeded = YES;
     }
@@ -262,7 +279,7 @@ UIScrollViewDelegate
 {
     IRDebugLog(@"Chapter parse successed with index: %zd title: %@", chapter.chapterIndex, chapter.title);
     [self.chapters addObject:chapter];
-    if (self.reloadDataIfNeeded) {
+    if (self.reloadDataIfNeeded && self.chapterSelectIndex == chapter.chapterIndex) {
         [self reloadDataWithChapter:chapter];
         self.reloadDataIfNeeded = NO;
     }
@@ -270,10 +287,35 @@ UIScrollViewDelegate
 
 - (void)reloadDataWithChapter:(IRChapterModel *)chapter
 {
-    IRReadingViewController *currentVc = self.pageViewController.childViewControllers.firstObject;
-    currentVc.pageModel = chapter.pages.firstObject;
+    IRReadingViewController *currentVc = [self currentReadingViewController];
+    currentVc.pageModel = [chapter.pages safeObjectAtIndex:self.pageSelectIndex returnFirst:YES];
     self.currentPage = currentVc.pageModel;
     IRDebugLog(@"Current chapter index: %zd page index: %zd", self.currentPage.chapterIndex, self.currentPage.pageIndex);
+}
+
+- (IRReadingViewController *)currentReadingViewController
+{
+    return self.pageViewController.childViewControllers.firstObject;
+}
+
+- (void)updateReaderSettingViewStateWithAnimated:(BOOL)animated completion:(void (^)(void))completion
+{
+    self.shouldHideStatusBar = !self.shouldHideStatusBar;
+    
+    [UIView animateWithDuration:(animated ? 0.25 : 0) animations:^{
+        [self setNeedsStatusBarAppearanceUpdate];
+    } completion:^(BOOL finished) {
+        if (completion) {
+            completion();
+        }
+    }];
+    
+    [self.navigationController setNavigationBarHidden:self.shouldHideStatusBar animated:animated];
+    
+//    if (!self.shouldHideStatusBar) {
+//        IRReaderSettingMenuView *menuView = [IRReaderSettingMenuView readerSettingMenuView];
+//        [menuView showInView:self.view animated:YES];
+//    }
 }
 
 #pragma mark - Loading HUD
@@ -315,12 +357,22 @@ UIScrollViewDelegate
     }];
 }
 
+#pragma mark - BookChapterListControllerDelegate
+
+- (void)bookChapterListControllerDidSelectChapterAtIndex:(NSUInteger)index
+{
+    [self selectChapterAtIndex:index];
+    self.fromChapterListView = YES;
+}
+
 #pragma mark - IRReaderNavigationViewDelegate
 
 - (void)readerNavigationViewDidClickChapterListButton:(IRReaderNavigationView *)aView
 {
     BookChapterListController *chapterVc = [[BookChapterListController alloc] init];
+    chapterVc.delegate = self;
     chapterVc.chapterList = self.book.flatTableOfContents;
+    chapterVc.selectChapterIndex = self.currentPage.chapterIndex;
     [self.navigationController pushViewController:chapterVc animated:YES];
 }
 
@@ -500,9 +552,42 @@ UIScrollViewDelegate
 {
     if (self = [super init]) {
         self.book = book;
+        self.chapterCount = book.flatTableOfContents.count;
+        self.chapter_parse_serial_queue = dispatch_queue_create("ir_chapter_parse_serial_queue", DISPATCH_QUEUE_SERIAL);
     }
 
     return self;
+}
+
+- (void)selectChapterAtIndex:(NSUInteger)chapterIndex
+{
+    [self selectChapterAtIndex:chapterIndex pageAtIndex:0];
+}
+
+- (void)selectChapterAtIndex:(NSUInteger)chapterIndex pageAtIndex:(NSUInteger)pageInadex
+{
+    self.chapterSelectIndex = chapterIndex;
+    self.pageSelectIndex = pageInadex;
+    
+    if ([self isViewLoaded]) {
+        if (chapterIndex < self.chapters.count) {
+            IRChapterModel *select = [self.chapters safeObjectAtIndex:chapterIndex];
+            IRReadingViewController *currentVc = [self currentReadingViewController];
+            currentVc.pageModel = [select.pages safeObjectAtIndex:pageInadex returnFirst:YES];
+            self.currentPage = currentVc.pageModel;
+        } else {
+            if (chapterIndex < self.chapterCount) {
+                self.reloadDataIfNeeded = YES;
+            } else {
+                IRDebugLog(@"Select chapter index is not exist:%zd chapterCount: %zd", chapterIndex, self.chapterCount);
+            }
+        }
+    } else {
+        if (chapterIndex >= self.chapterCount) {
+            self.chapterSelectIndex = 0;
+            IRDebugLog(@"Select chapter index is not exist:%zd chapterCount: %zd", chapterIndex, self.chapterCount);
+        }
+    }
 }
 
 @end

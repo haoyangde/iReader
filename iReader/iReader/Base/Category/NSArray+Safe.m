@@ -22,6 +22,16 @@
     }
 }
 
+- (id)safeObjectAtIndex:(NSUInteger)index returnFirst:(BOOL)returnFirst
+{
+    id obj = [self safeObjectAtIndex:index];
+    if (!obj && returnFirst && self.count) {
+        obj = self.firstObject;
+    }
+    
+    return obj;
+}
+
 @end
 
 @implementation NSMutableArray (Safe)
