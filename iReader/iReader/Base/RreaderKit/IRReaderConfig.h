@@ -10,10 +10,16 @@
 
 #define IR_READER_CONFIG [IRReaderConfig sharedInstance]
 
+typedef NS_ENUM(NSUInteger, ReaderPageNavigationOrientation) {
+    ReaderPageNavigationOrientationHorizontal,
+    ReaderPageNavigationOrientationVertical
+};
+
 @interface IRReaderConfig : NSObject
 
 + (instancetype)sharedInstance;
 
+@property (nonatomic, assign, readonly) ReaderPageNavigationOrientation readerPageNavigationOrientation;
 @property (nonatomic, strong, readonly) UIColor *appThemeColor;
 @property (nonatomic, assign, readonly) UIEdgeInsets pageInsets;
 @property (nonatomic, assign, readonly) CGFloat verticalInset;
@@ -39,6 +45,6 @@
 /// default 2 char
 @property (nonatomic, assign) CGFloat firstLineHeadIndent;
 
-
+- (void)updateReaderPageNavigationOrientation:(ReaderPageNavigationOrientation)orientation;
 
 @end

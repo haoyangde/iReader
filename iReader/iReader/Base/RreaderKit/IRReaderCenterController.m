@@ -13,7 +13,7 @@
 
 // view
 #import "IRReaderNavigationView.h"
-#import "IRReaderSettingMenuView.h"
+#import "IRReaderSettingView.h"
 
 // model
 #import "IRTocRefrence.h"
@@ -31,7 +31,9 @@ UIPageViewControllerDataSource,
 UIPageViewControllerDelegate,
 IRReaderNavigationViewDelegate,
 UIScrollViewDelegate,
-BookChapterListControllerDelegate
+BookChapterListControllerDelegate,
+ReaderSettingViewDeletage,
+UIGestureRecognizerDelegate
 >
 
 @property (nonatomic, strong) dispatch_queue_t chapter_parse_serial_queue;
@@ -54,6 +56,8 @@ BookChapterListControllerDelegate
 @property (nonatomic, strong) UIView *chapterLoadingHUD;
 @property (nonatomic, assign) NSUInteger chapterSelectIndex;
 @property (nonatomic, assign) NSUInteger pageSelectIndex;
+@property (nonatomic, weak) IRReaderSettingView *readerSettingView;
+@property (nonatomic, assign) BOOL changeNavigationOrientationByUser;
 
 @end
 
@@ -104,6 +108,16 @@ BookChapterListControllerDelegate
 }
 
 #pragma mark - Setter/Getter
+
+- (IRReaderNavigationView *)readerNavigationView
+{
+    if (!_readerNavigationView) {
+        _readerNavigationView = [[IRReaderNavigationView alloc] init];
+        _readerNavigationView.actionDelegate = self;
+    }
+    
+    return _readerNavigationView;
+}
 
 - (NSMutableArray<IRChapterModel *> *)chapters
 {
@@ -162,6 +176,7 @@ BookChapterListControllerDelegate
 {
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSingleTap:)];
     singleTap.numberOfTapsRequired = 1;
+    singleTap.delegate = self;
     [self.view addGestureRecognizer:singleTap];
 }
 
@@ -172,6 +187,15 @@ BookChapterListControllerDelegate
     }
     
     [self updateReaderSettingViewStateWithAnimated:YES completion:nil];
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (self.readerSettingView && CGRectContainsPoint(self.readerSettingView.frame, [gestureRecognizer locationInView:self.view])) {
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark - Private
@@ -200,41 +224,60 @@ BookChapterListControllerDelegate
 
 - (void)setupPageViewController
 {
-    IRPageViewController *pageViewController = [[IRPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+    [self updatePageViewControllerWithNavigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+                                            transitionStyle:UIPageViewControllerTransitionStylePageCurl];
+}
+
+- (void)updatePageViewControllerWithNavigationOrientation:(UIPageViewControllerNavigationOrientation)orientation
+                                          transitionStyle:(UIPageViewControllerTransitionStyle)transitionStyle
+{
+    IRPageViewController *pageViewController = [[IRPageViewController alloc] initWithTransitionStyle:transitionStyle
+                                                                               navigationOrientation:orientation
+                                                                                             options:nil];
     pageViewController.delegate = self;
     pageViewController.dataSource = self;
     if (pageViewController.scrollView) {
         pageViewController.scrollView.delegate = self;
     }
+    
+    if (self.pageViewController.parentViewController) {
+        [self.pageViewController willMoveToParentViewController:nil];
+        [self.pageViewController removeFromParentViewController];
+        self.pageViewController.scrollView.delegate = nil;
+    }
+    
     [self addChildViewController:pageViewController];
     [pageViewController didMoveToParentViewController:self];
     [self.view addSubview:pageViewController.view];
-    if (self.chapterSelectIndex < self.chapters.count) {
-        IRChapterModel *selectChapter = [self.chapters safeObjectAtIndex:self.chapterSelectIndex];
-        if (selectChapter) {
-            self.currentPage = [selectChapter.pages safeObjectAtIndex:self.pageSelectIndex returnFirst:YES];
-        }
-    }
-    if (!self.currentPage) {
-        self.reloadDataIfNeeded = YES;
-    }
-    IRDebugLog(@"Current chapter index: %zd page index: %zd", self.currentPage.chapterIndex, self.currentPage.pageIndex);
-    IRReadingViewController *readVc = [self readingViewControllerWithPageModel:self.currentPage creatIfNoExist:YES];
-    [pageViewController setViewControllers:@[readVc]
-                                 direction:UIPageViewControllerNavigationDirectionForward
-                                  animated:YES
-                                completion:nil];
-    self.pageViewController = pageViewController;
-}
-
-- (IRReaderNavigationView *)readerNavigationView
-{
-    if (_readerNavigationView == nil) {
-        _readerNavigationView = [[IRReaderNavigationView alloc] init];
-        _readerNavigationView.actionDelegate = self;
+    
+    if (self.changeNavigationOrientationByUser && self.readerSettingView) {
+        [self.view bringSubviewToFront:self.readerSettingView];
     }
     
-    return _readerNavigationView;
+    IRReadingViewController *readVc = nil;
+    if (self.changeNavigationOrientationByUser) {
+        self.changeNavigationOrientationByUser = NO;
+        readVc = [self currentReadingViewController];
+    } else {
+        if (self.chapterSelectIndex < self.chapters.count) {
+            IRChapterModel *selectChapter = [self.chapters safeObjectAtIndex:self.chapterSelectIndex];
+            if (selectChapter) {
+                self.currentPage = [selectChapter.pages safeObjectAtIndex:self.pageSelectIndex returnFirst:YES];
+            }
+        }
+        if (!self.currentPage) {
+            self.reloadDataIfNeeded = YES;
+        }
+        IRDebugLog(@"Current chapter index: %zd page index: %zd", self.currentPage.chapterIndex, self.currentPage.pageIndex);
+        readVc = [self readingViewControllerWithPageModel:self.currentPage creatIfNoExist:YES];
+    }
+    
+    [pageViewController setViewControllers:@[readVc]
+                                 direction:UIPageViewControllerNavigationDirectionForward
+                                  animated:NO
+                                completion:nil];
+    
+    self.pageViewController = pageViewController;
 }
 
 - (void)cacheReadingViewController:(UIViewController *)readingVc
@@ -312,10 +355,12 @@ BookChapterListControllerDelegate
     
     [self.navigationController setNavigationBarHidden:self.shouldHideStatusBar animated:animated];
     
-//    if (!self.shouldHideStatusBar) {
-//        IRReaderSettingMenuView *menuView = [IRReaderSettingMenuView readerSettingMenuView];
-//        [menuView showInView:self.view animated:YES];
-//    }
+    if (!self.shouldHideStatusBar) {
+        IRReaderSettingView *settingView = [IRReaderSettingView readerSettingView];
+        settingView.delegate = self;
+        [settingView showInView:self.view animated:YES];
+        self.readerSettingView = settingView;
+    }
 }
 
 #pragma mark - Loading HUD
@@ -357,12 +402,38 @@ BookChapterListControllerDelegate
     }];
 }
 
+#pragma mark - ReaderSettingViewDeletage
+
+- (void)readerSettingViewWillDisappear:(IRReaderSettingView *)readerSettingView
+{
+    [self updateReaderSettingViewStateWithAnimated:YES completion:nil];
+}
+
+- (void)readerSettingViewDidClickVerticalButton:(IRReaderSettingView *)readerSettingView
+{
+    self.changeNavigationOrientationByUser = YES;
+    [IR_READER_CONFIG updateReaderPageNavigationOrientation:ReaderPageNavigationOrientationVertical];
+    [self updatePageViewControllerWithNavigationOrientation:UIPageViewControllerNavigationOrientationVertical
+                                            transitionStyle:UIPageViewControllerTransitionStylePageCurl];
+}
+
+- (void)readerSettingViewDidClickHorizontalButton:(IRReaderSettingView *)readerSettingView
+{
+    self.changeNavigationOrientationByUser = YES;
+    [IR_READER_CONFIG updateReaderPageNavigationOrientation:ReaderPageNavigationOrientationHorizontal];
+    [self updatePageViewControllerWithNavigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+                                            transitionStyle:UIPageViewControllerTransitionStylePageCurl];
+}
+
 #pragma mark - BookChapterListControllerDelegate
 
 - (void)bookChapterListControllerDidSelectChapterAtIndex:(NSUInteger)index
 {
     [self selectChapterAtIndex:index];
     self.fromChapterListView = YES;
+    [self.readerSettingView dismissWithAnimated:NO completion:^{
+        [self.readerSettingView removeFromSuperview];
+    }];
 }
 
 #pragma mark - IRReaderNavigationViewDelegate

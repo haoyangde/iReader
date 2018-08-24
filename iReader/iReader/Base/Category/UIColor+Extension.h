@@ -12,6 +12,8 @@
 
 @interface UIColor (Extension)
 
++ (UIColor *)ir_separatorLineColor;
+
 + (UIColor *)ir_randomColor;
 
 + (UIColor *)ir_colorWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue;

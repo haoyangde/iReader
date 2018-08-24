@@ -10,6 +10,11 @@
 
 @implementation UIColor (Extension)
 
++ (UIColor *)ir_separatorLineColor
+{
+    return [UIColor colorWithWhite:0.9 alpha:1];
+}
+
 + (UIColor *)ir_randomColor
 {
     return [self ir_colorWithRed:(arc4random() % 255) green:(arc4random() % 255) blue:(arc4random() % 255)];

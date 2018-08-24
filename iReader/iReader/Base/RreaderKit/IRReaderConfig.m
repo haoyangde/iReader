@@ -8,6 +8,8 @@
 
 #import "IRReaderConfig.h"
 
+static NSString * const kReaderPageNavigationOrientation = @"kReaderPageNavigationOrientation";
+
 @interface IRReaderConfig ()
 
 
@@ -43,6 +45,7 @@
     CGFloat bottom = [IRUIUtilites isIPhoneX] ? 30 : 20;
     _pageInsets = UIEdgeInsetsMake(top, 20, bottom, 20);
     
+    _readerPageNavigationOrientation = [[NSUserDefaults standardUserDefaults] integerForKey:kReaderPageNavigationOrientation];
     _appThemeColor = [UIColor ir_colorWithRed:126 green:211 blue:33];
     _verticalInset = _pageInsets.top + _pageInsets.bottom;
     _horizontalInset = _pageInsets.left + _pageInsets.right;
@@ -60,6 +63,17 @@
 }
 
 #pragma mark - Public
+
+- (void)updateReaderPageNavigationOrientation:(ReaderPageNavigationOrientation)orientation
+{
+    if (orientation == self.readerPageNavigationOrientation) {
+        return;
+    }
+    
+    _readerPageNavigationOrientation = orientation;
+    [[NSUserDefaults standardUserDefaults] setInteger:orientation forKey:kReaderPageNavigationOrientation];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 
 @end

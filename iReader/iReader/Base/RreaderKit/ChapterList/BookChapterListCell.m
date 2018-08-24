@@ -57,7 +57,7 @@ CGFloat const kChapterListCellFontSize = 15;
     [self.contentView addSubview:self.chapterLabel];
     
     self.bottomLine = [[UIView alloc] init];
-    self.bottomLine.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+    self.bottomLine.backgroundColor = [UIColor ir_separatorLineColor];
     [self.contentView addSubview:self.bottomLine];
 }
 
