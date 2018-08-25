@@ -26,6 +26,6 @@
 + (instancetype)readerSettingView;
 
 - (void)showInView:(UIView *)targetView animated:(BOOL)animated;
-- (void)dismissWithAnimated:(BOOL)animated completion:(void(^)(void))completion;
+- (void)dismissWithAnimated:(BOOL)animated;
 
 @end

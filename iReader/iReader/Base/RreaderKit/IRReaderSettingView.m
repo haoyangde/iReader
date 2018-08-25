@@ -60,10 +60,7 @@
         [self.delegate readerSettingViewWillDisappear:self];
     }
     
-    IR_WEAK_SELF
-    [self dismissWithAnimated:YES completion:^{
-        [weakSelf removeFromSuperview];
-    }];
+    [self dismissWithAnimated:YES];
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
@@ -272,7 +269,7 @@
     }
 }
 
-- (void)dismissWithAnimated:(BOOL)animated completion:(void(^)(void))completion
+- (void)dismissWithAnimated:(BOOL)animated
 {
     if (animated) {
         self.menuView.frame = CGRectMake(0, self.height - _menuViewHeight, self.width, _menuViewHeight);
@@ -281,13 +278,11 @@
             self.menuView.frame = CGRectMake(0, self.height, self.width, _menuViewHeight);
             self.alpha = 0;
         } completion:^(BOOL finished) {
-            if (completion) {
-                completion();
-            }
-            self.alpha = 1;
+            [self removeFromSuperview];
         }];
     } else {
-        self.menuView.hidden = YES;
+        self.alpha = 0;
+        [self removeFromSuperview];
     }
 }
 

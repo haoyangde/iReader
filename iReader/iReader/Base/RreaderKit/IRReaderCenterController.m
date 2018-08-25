@@ -435,9 +435,7 @@ UIGestureRecognizerDelegate
 {
     [self selectChapterAtIndex:index];
     self.fromChapterListView = YES;
-    [self.readerSettingView dismissWithAnimated:NO completion:^{
-        [self.readerSettingView removeFromSuperview];
-    }];
+    [self.readerSettingView dismissWithAnimated:NO];
 }
 
 #pragma mark - IRReaderNavigationViewDelegate
