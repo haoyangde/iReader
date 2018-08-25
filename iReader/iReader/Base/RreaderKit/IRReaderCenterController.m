@@ -224,7 +224,11 @@ UIGestureRecognizerDelegate
 
 - (void)setupPageViewController
 {
-    [self updatePageViewControllerWithNavigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+    UIPageViewControllerNavigationOrientation orientation = UIPageViewControllerNavigationOrientationHorizontal;
+    if (ReaderPageNavigationOrientationVertical == IR_READER_CONFIG.readerPageNavigationOrientation) {
+        orientation = UIPageViewControllerNavigationOrientationVertical;
+    }
+    [self updatePageViewControllerWithNavigationOrientation:orientation
                                             transitionStyle:UIPageViewControllerTransitionStylePageCurl];
 }
 
