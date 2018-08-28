@@ -9,6 +9,9 @@
 #import "IRReaderConfig.h"
 
 static NSString * const kReaderPageNavigationOrientation = @"kReaderPageNavigationOrientation";
+static NSString * const kReaderTextSizeMultiplier = @"kReaderTextSizeMultiplier";
+
+static CGFloat kReaderDefaultTextFontSize = 16;
 
 @interface IRReaderConfig ()
 
@@ -50,8 +53,10 @@ static NSString * const kReaderPageNavigationOrientation = @"kReaderPageNavigati
     _verticalInset = _pageInsets.top + _pageInsets.bottom;
     _horizontalInset = _pageInsets.left + _pageInsets.right;
     _pageSize = CGSizeMake([IRUIUtilites UIScreenMinWidth] - _horizontalInset, [IRUIUtilites UIScreenMaxHeight] - _verticalInset);
-    _textFontSize = 16;
-    _textSizeMultiplier = 0.875;
+    _textSizeMultiplier = [[NSUserDefaults standardUserDefaults] doubleForKey:kReaderTextSizeMultiplier] ?: 1;
+    _textFontSize =  _textSizeMultiplier * kReaderDefaultTextFontSize;
+    _textDefaultFontSize = kReaderDefaultTextFontSize;
+    _fontSizeMultipliers = @[@(0.875), @(1), @(1.125), @(1.25), @(1.375), @(1.5), @(1.625), @(1.75)];
     _lineSpacing = 5;
     _paragraphSpacing = 20;
     _firstLineHeadIndent = [UIFont systemFontOfSize:_textFontSize].pointSize * 2;
@@ -75,5 +80,18 @@ static NSString * const kReaderPageNavigationOrientation = @"kReaderPageNavigati
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+
+- (void)setTextSizeMultiplier:(CGFloat)textSizeMultiplier
+{
+    if (_textSizeMultiplier == textSizeMultiplier) {
+        return;
+    }
+    
+    _textSizeMultiplier = textSizeMultiplier;
+    _textFontSize = textSizeMultiplier * kReaderDefaultTextFontSize;
+    
+    [[NSUserDefaults standardUserDefaults] setDouble:textSizeMultiplier forKey:kReaderTextSizeMultiplier];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 @end

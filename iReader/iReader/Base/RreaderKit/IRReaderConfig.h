@@ -26,8 +26,10 @@ typedef NS_ENUM(NSUInteger, ReaderPageNavigationOrientation) {
 @property (nonatomic, assign, readonly) CGFloat horizontalInset;
 /// 阅读页尺寸
 @property (nonatomic, assign, readonly) CGSize pageSize;
-/// 文字缩放基数: 16
+/// default : 16
 @property (nonatomic, assign, readonly) CGFloat textFontSize;
+@property (nonatomic, assign, readonly) CGFloat textDefaultFontSize;
+@property (nonatomic, strong, readonly) NSArray<NSNumber *> *fontSizeMultipliers;
 
 #pragma mark - Custom
 
@@ -36,8 +38,9 @@ typedef NS_ENUM(NSUInteger, ReaderPageNavigationOrientation) {
 @property (nonatomic, strong) UIColor *textColor;
 @property (nonatomic, strong) UIColor *pageBackgroundColor;
 @property (nonatomic, strong) UIImage *pageBackgroundImg;
-/// default 0.875, 缩放比例: [ { 12 : 0.75 }, { 14 : 0.875 }, { 16 : 1 }, { 18 : 1.125 }, { 20 : 1.25 }, { 22 : 1.375 }, { 24 : 1.5 }, { 26 : 1.625 }, { 28 : 1.75 } ]
+/// default 0.875, 缩放比例: [ { 14 : 0.875 }, { 16 : 1 }, { 18 : 1.125 }, { 20 : 1.25 }, { 22 : 1.375 }, { 24 : 1.5 }, { 26 : 1.625 }, { 28 : 1.75 } ]
 @property (nonatomic, assign) CGFloat textSizeMultiplier;
+
 /// default 5
 @property (nonatomic, assign) CGFloat lineSpacing;
 /// default 20

@@ -35,7 +35,7 @@
                               DTDefaultFontName   : IR_READER_CONFIG.fontName,
                               DTDefaultLinkColor  : @"purple",
                               DTDefaultTextColor  : IR_READER_CONFIG.textColor,
-                              DTDefaultFontSize   : @(IR_READER_CONFIG.textFontSize),
+                              DTDefaultFontSize   : @(IR_READER_CONFIG.textDefaultFontSize),
                               DTMaxImageSize      : [NSValue valueWithCGSize:[IR_READER_CONFIG pageSize]]
                             };
     

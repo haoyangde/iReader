@@ -18,11 +18,18 @@
 
 @implementation IRPageViewController
 
+- (instancetype)init
+{
+    if (self = [super init]) {
+        self.gestureRecognizerShouldBegin = YES;
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.gestureRecognizerShouldBegin = YES;
 }
 
 #pragma mark - Public

@@ -40,8 +40,7 @@ UIGestureRecognizerDelegate
 @property (nonatomic, strong) IREpubBook *book;
 @property (nonatomic, strong) IRPageViewController *pageViewController;
 @property (nonatomic, assign) NSUInteger chapterCount;
-@property (nonatomic, assign, readonly) NSUInteger activityIndicatorViewTag;
-@property (nonatomic, strong) NSMutableArray<IRChapterModel *> *chapters;
+@property (nonatomic, strong) NSMutableArray *chapters;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
 @property (nonatomic, strong) IRReaderNavigationView *readerNavigationView;
 @property (nonatomic, strong) UINavigationBar *orilNavigationBar;
@@ -53,7 +52,6 @@ UIGestureRecognizerDelegate
 @property (nonatomic, assign) BOOL isScrollToNext;
 @property (nonatomic, strong) IRPageModel *currentPage;
 @property (nonatomic, strong) IRPageModel *nextPage;
-@property (nonatomic, strong) UIView *chapterLoadingHUD;
 @property (nonatomic, assign) NSUInteger chapterSelectIndex;
 @property (nonatomic, assign) NSUInteger pageSelectIndex;
 @property (nonatomic, weak) IRReaderSettingView *readerSettingView;
@@ -123,25 +121,12 @@ UIGestureRecognizerDelegate
 {
     if (!_chapters) {
         _chapters = [[NSMutableArray alloc] initWithCapacity:self.chapterCount];
+        for (int index = 0; index < self.chapterCount; index++) {
+            [_chapters addObject:[NSNull null]];
+        }
     }
     
     return _chapters;
-}
-
-- (void)setReloadDataIfNeeded:(BOOL)reloadDataIfNeeded
-{
-    _reloadDataIfNeeded = reloadDataIfNeeded;
-    
-    if (reloadDataIfNeeded) {
-        [self showChapterLoadingHUD];
-    } else {
-        [self dismissChapterLoadingHUD];
-    }
-}
-
-- (NSUInteger)activityIndicatorViewTag
-{
-    return 999;
 }
 
 - (NSMutableArray<IRReadingViewController *> *)childViewControllersCache
@@ -204,10 +189,6 @@ UIGestureRecognizerDelegate
 {
     self.shouldHideStatusBar = NO;
     self.shouldUpdateSettingViewState = YES;
-    IR_WEAK_SELF
-    dispatch_async(self.chapter_parse_serial_queue, ^{
-        [weakSelf parseTocRefrenceToChapterModelWithTocRefrences:weakSelf.book.flatTableOfContents];
-    });
     [self setupPageViewController];
     [self setupNavigationbar];
     [self setupGestures];
@@ -265,15 +246,19 @@ UIGestureRecognizerDelegate
     } else {
         if (self.chapterSelectIndex < self.chapters.count) {
             IRChapterModel *selectChapter = [self.chapters safeObjectAtIndex:self.chapterSelectIndex];
-            if (selectChapter) {
+            if ([selectChapter isKindOfClass:[IRChapterModel class]]) {
                 self.currentPage = [selectChapter.pages safeObjectAtIndex:self.pageSelectIndex returnFirst:YES];
             }
         }
-        if (!self.currentPage) {
-            self.reloadDataIfNeeded = YES;
-        }
+        
         IRDebugLog(@"Current chapter index: %zd page index: %zd", self.currentPage.chapterIndex, self.currentPage.pageIndex);
         readVc = [self readingViewControllerWithPageModel:self.currentPage creatIfNoExist:YES];
+        
+        if (!self.currentPage) {
+            self.reloadDataIfNeeded = YES;
+            self.pageViewController.gestureRecognizerShouldBegin = NO;
+            [self parseTocRefrenceToChapterModel:[self.book.flatTableOfContents safeObjectAtIndex:self.chapterSelectIndex] atIndext:self.pageSelectIndex pendingReloadReadingVc:readVc toBefore:NO];
+        }
     }
     
     [pageViewController setViewControllers:@[readVc]
@@ -312,32 +297,49 @@ UIGestureRecognizerDelegate
     return readVc;
 }
 
-- (void)parseTocRefrenceToChapterModelWithTocRefrences:(NSArray<IRTocRefrence *> *)tocRefrences
+- (void)parseTocRefrenceToChapterModel:(IRTocRefrence *)tocRefrence
+                              atIndext:(NSUInteger)index
+                pendingReloadReadingVc:(IRReadingViewController *)pendingVc
+                              toBefore:(BOOL)toBefore
 {
-    [tocRefrences enumerateObjectsUsingBlock:^(IRTocRefrence * _Nonnull toc, NSUInteger idx, BOOL * _Nonnull stop) {
-        IRChapterModel *chapterModel = [IRChapterModel modelWithTocRefrence:toc chapterIndex:idx];
+    self.pageViewController.gestureRecognizerShouldBegin = NO;
+    if (!self.pageViewController.scrollView.isTracking &&
+        !self.pageViewController.gestureRecognizerShouldBegin &&
+        self.pageViewController.scrollView.userInteractionEnabled) {
+        
+        self.pageViewController.scrollView.userInteractionEnabled = NO;
+    }
+    
+    IR_WEAK_SELF
+    dispatch_async(self.chapter_parse_serial_queue, ^{
+        IRChapterModel *chapterModel = [IRChapterModel modelWithTocRefrence:tocRefrence chapterIndex:index];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self parseChapterCompletedWithChater:chapterModel];
+            [weakSelf parseChapterCompletedWithChater:chapterModel pendingReloadReadingVc:pendingVc toBefore:toBefore];
         });
-    }];
+    });
 }
 
 - (void)parseChapterCompletedWithChater:(IRChapterModel *)chapter
+                 pendingReloadReadingVc:(IRReadingViewController *)pendingVc
+                               toBefore:(BOOL)toBefore
 {
     IRDebugLog(@"Chapter parse successed with index: %zd title: %@", chapter.chapterIndex, chapter.title);
-    [self.chapters addObject:chapter];
-    if (self.reloadDataIfNeeded && self.chapterSelectIndex == chapter.chapterIndex) {
-        [self reloadDataWithChapter:chapter];
+    [self.chapters replaceObjectAtIndex:chapter.chapterIndex withObject:chapter];
+    
+    if (self.reloadDataIfNeeded) {
+        if (toBefore) {
+            pendingVc.pageModel = chapter.pages.lastObject;
+        } else {
+            pendingVc.pageModel = [chapter.pages safeObjectAtIndex:self.pageSelectIndex returnFirst:YES];
+        }
+        
+        self.currentPage = pendingVc.pageModel;
+        IRDebugLog(@"Current chapter index: %zd page index: %zd", self.currentPage.chapterIndex, self.currentPage.pageIndex);
         self.reloadDataIfNeeded = NO;
     }
-}
-
-- (void)reloadDataWithChapter:(IRChapterModel *)chapter
-{
-    IRReadingViewController *currentVc = [self currentReadingViewController];
-    currentVc.pageModel = [chapter.pages safeObjectAtIndex:self.pageSelectIndex returnFirst:YES];
-    self.currentPage = currentVc.pageModel;
-    IRDebugLog(@"Current chapter index: %zd page index: %zd", self.currentPage.chapterIndex, self.currentPage.pageIndex);
+    
+    self.pageViewController.view.userInteractionEnabled = YES;
+    self.pageViewController.gestureRecognizerShouldBegin = YES;
 }
 
 - (IRReadingViewController *)currentReadingViewController
@@ -367,45 +369,6 @@ UIGestureRecognizerDelegate
     }
 }
 
-#pragma mark - Loading HUD
-
-- (void)showChapterLoadingHUD
-{
-    UIActivityIndicatorView *loadingView = nil;
-    if (!self.chapterLoadingHUD) {
-        self.chapterLoadingHUD = [[UIView alloc] init];
-        self.chapterLoadingHUD.backgroundColor = [UIColor clearColor];
-        loadingView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        loadingView.hidesWhenStopped = YES;
-        loadingView.color = IR_READER_CONFIG.appThemeColor;
-        loadingView.tag = self.activityIndicatorViewTag;
-        [self.chapterLoadingHUD addSubview:loadingView];
-    }
-    
-    loadingView.frame = self.view.bounds;
-    self.chapterLoadingHUD.frame = self.view.bounds;
-    [self.view addSubview:self.chapterLoadingHUD];
-    [self.view bringSubviewToFront:self.chapterLoadingHUD];
-    [loadingView startAnimating];
-    
-    self.chapterLoadingHUD.alpha = 0;
-    [UIView animateWithDuration:0.25 animations:^{
-        self.chapterLoadingHUD.alpha = 1;
-    }];
-}
-
-- (void)dismissChapterLoadingHUD
-{
-    UIActivityIndicatorView *loadingView = [self.chapterLoadingHUD viewWithTag:self.activityIndicatorViewTag];
-    [loadingView stopAnimating];
-    [UIView animateWithDuration:0.25 animations:^{
-        self.chapterLoadingHUD.alpha = 0;
-    } completion:^(BOOL finished) {
-        [self.chapterLoadingHUD removeFromSuperview];
-        self.chapterLoadingHUD.alpha = 1;
-    }];
-}
-
 #pragma mark - ReaderSettingViewDeletage
 
 - (void)readerSettingViewWillDisappear:(IRReaderSettingView *)readerSettingView
@@ -427,6 +390,17 @@ UIGestureRecognizerDelegate
     [IR_READER_CONFIG updateReaderPageNavigationOrientation:ReaderPageNavigationOrientationHorizontal];
     [self updatePageViewControllerWithNavigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
                                             transitionStyle:UIPageViewControllerTransitionStylePageCurl];
+}
+
+- (void)readerSettingViewDidChangedTextSizeMultiplier:(CGFloat)textSizeMultiplier
+{
+    self.chapters = nil;
+    self.reloadDataIfNeeded = YES;
+    self.pageSelectIndex = self.currentPage.pageIndex;
+    [self parseTocRefrenceToChapterModel:[self.book.flatTableOfContents safeObjectAtIndex:self.currentPage.chapterIndex]
+                                atIndext:self.currentPage.chapterIndex
+                  pendingReloadReadingVc:[self currentReadingViewController]
+                                toBefore:NO];
 }
 
 #pragma mark - BookChapterListControllerDelegate
@@ -499,10 +473,12 @@ UIGestureRecognizerDelegate
             } else {
                 if (chapterIndex < self.chapterCount - 1) {
                     chapterIndex++;
-                    if (chapterIndex > self.chapters.count - 1) {
+                    IRChapterModel *chapter = [self.chapters safeObjectAtIndex:chapterIndex];
+                    if ([chapter isKindOfClass:[NSNull class]]) {
                         self.reloadDataIfNeeded = YES;
+                        [self parseTocRefrenceToChapterModel:[self.book.flatTableOfContents safeObjectAtIndex:chapterIndex]
+                                                    atIndext:chapterIndex pendingReloadReadingVc:pending toBefore:NO];
                     } else {
-                        IRChapterModel *chapter = [self.chapters safeObjectAtIndex:chapterIndex];
                         nextPage = chapter.pages.firstObject;
                     }
                 }
@@ -519,15 +495,21 @@ UIGestureRecognizerDelegate
                 if (chapterIndex > 0) {
                     chapterIndex--;
                     chapter = [self.chapters safeObjectAtIndex:chapterIndex];
-                    nextPage = chapter.pages.lastObject;
+                    if ([chapter isKindOfClass:[NSNull class]]) {
+                        self.reloadDataIfNeeded = YES;
+                        [self parseTocRefrenceToChapterModel:[self.book.flatTableOfContents safeObjectAtIndex:chapterIndex]
+                                                    atIndext:chapterIndex pendingReloadReadingVc:pending toBefore:YES];
+                    } else {
+                        nextPage = chapter.pages.lastObject;
+                    }
                 }
             }
         }
         
         if (nextPage) {
             self.nextPage = nextPage;
-            pending.pageModel = nextPage;
         }
+        pending.pageModel = nextPage;
     }
     
     IRDebugLog(@"pageViewController childViewControllers: %@ pendingViewControllers: %@", pageViewController.childViewControllers, pendingViewControllers);
@@ -549,8 +531,10 @@ UIGestureRecognizerDelegate
     IRDebugLog(@"Current chapter index: %zd page index: %zd", self.currentPage.chapterIndex, self.currentPage.pageIndex);
     
     self.nextPage = nil;
-    self.pageViewController.scrollView.userInteractionEnabled = YES;
-    self.pageViewController.gestureRecognizerShouldBegin = YES;
+    if (!self.reloadDataIfNeeded) {
+        self.pageViewController.scrollView.userInteractionEnabled = YES;
+        self.pageViewController.gestureRecognizerShouldBegin = YES;
+    }
     
     IRDebugLog(@"previousViewControllers: %@", previousViewControllers);
 }
@@ -559,6 +543,7 @@ UIGestureRecognizerDelegate
 {
     IRPageModel *beforePage = nil;
     IRChapterModel *chapter = nil;
+    IRReadingViewController *beforeReadVc = nil;
     IRReadingViewController *readVc = (IRReadingViewController *)viewController;
     NSUInteger pageIndex = readVc.pageModel.pageIndex;
     NSUInteger chapterIndex = readVc.pageModel.chapterIndex;
@@ -572,23 +557,34 @@ UIGestureRecognizerDelegate
         if (chapterIndex > 0) {
             chapterIndex--;
             chapter = [self.chapters safeObjectAtIndex:chapterIndex];
-            beforePage = chapter.pages.lastObject;
+            if ([chapter isKindOfClass:[NSNull class]]) {
+                self.reloadDataIfNeeded = YES;
+            } else {
+                beforePage = chapter.pages.lastObject;
+            }
         } else {
             return nil;
         }
     }
     
-    if (UIPageViewControllerTransitionStylePageCurl == pageViewController.transitionStyle) {
+    if (beforePage && UIPageViewControllerTransitionStylePageCurl == pageViewController.transitionStyle) {
         self.currentPage = beforePage;
     }
     
     IRDebugLog(@"BeforeViewController: %@", viewController);
-    return [self readingViewControllerWithPageModel:beforePage creatIfNoExist:YES];
+    beforeReadVc = [self readingViewControllerWithPageModel:beforePage creatIfNoExist:YES];
+    if (self.reloadDataIfNeeded) {
+        [self parseTocRefrenceToChapterModel:[self.book.flatTableOfContents safeObjectAtIndex:chapterIndex]
+                                    atIndext:chapterIndex pendingReloadReadingVc:beforeReadVc toBefore:YES];
+    }
+    
+    return beforeReadVc;
 }
 
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
     IRPageModel *afterPage = nil;
+    IRReadingViewController *afterReadVc = nil;
     IRReadingViewController *readVc = (IRReadingViewController *)viewController;
     NSUInteger pageIndex = readVc.pageModel.pageIndex;
     NSUInteger chapterIndex = readVc.pageModel.chapterIndex;
@@ -600,23 +596,31 @@ UIGestureRecognizerDelegate
     } else {
         if (chapterIndex < self.chapterCount - 1) {
             chapterIndex++;
-            if (chapterIndex > self.chapters.count - 1) {
+            id chapter = [self.chapters safeObjectAtIndex:chapterIndex];
+            if ([chapter isKindOfClass:[NSNull class]]) {
                 self.reloadDataIfNeeded = YES;
             } else {
-                IRChapterModel *chapter = [self.chapters safeObjectAtIndex:chapterIndex];
-                afterPage = chapter.pages.firstObject;
+                afterPage = [(IRChapterModel *)chapter pages].firstObject;
             }
         } else {
             return nil;
         }
     }
     
-    if (UIPageViewControllerTransitionStylePageCurl == pageViewController.transitionStyle) {
+    if (afterPage && UIPageViewControllerTransitionStylePageCurl == pageViewController.transitionStyle) {
         self.currentPage = afterPage;
     }
     
     IRDebugLog(@"AfterViewController: %@", viewController);
-    return [self readingViewControllerWithPageModel:afterPage creatIfNoExist:YES];
+    afterReadVc = [self readingViewControllerWithPageModel:afterPage creatIfNoExist:YES];
+    
+    if (self.reloadDataIfNeeded) {
+        self.pageSelectIndex = 0;
+        [self parseTocRefrenceToChapterModel:[self.book.flatTableOfContents safeObjectAtIndex:chapterIndex]
+                                    atIndext:chapterIndex pendingReloadReadingVc:afterReadVc toBefore:NO];
+    }
+    
+    return afterReadVc;
 }
 
 #pragma mark - Public
@@ -645,9 +649,14 @@ UIGestureRecognizerDelegate
     if ([self isViewLoaded]) {
         if (chapterIndex < self.chapters.count) {
             IRChapterModel *select = [self.chapters safeObjectAtIndex:chapterIndex];
-            IRReadingViewController *currentVc = [self currentReadingViewController];
-            currentVc.pageModel = [select.pages safeObjectAtIndex:pageInadex returnFirst:YES];
-            self.currentPage = currentVc.pageModel;
+            if ([select isKindOfClass:[NSNull class]]) {
+                self.reloadDataIfNeeded = YES;
+                [self parseTocRefrenceToChapterModel:[self.book.flatTableOfContents safeObjectAtIndex:chapterIndex] atIndext:self.chapterSelectIndex pendingReloadReadingVc:[self currentReadingViewController] toBefore:NO];
+            } else {
+                IRReadingViewController *currentVc = [self currentReadingViewController];
+                currentVc.pageModel = [select.pages safeObjectAtIndex:pageInadex returnFirst:YES];
+                self.currentPage = currentVc.pageModel;
+            }
         } else {
             if (chapterIndex < self.chapterCount) {
                 self.reloadDataIfNeeded = YES;

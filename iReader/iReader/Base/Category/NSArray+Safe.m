@@ -24,9 +24,15 @@
 
 - (id)safeObjectAtIndex:(NSUInteger)index returnFirst:(BOOL)returnFirst
 {
-    id obj = [self safeObjectAtIndex:index];
-    if (!obj && returnFirst && self.count) {
-        obj = self.firstObject;
+    id obj = nil;
+    if (returnFirst) {
+        if (self.count > index) {
+            obj = [self objectAtIndex:index];
+        } else {
+            obj = self.firstObject;
+        }
+    } else {
+        obj = [self safeObjectAtIndex:index];
     }
     
     return obj;

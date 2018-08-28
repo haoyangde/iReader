@@ -23,6 +23,7 @@
 @property (nonatomic ,strong) UIButton *fontAddBtn;
 @property (nonatomic ,strong) UIButton *fontReduceBtn;
 @property (nonatomic ,strong) UISlider *fontSlider;
+@property (nonatomic ,strong) NSMutableDictionary<NSNumber *, NSNumber *> *fontSliderValues;
 
 @end
 
@@ -112,6 +113,36 @@
     
 }
 
+- (void)onFontSizeMultiplierChange:(UISlider *)slider
+{
+    CGFloat oril = IR_READER_CONFIG.textSizeMultiplier;
+    // @[@(0.875), @(1), @(1.125), @(1.25), @(1.375), @(1.5), @(1.625), @(1.75)];
+    if (slider.value < 5 && IR_READER_CONFIG.textSizeMultiplier != 0.875) {
+        IR_READER_CONFIG.textSizeMultiplier = 0.875;
+    } else if ((slider.value > 5 && slider.value < 15) && IR_READER_CONFIG.textSizeMultiplier != 1) {
+        IR_READER_CONFIG.textSizeMultiplier = 1;
+    } else if (slider.value > 15 && slider.value < 25 && IR_READER_CONFIG.textSizeMultiplier != 1.125) {
+        IR_READER_CONFIG.textSizeMultiplier = 1.125;
+    } else if (slider.value > 25 && slider.value < 35 && IR_READER_CONFIG.textSizeMultiplier != 1.25) {
+        IR_READER_CONFIG.textSizeMultiplier = 1.25;
+    } else if (slider.value > 35 && slider.value < 45 && IR_READER_CONFIG.textSizeMultiplier != 1.375) {
+        IR_READER_CONFIG.textSizeMultiplier = 1.375;
+    } else if (slider.value > 45 && slider.value < 55 && IR_READER_CONFIG.textSizeMultiplier != 1.5) {
+        IR_READER_CONFIG.textSizeMultiplier = 1.5;
+    } else if (slider.value > 55 && slider.value < 65 && IR_READER_CONFIG.textSizeMultiplier != 1.625) {
+        IR_READER_CONFIG.textSizeMultiplier = 1.625;
+    } else if (slider.value > 65 && slider.value < 70 && IR_READER_CONFIG.textSizeMultiplier != 1.75) {
+        IR_READER_CONFIG.textSizeMultiplier = 1.75;
+    }
+    
+    if (oril != IR_READER_CONFIG.textSizeMultiplier) {
+        if ([self.delegate respondsToSelector:@selector(readerSettingViewDidChangedTextSizeMultiplier:)]) {
+            [self.delegate readerSettingViewDidChangedTextSizeMultiplier:IR_READER_CONFIG.textSizeMultiplier];
+        }
+        IRDebugLog(@"CurrentTextSizeMultiplier: %f", IR_READER_CONFIG.textSizeMultiplier);
+    }
+}
+
 #pragma mark - Private
 
 - (void)setupSubviews
@@ -126,6 +157,11 @@
 
 - (void)setupTextFontControllView
 {
+    self.fontSliderValues = [NSMutableDictionary dictionaryWithCapacity:IR_READER_CONFIG.fontSizeMultipliers.count];
+    [IR_READER_CONFIG.fontSizeMultipliers enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self.fontSliderValues setObject:@(idx * 10) forKey:obj];
+    }];
+    
     self.textFontControllView = [[UIView alloc] init];
     [self.menuView addSubview:self.textFontControllView];
     [self.textFontControllView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -136,6 +172,8 @@
     
     self.fontReduceBtn = [self buttonWithTitle:nil imageName:@"icon-font-small" sel:@selector(onFontReduceButtonClicked:)];
     [self.textFontControllView addSubview:self.fontReduceBtn];
+    self.fontReduceBtn.userInteractionEnabled = NO;
+    self.fontReduceBtn.selected = YES;
     [self.fontReduceBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.equalTo(self.textFontControllView);
         make.width.equalTo(self.textFontControllView.mas_height);
@@ -144,6 +182,8 @@
     
     self.fontAddBtn = [self buttonWithTitle:nil imageName:@"icon-font-big" sel:@selector(onFontAddButtonClicked:)];
     [self.textFontControllView addSubview:self.fontAddBtn];
+    self.fontAddBtn.userInteractionEnabled = NO;
+    self.fontAddBtn.selected = YES;
     [self.fontAddBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.equalTo(self.textFontControllView);
         make.width.equalTo(self.textFontControllView.mas_height);
@@ -151,10 +191,13 @@
     }];
     
     self.fontSlider = [[UISlider alloc] init];
-    self.fontSlider.minimumValue = 12;
-    self.fontSlider.maximumValue = 28;
+    self.fontSlider.minimumValue = 0;
+    self.fontSlider.maximumValue = (IR_READER_CONFIG.fontSizeMultipliers.count - 1) * 10;
+    [self.fontSlider addTarget:self action:@selector(onFontSizeMultiplierChange:) forControlEvents:UIControlEventValueChanged];
     self.fontSlider.thumbTintColor = IR_READER_CONFIG.appThemeColor;
     [self.textFontControllView addSubview:self.fontSlider];
+    [self.fontSlider setValue:[self.fontSliderValues objectForKey:@(IR_READER_CONFIG.textSizeMultiplier)].floatValue
+                     animated:NO];
     [self.fontSlider mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.equalTo(self.textFontControllView);
         make.left.equalTo(self.fontReduceBtn.mas_right);
