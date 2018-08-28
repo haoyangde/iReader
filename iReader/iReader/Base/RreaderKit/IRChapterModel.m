@@ -19,7 +19,22 @@
 #import <DTCoreTextLayoutLine.h>
 #import <DTCoreTextGlyphRun.h>
 
+@interface IRChapterModel ()
+
+@property (nonatomic, strong) UIColor *textColor;
+
+@end
+
 @implementation IRChapterModel
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        self.textColor = IR_READER_CONFIG.isNightMode ? IR_READER_CONFIG.nightModeTextColor : IR_READER_CONFIG.textColor;
+    }
+    
+    return self;
+}
 
 + (instancetype)modelWithTocRefrence:(IRTocRefrence *)tocRefrence chapterIndex:(NSUInteger)chapterIndex
 {
@@ -34,7 +49,7 @@
                               NSTextSizeMultiplierDocumentOption : @(IR_READER_CONFIG.textSizeMultiplier),
                               DTDefaultFontName   : IR_READER_CONFIG.fontName,
                               DTDefaultLinkColor  : @"purple",
-                              DTDefaultTextColor  : IR_READER_CONFIG.textColor,
+                              DTDefaultTextColor  : chapter.textColor,
                               DTDefaultFontSize   : @(IR_READER_CONFIG.textDefaultFontSize),
                               DTMaxImageSize      : [NSValue valueWithCGSize:[IR_READER_CONFIG pageSize]]
                             };

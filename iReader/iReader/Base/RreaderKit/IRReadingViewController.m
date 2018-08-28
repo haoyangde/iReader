@@ -29,7 +29,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
 }
 
 - (void)viewDidLayoutSubviews
@@ -82,12 +81,12 @@
     }];
 }
 
-
 #pragma mark - Private
 
 - (void)setupSubviews
 {
     self.pageLabel = [[DTAttributedLabel alloc] init];
+    self.pageLabel.backgroundColor = [UIColor clearColor];
     self.pageLabel.edgeInsets = IR_READER_CONFIG.pageInsets;
     self.pageLabel.numberOfLines = 0;
     [self.view addSubview:self.pageLabel];
@@ -96,6 +95,12 @@
 - (void)setPageModel:(IRPageModel *)pageModel
 {
     _pageModel = pageModel;
+    
+    if (IR_READER_CONFIG.isNightMode) {
+        self.view.backgroundColor = IR_READER_CONFIG.nightModeBgColor;
+    } else {
+        self.view.backgroundColor = [UIColor whiteColor];
+    }
     
     self.pageLabel.attributedString = pageModel.content;
     

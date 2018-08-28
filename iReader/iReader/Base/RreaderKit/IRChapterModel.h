@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) NSArray<IRPageModel *> *pages;
 @property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong, readonly) UIColor *textColor;
 @property (nonatomic, assign) NSUInteger pageCount;
 @property (nonatomic, assign) NSUInteger chapterIndex;
 

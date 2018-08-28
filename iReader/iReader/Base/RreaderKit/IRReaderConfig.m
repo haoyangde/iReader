@@ -7,6 +7,7 @@
 //
 
 #import "IRReaderConfig.h"
+#import "HexColors.h"
 
 static NSString * const kReaderPageNavigationOrientation = @"kReaderPageNavigationOrientation";
 static NSString * const kReaderTextSizeMultiplier = @"kReaderTextSizeMultiplier";
@@ -60,7 +61,8 @@ static CGFloat kReaderDefaultTextFontSize = 16;
     _fontSizeMultipliers = @[@(0.875), @(1), @(1.125), @(1.25), @(1.375), @(1.5), @(1.625), @(1.75)];
     _lineSpacing = 5;
     _paragraphSpacing = 20;
-    
+    _nightModeBgColor = [UIColor hx_colorWithHexString:@"#1E1E1E"];
+    _nightModeTextColor = [UIColor hx_colorWithHexString:@"#767676"];
     _firstLineHeadIndent = [UIFont systemFontOfSize:_textFontSize].pointSize * 2;
     _pageBackgroundImg = nil;
     _pageBackgroundColor = [UIColor whiteColor];

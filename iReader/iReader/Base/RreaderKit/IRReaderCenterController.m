@@ -406,11 +406,20 @@ UIGestureRecognizerDelegate
 - (void)readerSettingViewDidClickNightButton:(IRReaderSettingView *)readerSettingView
 {
     IR_READER_CONFIG.isNightMode = YES;
+    [self currentReadingViewController].view.backgroundColor = IR_READER_CONFIG.nightModeBgColor;
+    [self readerSettingViewDidChangedTextSizeMultiplier:IR_READER_CONFIG.textSizeMultiplier];
+    
+    [self updateReaderSettingViewStateWithAnimated:YES completion:nil];
+    [self.readerSettingView dismissWithAnimated:YES];
 }
 
 - (void)readerSettingViewDidClickSunButton:(IRReaderSettingView *)readerSettingView
 {
     IR_READER_CONFIG.isNightMode = NO;
+    [self currentReadingViewController].view.backgroundColor = [UIColor whiteColor];
+    [self readerSettingViewDidChangedTextSizeMultiplier:IR_READER_CONFIG.textSizeMultiplier];
+    [self updateReaderSettingViewStateWithAnimated:YES completion:nil];
+    [self.readerSettingView dismissWithAnimated:YES];
 }
 
 #pragma mark - BookChapterListControllerDelegate

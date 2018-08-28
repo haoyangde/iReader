@@ -21,6 +21,9 @@
 		810C5061212FF565000DA3B5 /* IRCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 810C5060212FF565000DA3B5 /* IRCacheManager.m */; };
 		811170A6213581CC003CC400 /* IRReaderPageBackgroundSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 811170A5213581CC003CC400 /* IRReaderPageBackgroundSelectView.m */; };
 		811170A92135841B003CC400 /* IRReaderPageBackgroundSelectViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 811170A82135841B003CC400 /* IRReaderPageBackgroundSelectViewCell.m */; };
+		811170B221359848003CC400 /* HexColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 811170AF21359847003CC400 /* HexColors.m */; };
+		811170B321359848003CC400 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 811170B021359847003CC400 /* README.md */; };
+		811170B421359848003CC400 /* LICENCE in Resources */ = {isa = PBXBuildFile; fileRef = 811170B121359847003CC400 /* LICENCE */; };
 		8145189520F307E000DC5F3D /* IREpubBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 8145189420F307E000DC5F3D /* IREpubBook.m */; };
 		81B3747520F8AABB00D86F5C /* IRCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 81B3747420F8AABB00D86F5C /* IRCollectionViewCell.m */; };
 		81E2851A20F857D700348253 /* IRNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81E2851920F857D700348253 /* IRNavigationController.m */; };
@@ -108,6 +111,10 @@
 		811170A5213581CC003CC400 /* IRReaderPageBackgroundSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRReaderPageBackgroundSelectView.m; sourceTree = "<group>"; };
 		811170A72135841B003CC400 /* IRReaderPageBackgroundSelectViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRReaderPageBackgroundSelectViewCell.h; sourceTree = "<group>"; };
 		811170A82135841B003CC400 /* IRReaderPageBackgroundSelectViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRReaderPageBackgroundSelectViewCell.m; sourceTree = "<group>"; };
+		811170AE21359847003CC400 /* HexColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HexColors.h; sourceTree = "<group>"; };
+		811170AF21359847003CC400 /* HexColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HexColors.m; sourceTree = "<group>"; };
+		811170B021359847003CC400 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		811170B121359847003CC400 /* LICENCE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENCE; sourceTree = "<group>"; };
 		8145189320F307E000DC5F3D /* IREpubBook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IREpubBook.h; sourceTree = "<group>"; };
 		8145189420F307E000DC5F3D /* IREpubBook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IREpubBook.m; sourceTree = "<group>"; };
 		81B3747320F8AABB00D86F5C /* IRCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCollectionViewCell.h; sourceTree = "<group>"; };
@@ -259,6 +266,25 @@
 			path = IRCacheManager;
 			sourceTree = "<group>";
 		};
+		811170AC21359847003CC400 /* HexColors */ = {
+			isa = PBXGroup;
+			children = (
+				811170AD21359847003CC400 /* Classes */,
+				811170B021359847003CC400 /* README.md */,
+				811170B121359847003CC400 /* LICENCE */,
+			);
+			path = HexColors;
+			sourceTree = "<group>";
+		};
+		811170AD21359847003CC400 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				811170AE21359847003CC400 /* HexColors.h */,
+				811170AF21359847003CC400 /* HexColors.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		81154F4D20F64F9F008A15E8 /* RreaderKit */ = {
 			isa = PBXGroup;
 			children = (
@@ -335,6 +361,7 @@
 		81E2852520F8868900348253 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				811170AC21359847003CC400 /* HexColors */,
 				81E2886720F34408006DB29B /* GDataXML */,
 			);
 			path = ThirdParty;
@@ -694,6 +721,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				811170B321359848003CC400 /* README.md in Resources */,
+				811170B421359848003CC400 /* LICENCE in Resources */,
 				DFDC3C0B2056688400E40E27 /* Assets.xcassets in Resources */,
 				DFDC3C0A2056688400E40E27 /* Main.storyboard in Resources */,
 				81E2889720F4A99F006DB29B /* The Silver Chair.epub in Resources */,
@@ -787,6 +816,7 @@
 				810688C6211939180038B94A /* NSDictionary+Safe.m in Sources */,
 				81E288A220F5F45D006DB29B /* IRSpine.m in Sources */,
 				81E2887C20F391C5006DB29B /* IRCommonUtilites.m in Sources */,
+				811170B221359848003CC400 /* HexColors.m in Sources */,
 				81E2887920F38C4E006DB29B /* IRContainer.m in Sources */,
 				81E2886E20F35295006DB29B /* IRFileUtilites.m in Sources */,
 				DFEADB8620FB82B100BB4F97 /* UIColor+Extension.m in Sources */,
