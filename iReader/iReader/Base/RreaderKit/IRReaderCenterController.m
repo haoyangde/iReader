@@ -403,6 +403,16 @@ UIGestureRecognizerDelegate
                                 toBefore:NO];
 }
 
+- (void)readerSettingViewDidClickNightButton:(IRReaderSettingView *)readerSettingView
+{
+    IR_READER_CONFIG.isNightMode = YES;
+}
+
+- (void)readerSettingViewDidClickSunButton:(IRReaderSettingView *)readerSettingView
+{
+    IR_READER_CONFIG.isNightMode = NO;
+}
+
 #pragma mark - BookChapterListControllerDelegate
 
 - (void)bookChapterListControllerDidSelectChapterAtIndex:(NSUInteger)index

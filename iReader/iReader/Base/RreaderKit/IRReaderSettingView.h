@@ -17,6 +17,8 @@
 - (void)readerSettingViewDidClickVerticalButton:(IRReaderSettingView *)readerSettingView;
 - (void)readerSettingViewDidClickHorizontalButton:(IRReaderSettingView *)readerSettingView;
 - (void)readerSettingViewDidChangedTextSizeMultiplier:(CGFloat)textSizeMultiplier;
+- (void)readerSettingViewDidClickNightButton:(IRReaderSettingView *)readerSettingView;
+- (void)readerSettingViewDidClickSunButton:(IRReaderSettingView *)readerSettingView;
 
 @end
 

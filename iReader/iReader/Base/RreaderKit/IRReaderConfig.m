@@ -10,6 +10,7 @@
 
 static NSString * const kReaderPageNavigationOrientation = @"kReaderPageNavigationOrientation";
 static NSString * const kReaderTextSizeMultiplier = @"kReaderTextSizeMultiplier";
+static NSString * const kReaderNightMode = @"kReaderNightMode";
 
 static CGFloat kReaderDefaultTextFontSize = 16;
 
@@ -47,7 +48,7 @@ static CGFloat kReaderDefaultTextFontSize = 16;
     CGFloat top = [IRUIUtilites isIPhoneX] ? 40 : 20;
     CGFloat bottom = [IRUIUtilites isIPhoneX] ? 30 : 20;
     _pageInsets = UIEdgeInsetsMake(top, 20, bottom, 20);
-    
+    _isNightMode = [[NSUserDefaults standardUserDefaults] boolForKey:kReaderNightMode];
     _readerPageNavigationOrientation = [[NSUserDefaults standardUserDefaults] integerForKey:kReaderPageNavigationOrientation];
     _appThemeColor = [UIColor ir_colorWithRed:126 green:211 blue:33];
     _verticalInset = _pageInsets.top + _pageInsets.bottom;
@@ -59,6 +60,7 @@ static CGFloat kReaderDefaultTextFontSize = 16;
     _fontSizeMultipliers = @[@(0.875), @(1), @(1.125), @(1.25), @(1.375), @(1.5), @(1.625), @(1.75)];
     _lineSpacing = 5;
     _paragraphSpacing = 20;
+    
     _firstLineHeadIndent = [UIFont systemFontOfSize:_textFontSize].pointSize * 2;
     _pageBackgroundImg = nil;
     _pageBackgroundColor = [UIColor whiteColor];
@@ -80,6 +82,17 @@ static CGFloat kReaderDefaultTextFontSize = 16;
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+- (void)setIsNightMode:(BOOL)isNightMode
+{
+    if (_isNightMode == isNightMode) {
+        return;
+    }
+    
+    _isNightMode =isNightMode;
+    
+    [[NSUserDefaults standardUserDefaults] setBool:isNightMode forKey:kReaderNightMode];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 - (void)setTextSizeMultiplier:(CGFloat)textSizeMultiplier
 {

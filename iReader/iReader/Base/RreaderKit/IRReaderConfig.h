@@ -31,8 +31,10 @@ typedef NS_ENUM(NSUInteger, ReaderPageNavigationOrientation) {
 @property (nonatomic, assign, readonly) CGFloat textDefaultFontSize;
 @property (nonatomic, strong, readonly) NSArray<NSNumber *> *fontSizeMultipliers;
 
+
 #pragma mark - Custom
 
+@property (nonatomic, assign) BOOL isNightMode;
 @property (nonatomic, strong) NSString *fontFamily;
 @property (nonatomic, strong) NSString *fontName;
 @property (nonatomic, strong) UIColor *textColor;

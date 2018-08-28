@@ -8,6 +8,7 @@
 
 #import "IRReaderSettingView.h"
 #import <Masonry.h>
+#import "IRReaderPageBackgroundSelectView.h"
 
 @interface IRReaderSettingView () <UIGestureRecognizerDelegate>
 
@@ -25,6 +26,12 @@
 @property (nonatomic ,strong) UISlider *fontSlider;
 @property (nonatomic ,strong) NSMutableDictionary<NSNumber *, NSNumber *> *fontSliderValues;
 
+@property (nonatomic, strong) IRReaderPageBackgroundSelectView *readerPageBackgroundSelectView;
+
+@property (nonatomic, strong)UIView *readerNightModeView;
+@property (nonatomic ,strong) UIButton *nightModeBtn;
+@property (nonatomic ,strong) UIButton *sunModeBtn;
+
 @end
 
 @implementation IRReaderSettingView
@@ -37,7 +44,7 @@
         if (@available(iOS 11.0, *)) {
             self.safeAreaInsetBottom = self.safeAreaInsets.bottom;
         }
-        self.menuViewHeight = 225 + self.safeAreaInsetBottom;
+        self.menuViewHeight = 230 + self.safeAreaInsetBottom;
         [self setupSubviews];
         [self setupGestures];
     }
@@ -103,6 +110,34 @@
     }
 }
 
+- (void)onNightButtonClicked:(UIButton *)btn
+{
+    if (btn.isSelected) {
+        return;
+    }
+    
+    btn.selected = YES;
+    self.sunModeBtn.selected = NO;
+    
+    if ([self.delegate respondsToSelector:@selector(readerSettingViewDidClickNightButton:)]) {
+        [self.delegate readerSettingViewDidClickNightButton:self];
+    }
+}
+
+- (void)onSunButtonClicked:(UIButton *)btn
+{
+    if (btn.isSelected) {
+        return;
+    }
+    
+    btn.selected = YES;
+    self.nightModeBtn.selected = NO;
+    
+    if ([self.delegate respondsToSelector:@selector(readerSettingViewDidClickSunButton:)]) {
+        [self.delegate readerSettingViewDidClickSunButton:self];
+    }
+}
+
 - (void)onFontReduceButtonClicked:(UIButton *)btn
 {
     
@@ -153,6 +188,55 @@
     
     [self setupPageOrientationView];
     [self setupTextFontControllView];
+    
+    self.readerPageBackgroundSelectView = [[IRReaderPageBackgroundSelectView alloc] init];
+    [self addSubview:self.readerPageBackgroundSelectView];
+    [self.readerPageBackgroundSelectView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(60);
+        make.width.equalTo(self.menuView);
+        make.bottom.equalTo(self.textFontControllView.mas_top);
+    }];
+    
+    [self setupReaderNightModeView];
+}
+
+- (void)setupReaderNightModeView
+{
+    self.readerNightModeView = [[UIView alloc] init];
+    [self.menuView addSubview:self.readerNightModeView];
+    [self.readerNightModeView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(55);
+        make.width.equalTo(self.menuView);
+        make.bottom.equalTo(self.readerPageBackgroundSelectView.mas_top);
+    }];
+    
+    self.nightModeBtn = [self buttonWithTitle:@" 夜间" imageName:@"icon-moon" sel:@selector(onNightButtonClicked:)];
+    [self.readerNightModeView addSubview:self.nightModeBtn];
+    [self.nightModeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.top.bottom.equalTo(self.readerNightModeView);
+        make.right.equalTo(self.readerNightModeView.mas_centerX);
+    }];
+    
+    self.sunModeBtn = [self buttonWithTitle:@" 白天" imageName:@"icon-sun" sel:@selector(onSunButtonClicked:)];
+    [self.readerNightModeView addSubview:self.sunModeBtn];
+    [self.sunModeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.top.bottom.equalTo(self.readerNightModeView);
+        make.left.equalTo(self.readerNightModeView.mas_centerX);
+    }];
+    
+    if (IR_READER_CONFIG.isNightMode) {
+        self.nightModeBtn.selected = YES;
+    } else {
+        self.sunModeBtn.selected = YES;
+    }
+    
+    UIView *middleLine = [[UIView alloc] init];
+    middleLine.backgroundColor = [UIColor ir_separatorLineColor];
+    [self.readerNightModeView addSubview:middleLine];
+    [middleLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(0.5);
+        make.center.height.equalTo(self.readerNightModeView);
+    }];
 }
 
 - (void)setupTextFontControllView

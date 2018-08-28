@@ -100,7 +100,7 @@
     self.pageLabel.attributedString = pageModel.content;
     
     if (pageModel) {
-       [self dismissChapterLoadingHUD];
+        [self dismissChapterLoadingHUD];
     } else {
         [self showChapterLoadingHUD];
     }
