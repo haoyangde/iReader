@@ -18,18 +18,24 @@
 
 @implementation IRPageViewController
 
-- (instancetype)init
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
-    if (self = [super init]) {
+    if (self = [super initWithCoder:coder]) {
         self.gestureRecognizerShouldBegin = YES;
     }
     
     return self;
 }
 
-- (void)viewDidLoad
+- (instancetype)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style
+                  navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation
+                                options:(NSDictionary<NSString *,id> *)options
 {
-    [super viewDidLoad];
+    if (self = [super initWithTransitionStyle:style navigationOrientation:navigationOrientation options:options]) {
+        self.gestureRecognizerShouldBegin = YES;
+    }
+    
+    return self;
 }
 
 #pragma mark - Public

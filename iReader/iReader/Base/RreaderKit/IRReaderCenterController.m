@@ -243,6 +243,7 @@ UIGestureRecognizerDelegate
     if (self.changeNavigationOrientationByUser) {
         self.changeNavigationOrientationByUser = NO;
         readVc = [self currentReadingViewController];
+        self.pageViewController.gestureRecognizerShouldBegin = YES;
     } else {
         if (self.chapterSelectIndex < self.chapters.count) {
             IRChapterModel *selectChapter = [self.chapters safeObjectAtIndex:self.chapterSelectIndex];
