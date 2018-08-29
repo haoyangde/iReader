@@ -65,7 +65,7 @@
         make.edges.equalTo(self);
     }];
     
-    self.closeBtn = [self commonButtonWithImageName:@"navbar_close" action:@selector(onCloseButtonClicked)];
+    self.closeBtn = [self commonButtonWithImageName:@"icon-navbar-close" action:@selector(onCloseButtonClicked)];
     [self.customContentView addSubview:self.closeBtn];
     [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.mas_equalTo(17);
@@ -73,7 +73,7 @@
         make.centerY.equalTo(self);
     }];
     
-    self.shareBtn = [self commonButtonWithImageName:@"navbar_share" action:@selector(onShareButtonClicked)];
+    self.shareBtn = [self commonButtonWithImageName:@"icon-navbar-share" action:@selector(onShareButtonClicked)];
     [self.customContentView addSubview:self.shareBtn];
     [self.shareBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(17);
@@ -82,7 +82,7 @@
         make.centerY.equalTo(self);
     }];
     
-    self.chapterListBtn = [self commonButtonWithImageName:@"navbar_chapter_list" action:@selector(onChapterListClicked)];
+    self.chapterListBtn = [self commonButtonWithImageName:@"icon-navbar-toc" action:@selector(onChapterListClicked)];
     [self.customContentView addSubview:self.chapterListBtn];
     [self.chapterListBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(22);
