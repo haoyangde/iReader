@@ -180,7 +180,11 @@ UIGestureRecognizerDelegate
         return NO;
     }
     
-    return YES;
+    if (CGRectContainsPoint(CGRectMake(CGRectGetMidX(self.view.frame) - 50, CGRectGetMidY(self.view.frame) - 100, 100, 200), [gestureRecognizer locationInView:self.view])) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 #pragma mark - Private
