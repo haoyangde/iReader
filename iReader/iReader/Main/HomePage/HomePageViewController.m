@@ -131,7 +131,7 @@ UICollectionViewDataSource
     IRReaderCenterController *mainVc = [[IRReaderCenterController alloc] initWithBook:[self.myBooks objectAtIndex:indexPath.row]];
     UINavigationController *containerNav = [[UINavigationController alloc] initWithRootViewController:mainVc];
     containerNav.navigationBarHidden = YES;
-    containerNav.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    containerNav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:containerNav animated:YES completion:nil];
 }
 

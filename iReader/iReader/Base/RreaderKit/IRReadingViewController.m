@@ -14,6 +14,7 @@
 @interface IRReadingViewController ()
 
 @property (nonatomic, strong) DTAttributedLabel *pageLabel;
+@property (nonatomic, strong) UIImageView *backgroundImgView;
 @property (nonatomic, strong) UIActivityIndicatorView *chapterLoadingHUD;
 
 @end
@@ -35,7 +36,8 @@
 {
     [super viewDidLayoutSubviews];
     
-    self.pageLabel.frame = self.view.bounds;
+    _pageLabel.frame = self.view.bounds;
+    _backgroundImgView.frame = self.view.bounds;
 }
 
 #pragma mark - Loading HUD
@@ -51,7 +53,7 @@
         self.chapterLoadingHUD = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         self.chapterLoadingHUD.backgroundColor = [UIColor clearColor];
         self.chapterLoadingHUD.hidesWhenStopped = YES;
-        self.chapterLoadingHUD.color = IR_READER_CONFIG.appThemeColor;
+        self.chapterLoadingHUD.color = [UIColor lightGrayColor];
         self.chapterLoadingHUD.tag = [self activityIndicatorViewTag];
         [self.view addSubview:self.chapterLoadingHUD];
     }
@@ -92,14 +94,24 @@
     [self.view addSubview:self.pageLabel];
 }
 
+- (UIImageView *)backgroundImgView
+{
+    if (_backgroundImgView) {
+        _backgroundImgView = [[UIImageView alloc] init];
+        [self.view addSubview:_backgroundImgView];
+        [self.view sendSubviewToBack:_backgroundImgView];
+    }
+    return _backgroundImgView;
+}
+
 - (void)setPageModel:(IRPageModel *)pageModel
 {
     _pageModel = pageModel;
     
-    if (IR_READER_CONFIG.isNightMode) {
-        self.view.backgroundColor = IR_READER_CONFIG.nightModeBgColor;
+    if (IR_READER_CONFIG.readerBgImg && !IR_READER_CONFIG.isNightMode) {
+        self.backgroundImgView.image = IR_READER_CONFIG.readerBgImg;
     } else {
-        self.view.backgroundColor = [UIColor whiteColor];
+        self.view.backgroundColor = IR_READER_CONFIG.readerBgColor;
     }
     
     self.pageLabel.attributedString = pageModel.content;

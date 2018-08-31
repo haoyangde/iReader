@@ -10,6 +10,7 @@
 #import "BookChapterListController.h"
 #import "IRPageViewController.h"
 #import "IRReadingViewController.h"
+#import "IRReadingBackViewController.h"
 
 // view
 #import "IRReaderNavigationView.h"
@@ -39,6 +40,7 @@ UIGestureRecognizerDelegate
 @property (nonatomic, strong) dispatch_queue_t chapter_parse_serial_queue;
 @property (nonatomic, strong) IREpubBook *book;
 @property (nonatomic, strong) IRPageViewController *pageViewController;
+@property (nonatomic, strong) IRReadingViewController *currentReadingViewController;
 @property (nonatomic, assign) NSUInteger chapterCount;
 @property (nonatomic, strong) NSMutableArray *chapters;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
@@ -187,6 +189,7 @@ UIGestureRecognizerDelegate
 
 - (void)commonInit
 {
+    self.view.backgroundColor = [UIColor whiteColor];
     self.shouldHideStatusBar = NO;
     self.shouldUpdateSettingViewState = YES;
     [self setupPageViewController];
@@ -221,6 +224,8 @@ UIGestureRecognizerDelegate
                                                                                              options:nil];
     pageViewController.delegate = self;
     pageViewController.dataSource = self;
+    pageViewController.view.backgroundColor = [UIColor clearColor];
+     pageViewController.doubleSided = (UIPageViewControllerTransitionStylePageCurl == transitionStyle);
     if (pageViewController.scrollView) {
         pageViewController.scrollView.delegate = self;
     }
@@ -407,7 +412,7 @@ UIGestureRecognizerDelegate
 - (void)readerSettingViewDidClickNightButton:(IRReaderSettingView *)readerSettingView
 {
     IR_READER_CONFIG.isNightMode = YES;
-    [self currentReadingViewController].view.backgroundColor = IR_READER_CONFIG.nightModeBgColor;
+    [self currentReadingViewController].view.backgroundColor = IR_READER_CONFIG.readerBgColor;
     [self readerSettingViewDidChangedTextSizeMultiplier:IR_READER_CONFIG.textSizeMultiplier];
     
     [self updateReaderSettingViewStateWithAnimated:YES completion:nil];
@@ -564,9 +569,46 @@ UIGestureRecognizerDelegate
     IRPageModel *beforePage = nil;
     IRChapterModel *chapter = nil;
     IRReadingViewController *beforeReadVc = nil;
-    IRReadingViewController *readVc = (IRReadingViewController *)viewController;
-    NSUInteger pageIndex = readVc.pageModel.pageIndex;
-    NSUInteger chapterIndex = readVc.pageModel.chapterIndex;
+    
+    if (UIPageViewControllerTransitionStylePageCurl == pageViewController.transitionStyle) {
+        
+        if ([viewController isKindOfClass:[IRReadingViewController class]]) {
+            self.currentReadingViewController = (IRReadingViewController *)viewController;
+            NSUInteger pageIndex = self.currentReadingViewController.pageModel.pageIndex;
+            NSUInteger chapterIndex = self.currentReadingViewController.pageModel.chapterIndex;
+            
+            if (pageIndex > 0) {
+                pageIndex--;
+                chapter = [self.chapters safeObjectAtIndex:chapterIndex];
+                beforePage = [chapter.pages safeObjectAtIndex:pageIndex];
+            } else {
+                
+                if (chapterIndex > 0) {
+                    chapterIndex--;
+                    chapter = [self.chapters safeObjectAtIndex:chapterIndex];
+                    if (![chapter isKindOfClass:[NSNull class]]) {
+                        beforePage = chapter.pages.lastObject;
+                    }
+                }
+            }
+            
+            beforeReadVc = [self readingViewControllerWithPageModel:beforePage creatIfNoExist:YES];
+            if (!beforePage) {
+                [beforeReadVc dismissChapterLoadingHUD];
+            }
+            
+            IRReadingBackViewController *backViewController = [[IRReadingBackViewController alloc] init];
+            backViewController.view.frame = pageViewController.view.bounds;
+            [backViewController updateWithViewController:beforeReadVc];
+            return backViewController;
+        }
+        
+    } else {
+        self.currentReadingViewController = (IRReadingViewController *)viewController;
+    }
+    
+    NSUInteger pageIndex = self.currentReadingViewController.pageModel.pageIndex;
+    NSUInteger chapterIndex = self.currentReadingViewController.pageModel.chapterIndex;
     
     if (pageIndex > 0) {
         pageIndex--;
@@ -603,11 +645,23 @@ UIGestureRecognizerDelegate
 
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
+    if (UIPageViewControllerTransitionStylePageCurl == pageViewController.transitionStyle) {
+        if ([viewController isKindOfClass:[IRReadingViewController class]]) {
+            self.currentReadingViewController  = (IRReadingViewController *)viewController;
+            IRReadingBackViewController *backViewController = [[IRReadingBackViewController alloc] init];
+            backViewController.view.frame = pageViewController.view.bounds;
+            [backViewController updateWithViewController:viewController];
+            return backViewController;
+        }
+    } else {
+        self.currentReadingViewController  = (IRReadingViewController *)viewController;
+    }
+    
+    
     IRPageModel *afterPage = nil;
     IRReadingViewController *afterReadVc = nil;
-    IRReadingViewController *readVc = (IRReadingViewController *)viewController;
-    NSUInteger pageIndex = readVc.pageModel.pageIndex;
-    NSUInteger chapterIndex = readVc.pageModel.chapterIndex;
+    NSUInteger pageIndex = self.currentReadingViewController.pageModel.pageIndex;
+    NSUInteger chapterIndex = self.currentReadingViewController.pageModel.chapterIndex;
     IRChapterModel *currentChapter = [self.chapters safeObjectAtIndex:chapterIndex];
     
     if (pageIndex < currentChapter.pages.count - 1) {

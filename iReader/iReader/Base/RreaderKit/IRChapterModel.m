@@ -30,7 +30,7 @@
 - (instancetype)init
 {
     if (self = [super init]) {
-        self.textColor = IR_READER_CONFIG.isNightMode ? IR_READER_CONFIG.nightModeTextColor : IR_READER_CONFIG.textColor;
+        self.textColor = IR_READER_CONFIG.readerTextColor;
     }
     
     return self;

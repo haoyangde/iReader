@@ -14,4 +14,7 @@
 
 @property (nonatomic, strong) IRPageModel *pageModel;
 
+- (void)showChapterLoadingHUD;
+- (void)dismissChapterLoadingHUD;
+
 @end

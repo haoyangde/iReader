@@ -24,28 +24,24 @@ typedef NS_ENUM(NSUInteger, ReaderPageNavigationOrientation) {
 @property (nonatomic, assign, readonly) UIEdgeInsets pageInsets;
 @property (nonatomic, assign, readonly) CGFloat verticalInset;
 @property (nonatomic, assign, readonly) CGFloat horizontalInset;
-/// 阅读页尺寸
 @property (nonatomic, assign, readonly) CGSize pageSize;
 /// default : 16
 @property (nonatomic, assign, readonly) CGFloat textFontSize;
 @property (nonatomic, assign, readonly) CGFloat textDefaultFontSize;
 @property (nonatomic, strong, readonly) NSArray<NSNumber *> *fontSizeMultipliers;
-@property (nonatomic, strong, readonly) UIColor *nightModeBgColor;
-/// #767676
-@property (nonatomic, strong, readonly) UIColor *nightModeTextColor;
-
 
 #pragma mark - Custom
 
 @property (nonatomic, assign) BOOL isNightMode;
 @property (nonatomic, strong) NSString *fontFamily;
 @property (nonatomic, strong) NSString *fontName;
-@property (nonatomic, strong) UIColor *textColor;
-@property (nonatomic, strong) UIColor *pageBackgroundColor;
-@property (nonatomic, strong) UIImage *pageBackgroundImg;
-/// default 0.875, 缩放比例: [ { 14 : 0.875 }, { 16 : 1 }, { 18 : 1.125 }, { 20 : 1.25 }, { 22 : 1.375 }, { 24 : 1.5 }, { 26 : 1.625 }, { 28 : 1.75 } ]
+/// default #F6F6F6
+@property (nonatomic, strong) UIColor *readerBgColor;
+/// default #333333
+@property (nonatomic, strong) UIColor *readerTextColor;
+@property (nonatomic, strong) UIImage *readerBgImg;
+/// default 0.875, All Multipliers: [ { 14 : 0.875 }, { 16 : 1 }, { 18 : 1.125 }, { 20 : 1.25 }, { 22 : 1.375 }, { 24 : 1.5 }, { 26 : 1.625 }, { 28 : 1.75 } ]
 @property (nonatomic, assign) CGFloat textSizeMultiplier;
-
 /// default 5
 @property (nonatomic, assign) CGFloat lineSpacing;
 /// default 20
