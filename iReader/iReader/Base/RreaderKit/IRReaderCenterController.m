@@ -418,18 +418,23 @@ UIGestureRecognizerDelegate
     IR_READER_CONFIG.isNightMode = YES;
     [self currentReadingViewController].view.backgroundColor = IR_READER_CONFIG.readerBgColor;
     [self readerSettingViewDidChangedTextSizeMultiplier:IR_READER_CONFIG.textSizeMultiplier];
-    
-    [self updateReaderSettingViewStateWithAnimated:YES completion:nil];
-    [self.readerSettingView dismissWithAnimated:YES];
 }
 
 - (void)readerSettingViewDidClickSunButton:(IRReaderSettingView *)readerSettingView
 {
     IR_READER_CONFIG.isNightMode = NO;
-    [self currentReadingViewController].view.backgroundColor = [UIColor whiteColor];
+    [self currentReadingViewController].view.backgroundColor = IR_READER_CONFIG.readerBgColor;;
     [self readerSettingViewDidChangedTextSizeMultiplier:IR_READER_CONFIG.textSizeMultiplier];
-    [self updateReaderSettingViewStateWithAnimated:YES completion:nil];
-    [self.readerSettingView dismissWithAnimated:YES];
+}
+
+- (void)readerSettingViewDidSelectBackgroundColor:(UIColor *)bgColor
+{
+    [self currentReadingViewController].view.backgroundColor = bgColor;
+    UIColor *textColor = [IR_READER_CONFIG readerTextColorWithBgColor:bgColor];
+    if (!CGColorEqualToColor(IR_READER_CONFIG.readerTextColor.CGColor, textColor.CGColor)) {
+        IR_READER_CONFIG.readerTextColor = textColor;
+        [self readerSettingViewDidChangedTextSizeMultiplier:IR_READER_CONFIG.textSizeMultiplier];
+    }
 }
 
 #pragma mark - BookChapterListControllerDelegate

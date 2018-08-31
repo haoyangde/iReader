@@ -19,6 +19,7 @@
 - (void)readerSettingViewDidChangedTextSizeMultiplier:(CGFloat)textSizeMultiplier;
 - (void)readerSettingViewDidClickNightButton:(IRReaderSettingView *)readerSettingView;
 - (void)readerSettingViewDidClickSunButton:(IRReaderSettingView *)readerSettingView;
+- (void)readerSettingViewDidSelectBackgroundColor:(UIColor *)bgColor;
 
 @end
 

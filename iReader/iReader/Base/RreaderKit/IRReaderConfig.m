@@ -20,6 +20,7 @@ static CGFloat kReaderDefaultTextFontSize = 16;
 
 @interface IRReaderConfig ()
 
+@property (nonatomic, strong) NSDictionary *bgColorToTextColor;
 @property (nonatomic, strong) UIColor *nightModeBgColor;
 @property (nonatomic, strong) UIColor *nightModeTextColor;
 @property (nonatomic, strong) UIColor *defaultBgColor;
@@ -61,8 +62,8 @@ static CGFloat kReaderDefaultTextFontSize = 16;
     _isNightMode = [[NSUserDefaults standardUserDefaults] boolForKey:kReaderNightMode];
     _nightModeBgColor = [UIColor hx_colorWithHexString:@"#1E1E1E"];
     _nightModeTextColor = [UIColor hx_colorWithHexString:@"#767676"];
-    _defaultBgColor = [UIColor hx_colorWithHexString:@"#F6F6F6"];
-    _defaultTextColor = [UIColor hx_colorWithHexString:@"#333333"];
+    _defaultBgColor = [UIColor whiteColor];
+    _defaultTextColor = [UIColor blackColor];
     _readerBgImg = [[IRCacheManager sharedInstance] objectForKey:kReaderBgImg];
     _readerPageNavigationOrientation = [[NSUserDefaults standardUserDefaults] integerForKey:kReaderPageNavigationOrientation];
     _appThemeColor = [UIColor ir_colorWithRed:126 green:211 blue:33];
@@ -79,9 +80,49 @@ static CGFloat kReaderDefaultTextFontSize = 16;
     _readerBgImg = nil;
     _fontFamily = @"Times New Roman";
     _fontName   = @"TimesNewRomanPSMT";
+    
+    [self setupReaderBgSelectColors];
+}
+
+- (void)setupReaderBgSelectColors
+{
+ // bg color
+    
+    // #BFAF8D 191,175,141
+    // #E3E5F1 227,229,242
+    // #CCE9C8 204,233,200
+    // #F2E2E8 242,226,232
+    
+ // text color
+    
+    // #783441 120,52,65
+    // #445446 68,84,70
+    // #5A4531 90,69,49
+    // #313D55 49,61,85
+    
+    self.readerBgSelectColors = @[
+                                  _defaultBgColor,
+                                  [UIColor hx_colorWithHexString:@"#BFAF8D"],
+                                  [UIColor hx_colorWithHexString:@"#E3E5F1"],
+                                  [UIColor hx_colorWithHexString:@"#CCE9C8"],
+                                  [UIColor hx_colorWithHexString:@"#F2E2E8"]
+                                  ];
+    
+    self.bgColorToTextColor = @{
+                                _defaultBgColor : _defaultTextColor,
+                                [UIColor hx_colorWithHexString:@"#BFAF8D"] : [UIColor hx_colorWithHexString:@"#5A4531"],
+                                [UIColor hx_colorWithHexString:@"#E3E5F1"] : [UIColor hx_colorWithHexString:@"#313D55"],
+                                [UIColor hx_colorWithHexString:@"#CCE9C8"] : [UIColor hx_colorWithHexString:@"#445446"],
+                                [UIColor hx_colorWithHexString:@"#F2E2E8"] : [UIColor hx_colorWithHexString:@"#783441"]
+                                };
 }
 
 #pragma mark - Public
+
+- (UIColor *)readerTextColorWithBgColor:(UIColor *)bgColor
+{
+    return [self.bgColorToTextColor safeObjectForKey:bgColor];
+}
 
 - (void)updateReaderPageNavigationOrientation:(ReaderPageNavigationOrientation)orientation
 {
@@ -109,9 +150,7 @@ static CGFloat kReaderDefaultTextFontSize = 16;
 - (void)setReaderBgColor:(UIColor *)readerBgColor
 {
     _readerBgColor = readerBgColor;
-    
-    [[NSUserDefaults standardUserDefaults] setObject:readerBgColor forKey:kReaderBgColor];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[IRCacheManager sharedInstance] asyncSetObject:readerBgColor forKey:kReaderBgColor];
 }
 
 - (UIColor *)readerBgColor
@@ -120,18 +159,24 @@ static CGFloat kReaderDefaultTextFontSize = 16;
         return _nightModeBgColor;
     } else {
         if (!_readerBgColor) {
-            _readerBgColor = [[NSUserDefaults standardUserDefaults]objectForKey:kReaderBgColor];
+            _readerBgColor = [[IRCacheManager sharedInstance] objectForKey:kReaderBgColor];
+            __block BOOL isColorExist = NO;
+            [self.readerBgSelectColors enumerateObjectsUsingBlock:^(UIColor * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                if (CGColorEqualToColor(_readerBgColor.CGColor, obj.CGColor)) {
+                    isColorExist = YES;
+                }
+            }];
+            
+            if (!isColorExist) {
+                [[IRCacheManager sharedInstance] asyncRemoveObjectForKey:kReaderBgColor];
+                _readerBgColor = self.defaultBgColor;
+                _readerTextColor = self.defaultTextColor;
+            }
         }
-        return _readerBgColor ?: _defaultBgColor;
+        
+        _readerBgSelectColor = _readerBgColor ?: _defaultBgColor;
+        return _readerBgSelectColor;
     }
-}
-
-- (void)setReaderTextColor:(UIColor *)readerTextColor
-{
-    _readerTextColor = readerTextColor;
-    
-    [[NSUserDefaults standardUserDefaults] setObject:readerTextColor forKey:kReaderTextColor];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (UIColor *)readerTextColor
@@ -140,7 +185,7 @@ static CGFloat kReaderDefaultTextFontSize = 16;
         return _nightModeTextColor;
     } else {
         if (!_readerTextColor) {
-            _readerTextColor = [[NSUserDefaults standardUserDefaults]objectForKey:kReaderTextColor];
+            _readerTextColor = [[IRCacheManager sharedInstance] objectForKey:kReaderTextColor];
         }
         return _readerTextColor ?: _defaultTextColor;
     }
@@ -150,7 +195,11 @@ static CGFloat kReaderDefaultTextFontSize = 16;
 {
     _readerBgImg = readerBgImg;
     
-    [[IRCacheManager sharedInstance] asyncSetObject:readerBgImg forKey:kReaderBgImg];
+    if (readerBgImg) {
+        [[IRCacheManager sharedInstance] asyncSetObject:readerBgImg forKey:kReaderBgImg];
+    } else {
+        [[IRCacheManager sharedInstance] asyncRemoveObjectForKey:kReaderBgImg];
+    }
 }
 
 - (void)setTextSizeMultiplier:(CGFloat)textSizeMultiplier

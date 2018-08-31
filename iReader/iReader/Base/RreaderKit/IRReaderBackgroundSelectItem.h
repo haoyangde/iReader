@@ -1,5 +1,5 @@
 //
-//  IRReaderPageBackgroundSelectView.h
+//  IRReaderBackgroundSelectItem.h
 //  iReader
 //
 //  Created by zzyong on 2018/8/28.
@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface IRReaderPageBackgroundSelectView : UIView
+@interface IRReaderBackgroundSelectItem : UIControl
+
+- (void)setSelected:(BOOL)selected;
 
 @end

@@ -8,9 +8,9 @@
 
 #import "IRReaderSettingView.h"
 #import <Masonry.h>
-#import "IRReaderPageBackgroundSelectView.h"
+#import "IRReaderBackgroundSelectView.h"
 
-@interface IRReaderSettingView () <UIGestureRecognizerDelegate>
+@interface IRReaderSettingView () <UIGestureRecognizerDelegate, IRReaderBackgroundSelectViewDeleagte>
 
 @property (nonatomic ,strong) UIView *menuView;
 @property (nonatomic, assign) CGFloat menuViewHeight;
@@ -26,7 +26,7 @@
 @property (nonatomic ,strong) UISlider *fontSlider;
 @property (nonatomic ,strong) NSMutableDictionary<NSNumber *, NSNumber *> *fontSliderValues;
 
-@property (nonatomic, strong) IRReaderPageBackgroundSelectView *readerPageBackgroundSelectView;
+@property (nonatomic, strong) IRReaderBackgroundSelectView *readerBackgroundSelectView;
 
 @property (nonatomic, strong)UIView *readerNightModeView;
 @property (nonatomic ,strong) UIButton *nightModeBtn;
@@ -78,6 +78,19 @@
     }
     
     return YES;
+}
+
+#pragma mark - IRReaderBackgroundSelectViewDeleagte
+
+- (void)readerBackgroundSelectViewDidSelectBackgroundColor:(UIColor *)bgColor
+{
+    if (self.nightModeBtn.isSelected) {
+        [self onSunButtonClicked:self.sunModeBtn];
+    }
+    
+    if ([self.delegate respondsToSelector:@selector(readerSettingViewDidSelectBackgroundColor:)]) {
+        [self.delegate readerSettingViewDidSelectBackgroundColor:bgColor];
+    }
 }
 
 #pragma mark - Actions
@@ -189,10 +202,11 @@
     [self setupPageOrientationView];
     [self setupTextFontControllView];
     
-    self.readerPageBackgroundSelectView = [[IRReaderPageBackgroundSelectView alloc] init];
-    [self addSubview:self.readerPageBackgroundSelectView];
-    [self.readerPageBackgroundSelectView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(60);
+    self.readerBackgroundSelectView = [[IRReaderBackgroundSelectView alloc] init];
+    self.readerBackgroundSelectView.delegate = self;
+    [self.menuView addSubview:self.readerBackgroundSelectView];
+    [self.readerBackgroundSelectView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo([IRReaderBackgroundSelectView viewHeight]);
         make.width.equalTo(self.menuView);
         make.bottom.equalTo(self.textFontControllView.mas_top);
     }];
@@ -207,7 +221,7 @@
     [self.readerNightModeView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(55);
         make.width.equalTo(self.menuView);
-        make.bottom.equalTo(self.readerPageBackgroundSelectView.mas_top);
+        make.bottom.equalTo(self.readerBackgroundSelectView.mas_top);
     }];
     
     self.nightModeBtn = [self buttonWithTitle:@" 夜间" imageName:@"icon-moon" sel:@selector(onNightButtonClicked:)];
@@ -384,6 +398,7 @@
     self.frame = targetView.bounds;
     [targetView addSubview:self];
     
+    [self.readerBackgroundSelectView scrollSelectItemToVisible];
     if (animated) {
         self.alpha = 0;
         self.menuView.frame = CGRectMake(0, self.height, self.width, _menuViewHeight);
