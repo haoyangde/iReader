@@ -293,6 +293,7 @@
     self.fontSlider.maximumValue = (IR_READER_CONFIG.fontSizeMultipliers.count - 1) * 10;
     [self.fontSlider addTarget:self action:@selector(onFontSizeMultiplierChange:) forControlEvents:UIControlEventValueChanged];
     self.fontSlider.thumbTintColor = IR_READER_CONFIG.appThemeColor;
+    self.fontSlider.minimumTrackTintColor = IR_READER_CONFIG.appThemeColor;
     [self.textFontControllView addSubview:self.fontSlider];
     [self.fontSlider setValue:[self.fontSliderValues objectForKey:@(IR_READER_CONFIG.textSizeMultiplier)].floatValue
                      animated:NO];

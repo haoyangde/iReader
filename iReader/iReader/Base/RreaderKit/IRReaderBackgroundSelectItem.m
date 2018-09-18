@@ -21,7 +21,7 @@
     if (self = [super initWithFrame:frame]) {
         self.layer.cornerRadius = 5;
         self.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1].CGColor;
-        self.layer.borderWidth = 1;
+        self.layer.borderWidth = 0.5;
     }
     
     return self;
@@ -40,8 +40,6 @@
         [self addBgSelectIconViewIfNeeded];
     }
     
-    self.layer.borderColor = selected ? IR_READER_CONFIG.appThemeColor.CGColor : [UIColor grayColor].CGColor;
-    self.layer.borderWidth = selected ? 2 : 1;
     self.bgSelectIconView.hidden = !selected;
 }
 
