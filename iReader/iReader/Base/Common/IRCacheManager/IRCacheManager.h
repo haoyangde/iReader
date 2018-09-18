@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define IR_CACHE_MANAGER [IRCacheManager sharedInstance]
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface IRCacheManager : NSObject

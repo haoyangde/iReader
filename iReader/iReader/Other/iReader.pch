@@ -21,6 +21,7 @@
 #import "NSDictionary+Safe.h"
 #import "IRReaderConfig.h"
 #import "IRCacheManager.h"
+#import "IRObject.h"
 
 #endif
 

@@ -6,9 +6,9 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "IRObject.h"
 
-@interface IRPageModel : NSObject
+@interface IRPageModel : IRObject
 
 @property (nonatomic, strong) NSAttributedString *content;
 @property (nonatomic, assign) NSUInteger pageIndex;
