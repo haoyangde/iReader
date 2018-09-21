@@ -10,10 +10,10 @@
 
 @implementation IRObject (NSCoding)
 
-- (instancetype)initWithCoder:(NSCoder *)coder
+- (instancetype)initWithCoder:(NSCoder *)decoder
 {
     for (NSString *key in self.class.propertyKeys) {
-        id value = [coder decodeObjectForKey:key];
+        id value = [decoder decodeObjectForKey:key];
         if (!value) {
             continue;
         }
@@ -23,14 +23,14 @@
     return self;
 }
 
-- (void)encodeWithCoder:(NSCoder *)coder
+- (void)encodeWithCoder:(NSCoder *)encoder
 {
     for (NSString *key in self.class.propertyKeys) {
         id value = [self valueForKeyPath:key];
         if (!value) {
-            return;
+            continue;
         }
-        [coder encodeObject:value forKey:key];
+        [encoder encodeObject:value forKey:key];
     }
 }
 
@@ -42,6 +42,8 @@
 - (void)setValue:(nullable id)value forUndefinedKey:(NSString *)key
 {
     // do nothing
+    NSString *info = [NSString stringWithFormat:@"Class:%@ undefined key:%@", NSStringFromClass([self class]), key];
+    NSAssert(NO, info);
 }
 
 @end

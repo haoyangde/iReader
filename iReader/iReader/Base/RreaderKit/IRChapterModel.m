@@ -77,13 +77,6 @@
                 break;
             }
         }
-        
-//        DTCoreTextLayoutFrame *paragraphLayoutFrame = [textLayout layoutFrameWithRect:rect range:rangeValue.rangeValue];
-//        if (paragraphLayoutFrame.lines.count < 2) {
-//            [htmlString addAttribute:NSParagraphStyleAttributeName
-//                               value:[self customParagraphStyleWithFirstLineHeadIndent:NO alignment:NSTextAlignmentLeft]
-//                               range:rangeValue.rangeValue];
-//        }
     }
     
     IRDebugLog(@"First paragraph string: %@ chapter title: %@", title, chapter.title);
