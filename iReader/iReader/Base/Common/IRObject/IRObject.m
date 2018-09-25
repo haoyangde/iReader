@@ -35,6 +35,10 @@ static void *IRModelCachedPropertyKeysKey = &IRModelCachedPropertyKeysKey;
     
     objc_setAssociatedObject(self, IRModelCachedPropertyKeysKey, keys, OBJC_ASSOCIATION_COPY);
     
+#ifdef DEBUG
+    NSLog(@"Class:[%@] property keys: %@", NSStringFromClass([self class]), keys);
+#endif
+    
     return keys;
 }
 
@@ -42,69 +46,19 @@ static void *IRModelCachedPropertyKeysKey = &IRModelCachedPropertyKeysKey;
 
 + (BOOL)propertyIsReadonly:(objc_property_t)property
 {
-    BOOL readonly = NO;
-    
-    const char * const attrString = property_getAttributes(property);
-    if (!attrString) {
-        fprintf(stderr, "ERROR: Could not get attribute string from property %s\n", property_getName(property));
-        return readonly;
-    }
-    
+    const char * const attrCString = property_getAttributes(property);
+    if (!attrCString) {
 #ifdef DEBUG
-    fprintf(stderr, "Attribute string \"%s\"\n", attrString);
+        NSLog(@"ERROR: Could not get attribute string from property %s", property_getName(property));
 #endif
-    
-    if (attrString[0] != 'T') {
-        fprintf(stderr, "ERROR: Expected attribute string \"%s\" for property %s to start with 'T'\n", attrString, property_getName(property));
-        return readonly;
+        return NO;
     }
-    
-    const char *typeString = attrString + 1;
-    const char *next = NSGetSizeAndAlignment(typeString, NULL, NULL);
-    if (!next) {
-        fprintf(stderr, "ERROR: Could not read past type in attribute string \"%s\" for property %s\n", attrString, property_getName(property));
-        return readonly;
-    }
-    
-    size_t typeLength = next - typeString;
-    if (!typeLength) {
-        fprintf(stderr, "ERROR: Invalid type in attribute string \"%s\" for property %s\n", attrString, property_getName(property));
-        return readonly;
-    }
-
-    if (*next != '\0') {
-        // skip past any junk before the first flag
-        next = strchr(next, ',');
-    }
-    
-    while (next && *next == ',') {
-        char flag = next[1];
-        next += 2;
-        
-        switch (flag) {
-            case '\0':
-                break;
-                
-            case 'R':
-                readonly = YES;
-                break;
-            
-            case 't':
-                fprintf(stderr, "ERROR: Old-style type encoding is unsupported in attribute string \"%s\" for property %s\n", attrString, property_getName(property));
-                
-                // skip over this type encoding
-                while (*next != ',' && *next != '\0')
-                    ++next;
-                
-                break;
-                
-            default:
 #ifdef DEBUG
-                fprintf(stderr, "Attribute string flag '%c' in attribute string \"%s\" for property %s\n", flag, attrString, property_getName(property));
+    NSLog(@"Property attribute string: %s", attrCString);
 #endif
-        }
-    }
-    return readonly;
+    NSString *attrString = [NSString stringWithUTF8String:attrCString];
+    
+    return [attrString containsString:@",R,"];
 }
 
 + (void)enumeratePropertiesUsingBlock:(void (^)(objc_property_t property, BOOL *stop))block
