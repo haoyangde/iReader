@@ -12,8 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface IRObject (NSCoding) <NSCoding>
 
-- (instancetype)initWithCoder:(NSCoder *)coder;
-- (void)encodeWithCoder:(NSCoder *)coder;
+- (instancetype)initWithCoder:(NSCoder *)decoder;
+- (void)encodeWithCoder:(NSCoder *)encoder;
 
 @end
 

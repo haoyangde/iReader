@@ -42,7 +42,7 @@
 
 + (BOOL)isIPhoneX
 {
-    return [self UIScreenMaxHeight] == 812;
+    return [self UIScreenMaxHeight] >= 812;
 }
 
 @end

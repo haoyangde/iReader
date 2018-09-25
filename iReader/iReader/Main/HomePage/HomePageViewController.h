@@ -6,8 +6,8 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "IRBaseViewController.h"
 
-@interface HomePageViewController : UIViewController
+@interface HomePageViewController : IRBaseViewController
 
 @end

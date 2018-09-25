@@ -6,11 +6,11 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "IRBaseViewController.h"
 
 @class IREpubBook;
 
-@interface IRReaderCenterController : UIViewController
+@interface IRReaderCenterController : IRBaseViewController
 
 - (instancetype)initWithBook:(IREpubBook *)book;
 

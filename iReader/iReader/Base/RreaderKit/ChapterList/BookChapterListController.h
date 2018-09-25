@@ -6,7 +6,7 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "IRBaseViewController.h"
 
 @protocol BookChapterListControllerDelegate <NSObject>
 
@@ -16,7 +16,7 @@
 
 @class IRTocRefrence;
 
-@interface BookChapterListController : UIViewController
+@interface BookChapterListController : IRBaseViewController
 
 @property (nonatomic, strong) NSArray<IRTocRefrence *> *chapterList;
 @property (nonatomic, assign) NSUInteger selectChapterIndex;
