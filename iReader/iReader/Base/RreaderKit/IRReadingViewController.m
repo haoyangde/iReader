@@ -7,7 +7,7 @@
 //
 
 #import "IRReadingViewController.h"
-#import <DTAttributedLabel.h>
+#import "DTAttributedLabel.h"
 #import "IRPageModel.h"
 #import <Masonry.h>
 

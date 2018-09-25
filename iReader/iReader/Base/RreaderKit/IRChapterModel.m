@@ -12,12 +12,12 @@
 #import "IRReaderConfig.h"
 #import "IRTocRefrence.h"
 #import "IRResource.h"
-#import <NSAttributedString+HTML.h>
-#import <DTCoreTextLayouter.h>
-#import <DTCoreTextConstants.h>
-#import <DTCoreTextParagraphStyle.h>
-#import <DTCoreTextLayoutLine.h>
-#import <DTCoreTextGlyphRun.h>
+#import "NSAttributedString+HTML.h"
+#import "DTCoreTextLayouter.h"
+#import "DTCoreTextConstants.h"
+#import "DTCoreTextParagraphStyle.h"
+#import "DTCoreTextLayoutLine.h"
+#import "DTCoreTextGlyphRun.h"
 
 @interface IRChapterModel ()
 

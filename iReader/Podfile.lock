@@ -1,21 +1,4 @@
 PODS:
-  - DTCoreText (1.6.20):
-    - DTCoreText/Core (= 1.6.20)
-    - DTFoundation/Core (~> 1.7.5)
-    - DTFoundation/DTAnimatedGIF (~> 1.7.5)
-    - DTFoundation/DTHTMLParser (~> 1.7.5)
-    - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Core (1.6.20):
-    - DTFoundation/Core (~> 1.7.5)
-    - DTFoundation/DTAnimatedGIF (~> 1.7.5)
-    - DTFoundation/DTHTMLParser (~> 1.7.5)
-    - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.13)
-  - DTFoundation/DTAnimatedGIF (1.7.13)
-  - DTFoundation/DTHTMLParser (1.7.13):
-    - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.13):
-    - DTFoundation/Core
   - FLEX (2.4.0)
   - leveldb-library (1.18.3)
   - Masonry (0.5.3)
@@ -25,7 +8,6 @@ PODS:
   - ZipArchive (1.4.0)
 
 DEPENDENCIES:
-  - DTCoreText (= 1.6.20)
   - FLEX (~> 2.0)
   - Masonry (= 0.5.3)
   - Objective-LevelDB (= 2.1.5)
@@ -34,8 +16,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - DTCoreText
-    - DTFoundation
     - FLEX
     - leveldb-library
     - Masonry
@@ -44,8 +24,6 @@ SPEC REPOS:
     - ZipArchive
 
 SPEC CHECKSUMS:
-  DTCoreText: 51904f2374af443e0d270d6fdc76035ab6f9ef8a
-  DTFoundation: f03be9fd786f11e505bb8fc44e2a3732bf0917df
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   leveldb-library: 10fb39c39e243db4af1828441162405bbcec1404
   Masonry: 9f515466afe48632562342a40a1c224071a1a022
@@ -53,6 +31,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   ZipArchive: e25a4373192673e3229ac8d6e9f64a3e5713c966
 
-PODFILE CHECKSUM: f23eb99dcf656366d4e0849f41047834501fbe23
+PODFILE CHECKSUM: 85b26639997b0ad75b9f31a9c9cbe4d869cbbde7
 
 COCOAPODS: 1.5.3
