@@ -14,7 +14,7 @@
 @property (nonatomic, strong) UIView *customContentView;
 @property (nonatomic, strong) UIButton *closeBtn;
 @property (nonatomic, strong) UIButton *fontBtn;
-@property (nonatomic, strong) UIButton *shareBtn;
+@property (nonatomic, strong) UIButton *moreSettingBtn;
 @property (nonatomic, strong) UIButton *chapterListBtn;
 
 @end
@@ -43,7 +43,7 @@
     }
 }
 
-- (void)onShareButtonClicked
+- (void)onMoreSettingButtonClicked
 {
     
 }
@@ -73,11 +73,11 @@
         make.centerY.equalTo(self);
     }];
     
-    self.shareBtn = [self commonButtonWithImageName:@"icon-navbar-share" action:@selector(onShareButtonClicked)];
-    [self.customContentView addSubview:self.shareBtn];
-    [self.shareBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(17);
-        make.height.mas_equalTo(23);
+    self.moreSettingBtn = [self commonButtonWithImageName:@"more_setting" action:@selector(onMoreSettingButtonClicked)];
+    [self.customContentView addSubview:self.moreSettingBtn];
+    [self.moreSettingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(20);
+        make.height.mas_equalTo(20);
         make.right.equalTo(self).offset(-15);
         make.centerY.equalTo(self);
     }];
@@ -87,7 +87,7 @@
     [self.chapterListBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(22);
         make.height.mas_equalTo(14);
-        make.right.equalTo(self.shareBtn.mas_left).offset(-25);
+        make.right.equalTo(self.moreSettingBtn.mas_left).offset(-20);
         make.centerY.equalTo(self);
     }];
 }

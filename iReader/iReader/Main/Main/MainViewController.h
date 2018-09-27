@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSUInteger, IRMainTabIndex) {
-    IRMainTabIndexMyBooks = 0,
+    IRMainTabIndexHome = 0,
     IRMainTabIndexDiscovery
 };
 

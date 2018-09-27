@@ -31,6 +31,10 @@
 {
     if (self = [super init]) {
         self.textColor = IR_READER_CONFIG.readerTextColor;
+#warning zzyong - 后续需要单独做成开关
+#ifdef DEBUG
+        [DTCoreTextLayoutFrame setShouldDrawDebugFrames:YES];
+#endif
     }
     
     return self;
