@@ -65,7 +65,7 @@
         make.edges.equalTo(self);
     }];
     
-    self.closeBtn = [self commonButtonWithImageName:@"icon-navbar-close" action:@selector(onCloseButtonClicked)];
+    self.closeBtn = [self commonButtonWithImageName:@"reader_setting_close" action:@selector(onCloseButtonClicked)];
     [self.customContentView addSubview:self.closeBtn];
     [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.mas_equalTo(17);
@@ -73,7 +73,7 @@
         make.centerY.equalTo(self);
     }];
     
-    self.moreSettingBtn = [self commonButtonWithImageName:@"more_setting" action:@selector(onMoreSettingButtonClicked)];
+    self.moreSettingBtn = [self commonButtonWithImageName:@"reader_more_setting" action:@selector(onMoreSettingButtonClicked)];
     [self.customContentView addSubview:self.moreSettingBtn];
     [self.moreSettingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(20);
@@ -82,7 +82,7 @@
         make.centerY.equalTo(self);
     }];
     
-    self.chapterListBtn = [self commonButtonWithImageName:@"icon-navbar-toc" action:@selector(onChapterListClicked)];
+    self.chapterListBtn = [self commonButtonWithImageName:@"reader_chapter_list" action:@selector(onChapterListClicked)];
     [self.customContentView addSubview:self.chapterListBtn];
     [self.chapterListBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(22);

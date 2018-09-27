@@ -51,7 +51,7 @@
     
     self.bgSelectIconView = [[UIImageView alloc] init];
     self.bgSelectIconView.contentMode = UIViewContentModeCenter;
-    self.bgSelectIconView.image = [UIImage imageNamed:@"icon_bg_select"];
+    self.bgSelectIconView.image = [UIImage imageNamed:@"reader_setting_bg_select"];
     [self addSubview:self.bgSelectIconView];
 }
 

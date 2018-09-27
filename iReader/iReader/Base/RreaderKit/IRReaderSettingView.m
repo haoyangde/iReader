@@ -224,14 +224,20 @@
         make.bottom.equalTo(self.readerBackgroundSelectView.mas_top);
     }];
     
-    self.nightModeBtn = [self buttonWithTitle:@" 夜间" imageName:@"icon-moon" sel:@selector(onNightButtonClicked:)];
+    self.nightModeBtn = [self buttonWithTitle:@" 夜间"
+                                    imageName:@"reader_setting_moon_n"
+                                selectImgName:@"reader_setting_moon_s"
+                                          sel:@selector(onNightButtonClicked:)];
     [self.readerNightModeView addSubview:self.nightModeBtn];
     [self.nightModeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.bottom.equalTo(self.readerNightModeView);
         make.right.equalTo(self.readerNightModeView.mas_centerX);
     }];
     
-    self.sunModeBtn = [self buttonWithTitle:@" 白天" imageName:@"icon-sun" sel:@selector(onSunButtonClicked:)];
+    self.sunModeBtn = [self buttonWithTitle:@" 白天"
+                                  imageName:@"reader_setting_sun_n"
+                              selectImgName:@"reader_setting_sun_s"
+                                        sel:@selector(onSunButtonClicked:)];
     [self.readerNightModeView addSubview:self.sunModeBtn];
     [self.sunModeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.top.bottom.equalTo(self.readerNightModeView);
@@ -268,7 +274,10 @@
         make.bottom.equalTo(self.pageOrientationView.mas_top);
     }];
     
-    self.fontReduceBtn = [self buttonWithTitle:nil imageName:@"icon-font-small" sel:@selector(onFontReduceButtonClicked:)];
+    self.fontReduceBtn = [self buttonWithTitle:nil
+                                     imageName:@"reader_setting_font_small"
+                                 selectImgName:nil
+                                           sel:@selector(onFontReduceButtonClicked:)];
     [self.textFontControllView addSubview:self.fontReduceBtn];
     self.fontReduceBtn.userInteractionEnabled = NO;
     self.fontReduceBtn.selected = YES;
@@ -278,7 +287,10 @@
         make.left.equalTo(self.textFontControllView).offset(10);
     }];
     
-    self.fontAddBtn = [self buttonWithTitle:nil imageName:@"icon-font-big" sel:@selector(onFontAddButtonClicked:)];
+    self.fontAddBtn = [self buttonWithTitle:nil
+                                  imageName:@"reader_setting_font_big"
+                              selectImgName:nil
+                                        sel:@selector(onFontAddButtonClicked:)];
     [self.textFontControllView addSubview:self.fontAddBtn];
     self.fontAddBtn.userInteractionEnabled = NO;
     self.fontAddBtn.selected = YES;
@@ -322,14 +334,20 @@
         make.bottom.equalTo(self.menuView).offset(-self.safeAreaInsetBottom);
     }];
     
-    self.horizontalBtn = [self buttonWithTitle:@" 横向" imageName:@"icon-menu-horizontal" sel:@selector(onHorizontalButtonClicked:)];
+    self.horizontalBtn = [self buttonWithTitle:@" 横向"
+                                     imageName:@"reader_setting_horizontal_n"
+                                 selectImgName:@"reader_setting_horizontal_s"
+                                           sel:@selector(onHorizontalButtonClicked:)];
     [self.pageOrientationView addSubview:self.horizontalBtn];
     [self.horizontalBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.bottom.equalTo(self.pageOrientationView);
         make.right.equalTo(self.pageOrientationView.mas_centerX);
     }];
     
-    self.verticalBtn = [self buttonWithTitle:@" 竖向" imageName:@"icon-menu-vertical" sel:@selector(onVerticalButtonClicked:)];
+    self.verticalBtn = [self buttonWithTitle:@" 竖向"
+                                   imageName:@"reader_setting_vertical_n"
+                               selectImgName:@"reader_setting_vertical_s"
+                                         sel:@selector(onVerticalButtonClicked:)];
     [self.pageOrientationView addSubview:self.verticalBtn];
     [self.verticalBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.top.bottom.equalTo(self.pageOrientationView);
@@ -359,18 +377,20 @@
     }];
 }
 
-- (UIButton *)buttonWithTitle:(NSString *)title imageName:(NSString *)imageName sel:(SEL)sel
+- (UIButton *)buttonWithTitle:(NSString *)title
+                    imageName:(NSString *)normalName
+                selectImgName:(NSString *)selectName
+                          sel:(SEL)sel
 {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.selected = NO;
     [btn setTitle:title forState:UIControlStateNormal];
-    btn.tintColor = IR_READER_CONFIG.appThemeColor;
-    if (imageName) {
-        [btn setImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-             forState:UIControlStateNormal];
-        [btn setImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+    [btn setImage:[UIImage imageNamed:normalName]
+         forState:UIControlStateNormal];
+    if (selectName) {
+        [btn setImage:[UIImage imageNamed:selectName]
              forState:UIControlStateSelected];
-        [btn setImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
+        [btn setImage:[UIImage imageNamed:selectName]
              forState:UIControlStateHighlighted];
     }
     
