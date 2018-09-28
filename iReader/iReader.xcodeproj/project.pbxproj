@@ -15,6 +15,8 @@
 		810688C021192E330038B94A /* IRUIUtilites.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688BF21192E330038B94A /* IRUIUtilites.m */; };
 		810688C6211939180038B94A /* NSDictionary+Safe.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688C3211939180038B94A /* NSDictionary+Safe.m */; };
 		810688C9211939240038B94A /* NSArray+Safe.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688C8211939240038B94A /* NSArray+Safe.m */; };
+		810A4CF6215DC78200296DFF /* IRReaderMoreSettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 810A4CF5215DC78200296DFF /* IRReaderMoreSettingCell.m */; };
+		810A4CF9215DC79600296DFF /* IRReaderMoreSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 810A4CF8215DC79600296DFF /* IRReaderMoreSettingViewController.m */; };
 		810C5054212E63F6000DA3B5 /* IRBookCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 810C5053212E63F6000DA3B5 /* IRBookCell.m */; };
 		810C5057212E6459000DA3B5 /* HomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 810C5056212E6459000DA3B5 /* HomePageViewController.m */; };
 		810C505A212E9316000DA3B5 /* IRReaderSettingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 810C5059212E9316000DA3B5 /* IRReaderSettingView.m */; };
@@ -201,6 +203,10 @@
 		810688C3211939180038B94A /* NSDictionary+Safe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Safe.m"; sourceTree = "<group>"; };
 		810688C7211939240038B94A /* NSArray+Safe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Safe.h"; sourceTree = "<group>"; };
 		810688C8211939240038B94A /* NSArray+Safe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Safe.m"; sourceTree = "<group>"; };
+		810A4CF4215DC78200296DFF /* IRReaderMoreSettingCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRReaderMoreSettingCell.h; sourceTree = "<group>"; };
+		810A4CF5215DC78200296DFF /* IRReaderMoreSettingCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRReaderMoreSettingCell.m; sourceTree = "<group>"; };
+		810A4CF7215DC79600296DFF /* IRReaderMoreSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRReaderMoreSettingViewController.h; sourceTree = "<group>"; };
+		810A4CF8215DC79600296DFF /* IRReaderMoreSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRReaderMoreSettingViewController.m; sourceTree = "<group>"; };
 		810C5052212E63F6000DA3B5 /* IRBookCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRBookCell.h; sourceTree = "<group>"; };
 		810C5053212E63F6000DA3B5 /* IRBookCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRBookCell.m; sourceTree = "<group>"; };
 		810C5055212E6459000DA3B5 /* HomePageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomePageViewController.h; sourceTree = "<group>"; };
@@ -568,6 +574,17 @@
 				810089B4210B204100C05391 /* IRReaderConfig.m */,
 			);
 			path = ReaderConfig;
+			sourceTree = "<group>";
+		};
+		810A4CED215DC4E000296DFF /* ReaderMoreSetting */ = {
+			isa = PBXGroup;
+			children = (
+				810A4CF4215DC78200296DFF /* IRReaderMoreSettingCell.h */,
+				810A4CF5215DC78200296DFF /* IRReaderMoreSettingCell.m */,
+				810A4CF7215DC79600296DFF /* IRReaderMoreSettingViewController.h */,
+				810A4CF8215DC79600296DFF /* IRReaderMoreSettingViewController.m */,
+			);
+			path = ReaderMoreSetting;
 			sourceTree = "<group>";
 		};
 		810C504F212E6382000DA3B5 /* Main */ = {
@@ -995,10 +1012,11 @@
 		81154F4D20F64F9F008A15E8 /* RreaderKit */ = {
 			isa = PBXGroup;
 			children = (
+				81E2851720F8550100348253 /* ChapterList */,
 				810A4CEA215DBE9C00296DFF /* Model */,
 				810A4CEB215DBED300296DFF /* ReaderConfig */,
 				810A4CE9215DBE4700296DFF /* ReaderSetting */,
-				81E2851720F8550100348253 /* ChapterList */,
+				810A4CED215DC4E000296DFF /* ReaderMoreSetting */,
 				810688B221181D060038B94A /* IRReaderCenterController.h */,
 				810688B321181D060038B94A /* IRReaderCenterController.m */,
 				81FD55372126CD22005AA7AF /* IRReadingViewController.h */,
@@ -1198,6 +1216,7 @@
 				DFDC3BF82056673300E40E27 /* App */,
 				DFDC3C1920567E4400E40E27 /* Base */,
 				DFDC3C0C205668B400E40E27 /* Main */,
+				81154F4D20F64F9F008A15E8 /* RreaderKit */,
 				DFDC3C042056688400E40E27 /* Resource */,
 				81D3402620EC6CCD0082725B /* Other */,
 				DFDC3BD4205665E100E40E27 /* Info.plist */,
@@ -1275,7 +1294,6 @@
 			children = (
 				81B3747120F8AA6200D86F5C /* Common */,
 				DFEADB8720FB8F3000BB4F97 /* Macros */,
-				81154F4D20F64F9F008A15E8 /* RreaderKit */,
 				81E2886B20F35248006DB29B /* Utilites */,
 				DFDC3C3A205A4A4300E40E27 /* EpubParser */,
 				DFDC3C1F20567EFC00E40E27 /* Router */,
@@ -1535,6 +1553,7 @@
 				DFDC3C1D20567E8900E40E27 /* UIView+Extension.m in Sources */,
 				81154045215A203A00F86A88 /* DTStylesheetHTMLElement.m in Sources */,
 				810089B2210B1D7200C05391 /* IRPageModel.m in Sources */,
+				810A4CF6215DC78200296DFF /* IRReaderMoreSettingCell.m in Sources */,
 				8115405B215A203A00F86A88 /* DTTextBlock.m in Sources */,
 				81154041215A203A00F86A88 /* DTTextAttachmentHTMLElement.m in Sources */,
 				81E2886A20F34700006DB29B /* GDataXMLNode.m in Sources */,
@@ -1588,6 +1607,7 @@
 				810688C9211939240038B94A /* NSArray+Safe.m in Sources */,
 				DFDC3C3D205A5A0A00E40E27 /* IREpubParser.m in Sources */,
 				81154057215A203A00F86A88 /* DTHTMLAttributedStringBuilder.m in Sources */,
+				810A4CF9215DC79600296DFF /* IRReaderMoreSettingViewController.m in Sources */,
 				8115406B215A203A00F86A88 /* DTCoreTextFontCollection.m in Sources */,
 				81154052215A203A00F86A88 /* DTImageTextAttachment.m in Sources */,
 				8115403C215A203A00F86A88 /* DTColorFunctions.m in Sources */,
