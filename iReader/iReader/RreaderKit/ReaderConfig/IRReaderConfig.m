@@ -56,8 +56,8 @@ static CGFloat kReaderDefaultTextFontSize = 16;
 
 - (void)commonInit
 {
-    CGFloat top = [IRUIUtilites isIPhoneX] ? 40 : 20;
-    CGFloat bottom = [IRUIUtilites isIPhoneX] ? 30 : 20;
+    CGFloat top = IS_IPHONEX_SERIES ? 40 : 20;
+    CGFloat bottom = IS_IPHONEX_SERIES ? 30 : 20;
     _pageInsets = UIEdgeInsetsMake(top, 20, bottom, 20);
     _isNightMode = [[NSUserDefaults standardUserDefaults] boolForKey:kReaderNightMode];
     _nightModeBgColor = [UIColor hx_colorWithHexString:@"#1E1E1E"];

@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-#define APP_THEME_COLOR [IRUIUtilites appThemeColor]
+#define APP_THEME_COLOR    [IRUIUtilites appThemeColor]
+#define IS_IPHONEX_SERIES  [IRUIUtilites isIPhoneXSeries]
 
 @interface IRUIUtilites : NSObject
+
++ (void)commonInit;
 
 + (UIColor *)appThemeColor;
 
@@ -20,6 +23,6 @@
 
 + (CGFloat)UIScreenMaxHeight;
 
-+ (BOOL)isIPhoneX;
++ (BOOL)isIPhoneXSeries;
 
 @end

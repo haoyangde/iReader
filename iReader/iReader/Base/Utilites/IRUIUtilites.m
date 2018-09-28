@@ -10,6 +10,11 @@
 
 @implementation IRUIUtilites
 
++ (void)commonInit
+{
+    IS_IPHONEX_SERIES;
+}
+
 + (UIColor *)appThemeColor
 {
     static UIColor *appThemeColor = nil;
@@ -51,9 +56,30 @@
     return UIScreenMaxHeight;
 }
 
-+ (BOOL)isIPhoneX
++ (BOOL)isIPhoneXSeries
 {
-    return [self UIScreenMaxHeight] >= 812;
+    return isIPhoneXSeries();
+}
+
+static inline BOOL isIPhoneXSeries()
+{
+    static BOOL iPhoneXSeries = NO;
+    
+    if (UIDevice.currentDevice.userInterfaceIdiom != UIUserInterfaceIdiomPhone) {
+        return iPhoneXSeries;
+    }
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        if (@available(iOS 11.0, *)) {
+            UIWindow *mainWindow = [[[UIApplication sharedApplication] delegate] window];
+            if (mainWindow.safeAreaInsets.top > 0.0) {
+                iPhoneXSeries = YES;
+            }
+        }
+    });
+    
+    return iPhoneXSeries;
 }
 
 @end

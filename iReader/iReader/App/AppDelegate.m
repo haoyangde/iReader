@@ -20,6 +20,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [self commonInit];
 #ifdef DEBUG
     [self addFLEX];
 #endif
@@ -65,13 +66,19 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-#pragma mark - privte
+#pragma mark - Privte
+
+- (void)commonInit
+{
+    [IRUIUtilites commonInit];
+}
 
 + (UINavigationController *)navigationController
 {
     return (UINavigationController *)[UIApplication sharedApplication].delegate.window.rootViewController;
 }
 
+#pragma mark - DEBUG
 #ifdef DEBUG
 
 - (void)addFLEX
