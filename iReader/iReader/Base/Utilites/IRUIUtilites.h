@@ -6,9 +6,13 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+#define APP_THEME_COLOR [IRUIUtilites appThemeColor]
 
 @interface IRUIUtilites : NSObject
+
++ (UIColor *)appThemeColor;
 
 + (CGFloat)appStatusBarMaxY;
 

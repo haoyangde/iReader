@@ -54,7 +54,7 @@
 
 - (void)setupTabbarItems
 {
-    self.tabBar.tintColor = IR_READER_CONFIG.appThemeColor;
+    self.tabBar.tintColor = APP_THEME_COLOR;
     [self.tabBar.items enumerateObjectsUsingBlock:^(UITabBarItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
         
         UIImage *normalImg = nil;

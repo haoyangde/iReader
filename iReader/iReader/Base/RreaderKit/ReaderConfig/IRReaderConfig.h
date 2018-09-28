@@ -20,7 +20,6 @@ typedef NS_ENUM(NSUInteger, ReaderPageNavigationOrientation) {
 + (instancetype)sharedInstance;
 
 @property (nonatomic, assign, readonly) ReaderPageNavigationOrientation readerPageNavigationOrientation;
-@property (nonatomic, strong, readonly) UIColor *appThemeColor;
 @property (nonatomic, assign, readonly) UIEdgeInsets pageInsets;
 @property (nonatomic, assign, readonly) CGFloat verticalInset;
 @property (nonatomic, assign, readonly) CGFloat horizontalInset;

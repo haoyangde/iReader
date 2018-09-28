@@ -34,7 +34,7 @@ CGFloat const kChapterListCellFontSize = 15;
     [super setSelected:selected];
     
     if (selected) {
-        self.chapterLabel.textColor = IR_READER_CONFIG.appThemeColor;
+        self.chapterLabel.textColor = APP_THEME_COLOR;
     } else {
         self.chapterLabel.textColor = [UIColor colorWithWhite:0.4 alpha:1];
     }

@@ -10,6 +10,17 @@
 
 @implementation IRUIUtilites
 
++ (UIColor *)appThemeColor
+{
+    static UIColor *appThemeColor = nil;
+    if (appThemeColor) {
+        return appThemeColor;
+    }
+    
+    appThemeColor = [UIColor ir_colorWithRed:255 green:156 blue:0];
+    return appThemeColor;
+}
+
 + (CGFloat)appStatusBarMaxY
 {
     static CGFloat appStatusBarMaxY;
