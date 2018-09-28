@@ -535,6 +535,41 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		810A4CE9215DBE4700296DFF /* ReaderSetting */ = {
+			isa = PBXGroup;
+			children = (
+				810C5058212E9316000DA3B5 /* IRReaderSettingView.h */,
+				810C5059212E9316000DA3B5 /* IRReaderSettingView.m */,
+				811170A4213581CC003CC400 /* IRReaderBackgroundSelectView.h */,
+				811170A5213581CC003CC400 /* IRReaderBackgroundSelectView.m */,
+				811170A72135841B003CC400 /* IRReaderBackgroundSelectItem.h */,
+				811170A82135841B003CC400 /* IRReaderBackgroundSelectItem.m */,
+				810688BB21182BB20038B94A /* IRReaderNavigationView.h */,
+				810688BC21182BB20038B94A /* IRReaderNavigationView.m */,
+			);
+			path = ReaderSetting;
+			sourceTree = "<group>";
+		};
+		810A4CEA215DBE9C00296DFF /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8100899721084D3700C05391 /* IRChapterModel.h */,
+				8100899821084D3700C05391 /* IRChapterModel.m */,
+				810089B0210B1D7200C05391 /* IRPageModel.h */,
+				810089B1210B1D7200C05391 /* IRPageModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		810A4CEB215DBED300296DFF /* ReaderConfig */ = {
+			isa = PBXGroup;
+			children = (
+				810089B3210B204100C05391 /* IRReaderConfig.h */,
+				810089B4210B204100C05391 /* IRReaderConfig.m */,
+			);
+			path = ReaderConfig;
+			sourceTree = "<group>";
+		};
 		810C504F212E6382000DA3B5 /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -960,25 +995,14 @@
 		81154F4D20F64F9F008A15E8 /* RreaderKit */ = {
 			isa = PBXGroup;
 			children = (
+				810A4CEA215DBE9C00296DFF /* Model */,
+				810A4CEB215DBED300296DFF /* ReaderConfig */,
+				810A4CE9215DBE4700296DFF /* ReaderSetting */,
 				81E2851720F8550100348253 /* ChapterList */,
-				8100899721084D3700C05391 /* IRChapterModel.h */,
-				8100899821084D3700C05391 /* IRChapterModel.m */,
-				810089B0210B1D7200C05391 /* IRPageModel.h */,
-				810089B1210B1D7200C05391 /* IRPageModel.m */,
-				810089B3210B204100C05391 /* IRReaderConfig.h */,
-				810089B4210B204100C05391 /* IRReaderConfig.m */,
 				810688B221181D060038B94A /* IRReaderCenterController.h */,
 				810688B321181D060038B94A /* IRReaderCenterController.m */,
-				810688BB21182BB20038B94A /* IRReaderNavigationView.h */,
-				810688BC21182BB20038B94A /* IRReaderNavigationView.m */,
 				81FD55372126CD22005AA7AF /* IRReadingViewController.h */,
 				81FD55382126CD22005AA7AF /* IRReadingViewController.m */,
-				810C5058212E9316000DA3B5 /* IRReaderSettingView.h */,
-				810C5059212E9316000DA3B5 /* IRReaderSettingView.m */,
-				811170A4213581CC003CC400 /* IRReaderBackgroundSelectView.h */,
-				811170A5213581CC003CC400 /* IRReaderBackgroundSelectView.m */,
-				811170A72135841B003CC400 /* IRReaderBackgroundSelectItem.h */,
-				811170A82135841B003CC400 /* IRReaderBackgroundSelectItem.m */,
 				815457CC213792E9000806B5 /* IRReadingBackViewController.h */,
 				815457CD213792E9000806B5 /* IRReadingBackViewController.m */,
 			);
