@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSUInteger, IRMainTabIndex) {
-    IRMainTabIndexHome = 0,
-    IRMainTabIndexDiscovery
+    IRMainTabIndexHome      = 0,
+    IRMainTabIndexDiscovery = 1
 };
 
 @interface MainViewController : UITabBarController
