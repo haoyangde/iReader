@@ -8,11 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@class IRSettingModel;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface IRSettingCell : UICollectionViewCell
 
+@property (nonatomic, strong, readonly) UILabel *titleLabel;
+@property (nonatomic, strong) IRSettingModel *settingModel;
 
+- (void)setupSubviews;
 
 @end
 

@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface IRSettingModel : IRObject
 
 @property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *detailText;
+@property (nonatomic, strong) NSString *rightText;
 @property (nonatomic, assign) IRSettingCellType cellType;
 @property (nonatomic, strong) IRSettingCellClickedHandler clickedHandler;
 

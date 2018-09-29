@@ -20,4 +20,8 @@
 
 + (UIColor *)ir_colorWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
 
++ (UIColor *)ir_colorWithHexString:(NSString *)hexString;
+
++ (UIColor *)ir_colorWithHexString:(NSString *)hexString alpha:(CGFloat)alpha;
+
 @end

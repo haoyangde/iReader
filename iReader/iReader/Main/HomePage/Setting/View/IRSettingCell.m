@@ -7,13 +7,11 @@
 //
 
 #import "IRSettingCell.h"
+#import "IRSettingModel.h"
 
 @interface IRSettingCell ()
 
-@property (nonatomic, strong) UIImageView *arrowView;
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UILabel *detailLabel;
-@property (nonatomic, strong) UISwitch *switchView;
 
 @end
 
@@ -28,9 +26,23 @@
     return self;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    
+}
+
+#pragma mark - Private
+
 - (void)setupSubviews
 {
-    
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.textColor = [UIColor ir_colorWithHexString:@"#333333"];
+    titleLabel.font = [UIFont systemFontOfSize:15];
+    titleLabel.textAlignment = NSTextAlignmentLeft;
+    [self.contentView addSubview:titleLabel];
+    self.titleLabel = titleLabel;
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "UIColor+Extension.h"
+#import "HexColors.h"
 
 @implementation UIColor (Extension)
 
@@ -28,6 +29,16 @@
 + (UIColor *)ir_colorWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha
 {
    return [UIColor colorWithRed:red/255.0 green:green/255.0 blue:blue/255.0 alpha:alpha];
+}
+
++ (UIColor *)ir_colorWithHexString:(NSString *)hexString
+{
+    return [UIColor hx_colorWithHexString:hexString];
+}
+
++ (UIColor *)ir_colorWithHexString:(NSString *)hexString alpha:(CGFloat)alpha
+{
+    return [UIColor ir_colorWithHexString:hexString alpha:alpha];
 }
 
 @end
