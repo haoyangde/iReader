@@ -6,11 +6,11 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "IRBaseViewController.h"
+#import <UIKit/UIKit.h>
 
 @class IRPageModel;
 
-@interface IRReadingViewController : IRBaseViewController
+@interface IRReadingViewController : UIViewController
 
 @property (nonatomic, strong) IRPageModel *pageModel;
 
