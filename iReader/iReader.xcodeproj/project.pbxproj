@@ -15,6 +15,7 @@
 		810688C021192E330038B94A /* IRUIUtilites.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688BF21192E330038B94A /* IRUIUtilites.m */; };
 		810688C6211939180038B94A /* NSDictionary+Safe.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688C3211939180038B94A /* NSDictionary+Safe.m */; };
 		810688C9211939240038B94A /* NSArray+Safe.m in Sources */ = {isa = PBXBuildFile; fileRef = 810688C8211939240038B94A /* NSArray+Safe.m */; };
+		81086818215F64F2000F0A05 /* UIViewController+IRNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 81086817215F64F2000F0A05 /* UIViewController+IRNavigationBar.m */; };
 		810A4CF6215DC78200296DFF /* IRReaderMoreSettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 810A4CF5215DC78200296DFF /* IRReaderMoreSettingCell.m */; };
 		810A4CF9215DC79600296DFF /* IRReaderMoreSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 810A4CF8215DC79600296DFF /* IRReaderMoreSettingViewController.m */; };
 		810A4CFD215DCB3B00296DFF /* IRSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 810A4CFC215DCB3B00296DFF /* IRSettingViewController.m */; };
@@ -206,6 +207,8 @@
 		810688C3211939180038B94A /* NSDictionary+Safe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Safe.m"; sourceTree = "<group>"; };
 		810688C7211939240038B94A /* NSArray+Safe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Safe.h"; sourceTree = "<group>"; };
 		810688C8211939240038B94A /* NSArray+Safe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Safe.m"; sourceTree = "<group>"; };
+		81086816215F64F2000F0A05 /* UIViewController+IRNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+IRNavigationBar.h"; sourceTree = "<group>"; };
+		81086817215F64F2000F0A05 /* UIViewController+IRNavigationBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+IRNavigationBar.m"; sourceTree = "<group>"; };
 		810A4CF4215DC78200296DFF /* IRReaderMoreSettingCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRReaderMoreSettingCell.h; sourceTree = "<group>"; };
 		810A4CF5215DC78200296DFF /* IRReaderMoreSettingCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRReaderMoreSettingCell.m; sourceTree = "<group>"; };
 		810A4CF7215DC79600296DFF /* IRReaderMoreSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRReaderMoreSettingViewController.h; sourceTree = "<group>"; };
@@ -1341,6 +1344,8 @@
 				DFEADB8520FB82B100BB4F97 /* UIColor+Extension.m */,
 				81FD54E921255AF4005AA7AF /* NSObject+IRSwizzling.h */,
 				81FD54EA21255AF4005AA7AF /* NSObject+IRSwizzling.m */,
+				81086816215F64F2000F0A05 /* UIViewController+IRNavigationBar.h */,
+				81086817215F64F2000F0A05 /* UIViewController+IRNavigationBar.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -1640,6 +1645,7 @@
 				810688C6211939180038B94A /* NSDictionary+Safe.m in Sources */,
 				81154032215A203A00F86A88 /* DTDictationPlaceholderView.m in Sources */,
 				81E288A220F5F45D006DB29B /* IRSpine.m in Sources */,
+				81086818215F64F2000F0A05 /* UIViewController+IRNavigationBar.m in Sources */,
 				81E2887C20F391C5006DB29B /* IRCommonUtilites.m in Sources */,
 				8115406E215A203A00F86A88 /* DTCoreTextLayouter.m in Sources */,
 				81154046215A203A00F86A88 /* DTListItemHTMLElement.m in Sources */,

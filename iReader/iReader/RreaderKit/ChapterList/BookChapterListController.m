@@ -36,6 +36,7 @@
 - (void)commonInit
 {
     self.title = @"目录";
+    [self setupLeftBackBarButton];
     self.view.backgroundColor = [UIColor whiteColor];
     [self setupCollectionView];
 }

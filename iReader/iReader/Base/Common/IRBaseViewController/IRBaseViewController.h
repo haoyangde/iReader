@@ -6,7 +6,7 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "UIViewController+IRNavigationBar.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
