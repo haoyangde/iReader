@@ -8,6 +8,7 @@
 
 #import "IRArrowSettingCell.h"
 #import "IRSettingModel.h"
+#import <Masonry.h>
 
 @interface IRArrowSettingCell ()
 
@@ -23,18 +24,22 @@
     
     self.arrowView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow_grey_right"]];
     [self.contentView addSubview:self.arrowView];
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
+    
+    [self.arrowView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.contentView);
+        make.right.equalTo(self.contentView).offset(-10);
+    }];
 }
 
 #pragma mark - Public
 
 - (void)setSettingModel:(IRSettingModel *)settingModel
 {
+    [super setSettingModel:settingModel];
     
+    self.titleLabel.text = settingModel.title;
+    
+    [self setNeedsLayout];
 }
 
 @end

@@ -12,6 +12,7 @@
 @interface IRSettingCell ()
 
 @property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UIView *bottomLine;
 
 @end
 
@@ -30,7 +31,8 @@
 {
     [super layoutSubviews];
     
-    
+    self.titleLabel.frame = CGRectMake(10, 0, 200, self.height);
+    self.bottomLine.frame = CGRectMake(0, self.height - 0.7, self.width, 0.7);
 }
 
 #pragma mark - Private
@@ -43,6 +45,10 @@
     titleLabel.textAlignment = NSTextAlignmentLeft;
     [self.contentView addSubview:titleLabel];
     self.titleLabel = titleLabel;
+    
+    self.bottomLine = [[UIView alloc] init];
+    self.bottomLine.backgroundColor = [UIColor colorWithWhite:0.9 alpha:0.8];
+    [self.contentView addSubview:self.bottomLine];
 }
 
 @end

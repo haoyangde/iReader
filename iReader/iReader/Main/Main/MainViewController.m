@@ -80,6 +80,7 @@
     switch (index) {
         case IRMainTabIndexHome: {
             self.navigationItem.title = self.selectedViewController.navigationItem.title;
+            self.navigationItem.rightBarButtonItem = self.selectedViewController.navigationItem.rightBarButtonItem;
             break;
         }
             

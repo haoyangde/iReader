@@ -155,6 +155,9 @@
 		81FD55392126CD22005AA7AF /* IRReadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81FD55382126CD22005AA7AF /* IRReadingViewController.m */; };
 		CC9EB8FE7CDD1B0D1AF79B38 /* libPods-iReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 42D886AB0BE345FE472D2E28 /* libPods-iReader.a */; };
 		DF92E84020FAFC3A008285C1 /* 细说明朝.epub in Resources */ = {isa = PBXBuildFile; fileRef = DF92E83F20FAFC3A008285C1 /* 细说明朝.epub */; };
+		DFD88F542162192200C3B1D9 /* IRDebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DFD88F532162192200C3B1D9 /* IRDebugViewController.m */; };
+		DFD88F572162218A00C3B1D9 /* IRSettingSectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DFD88F562162218A00C3B1D9 /* IRSettingSectionModel.m */; };
+		DFD88F5E216AFF9300C3B1D9 /* AppDelegate+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = DFD88F5D216AFF9300C3B1D9 /* AppDelegate+Debug.m */; };
 		DFDC3BC8205665E100E40E27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BC7205665E100E40E27 /* AppDelegate.m */; };
 		DFDC3BD6205665E100E40E27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BD5205665E100E40E27 /* main.m */; };
 		DFDC3BE0205665E100E40E27 /* iReaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BDF205665E100E40E27 /* iReaderTests.m */; };
@@ -491,6 +494,13 @@
 		81FD55382126CD22005AA7AF /* IRReadingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRReadingViewController.m; sourceTree = "<group>"; };
 		B2035DF92994DB586CB903BD /* Pods-iReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iReader/Pods-iReader.debug.xcconfig"; sourceTree = "<group>"; };
 		DF92E83F20FAFC3A008285C1 /* 细说明朝.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "细说明朝.epub"; sourceTree = "<group>"; };
+		DFD88F522162192200C3B1D9 /* IRDebugViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRDebugViewController.h; sourceTree = "<group>"; };
+		DFD88F532162192200C3B1D9 /* IRDebugViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRDebugViewController.m; sourceTree = "<group>"; };
+		DFD88F552162218A00C3B1D9 /* IRSettingSectionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSettingSectionModel.h; sourceTree = "<group>"; };
+		DFD88F562162218A00C3B1D9 /* IRSettingSectionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRSettingSectionModel.m; sourceTree = "<group>"; };
+		DFD88F59216AFA2F00C3B1D9 /* IRDebugConst.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRDebugConst.h; sourceTree = "<group>"; };
+		DFD88F5C216AFF9300C3B1D9 /* AppDelegate+Debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Debug.h"; sourceTree = "<group>"; };
+		DFD88F5D216AFF9300C3B1D9 /* AppDelegate+Debug.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Debug.m"; sourceTree = "<group>"; };
 		DFDC3BC3205665E100E40E27 /* iReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFDC3BC6205665E100E40E27 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DFDC3BC7205665E100E40E27 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -580,6 +590,8 @@
 			children = (
 				810A4D04215DCC3700296DFF /* IRSettingModel.h */,
 				810A4D05215DCC3700296DFF /* IRSettingModel.m */,
+				DFD88F552162218A00C3B1D9 /* IRSettingSectionModel.h */,
+				DFD88F562162218A00C3B1D9 /* IRSettingSectionModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -633,6 +645,7 @@
 		810A4CFA215DCB0B00296DFF /* Setting */ = {
 			isa = PBXGroup;
 			children = (
+				DFD88F51216218B700C3B1D9 /* Debug */,
 				81086823215F81FD000F0A05 /* Model */,
 				81086822215F81ED000F0A05 /* View */,
 				810A4CFB215DCB3B00296DFF /* IRSettingViewController.h */,
@@ -1242,6 +1255,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		DFD88F51216218B700C3B1D9 /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				DFD88F59216AFA2F00C3B1D9 /* IRDebugConst.h */,
+				DFD88F522162192200C3B1D9 /* IRDebugViewController.h */,
+				DFD88F532162192200C3B1D9 /* IRDebugViewController.m */,
+			);
+			path = Debug;
+			sourceTree = "<group>";
+		};
 		DFDC3BBA205665E100E40E27 = {
 			isa = PBXGroup;
 			children = (
@@ -1299,9 +1322,11 @@
 		DFDC3BF82056673300E40E27 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				DFDC3BD5205665E100E40E27 /* main.m */,
 				DFDC3BC6205665E100E40E27 /* AppDelegate.h */,
 				DFDC3BC7205665E100E40E27 /* AppDelegate.m */,
-				DFDC3BD5205665E100E40E27 /* main.m */,
+				DFD88F5C216AFF9300C3B1D9 /* AppDelegate+Debug.h */,
+				DFD88F5D216AFF9300C3B1D9 /* AppDelegate+Debug.m */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -1590,6 +1615,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81154064215A203A00F86A88 /* NSAttributedString+HTML.m in Sources */,
+				DFD88F542162192200C3B1D9 /* IRDebugViewController.m in Sources */,
 				81E2851D20F8592B00348253 /* BookChapterListController.m in Sources */,
 				810A4CFD215DCB3B00296DFF /* IRSettingViewController.m in Sources */,
 				81153EAE215A153D00F86A88 /* NSString+DTPaths.m in Sources */,
@@ -1620,6 +1646,7 @@
 				81153EB3215A153D00F86A88 /* NSString+DTURLEncoding.m in Sources */,
 				81E2889320F4A4D7006DB29B /* IROpfManifest.m in Sources */,
 				81154074215A235700F86A88 /* default.css.c in Sources */,
+				DFD88F5E216AFF9300C3B1D9 /* AppDelegate+Debug.m in Sources */,
 				81153EC1215A153E00F86A88 /* DTSmartPagingScrollView.m in Sources */,
 				81E2889F20F5F42B006DB29B /* IROpfSpine.m in Sources */,
 				810688B421181D060038B94A /* IRReaderCenterController.m in Sources */,
@@ -1669,6 +1696,7 @@
 				8115406B215A203A00F86A88 /* DTCoreTextFontCollection.m in Sources */,
 				81154052215A203A00F86A88 /* DTImageTextAttachment.m in Sources */,
 				8115403C215A203A00F86A88 /* DTColorFunctions.m in Sources */,
+				DFD88F572162218A00C3B1D9 /* IRSettingSectionModel.m in Sources */,
 				81153ECD215A153E00F86A88 /* NSArray+DTError.m in Sources */,
 				81154037215A203A00F86A88 /* DTAttributedTextContentView.m in Sources */,
 				810688C6211939180038B94A /* NSDictionary+Safe.m in Sources */,

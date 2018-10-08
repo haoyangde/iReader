@@ -6,11 +6,10 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#ifdef DEBUG
-#import <FLEX.h>
-#endif
-
 #import "AppDelegate.h"
+#ifdef DEBUG
+#import "AppDelegate+Debug.h"
+#endif
 
 @interface AppDelegate ()
 
@@ -20,15 +19,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [self commonInit];
+    IRDebugLog(@"");
 #ifdef DEBUG
-    [self addFLEX];
+    [self debugInit];
 #endif
     
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
+     [self commonInit];
     
-    IRDebugLog(@"");
     return YES;
 }
 
@@ -70,6 +67,9 @@
 
 - (void)commonInit
 {
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    
     [IRUIUtilites commonInit];
 }
 
@@ -77,35 +77,5 @@
 {
     return (UINavigationController *)[UIApplication sharedApplication].delegate.window.rootViewController;
 }
-
-#pragma mark - DEBUG
-#ifdef DEBUG
-
-- (void)addFLEX
-{
-    static UIWindow *flexWindow;
-    flexWindow = [[UIWindow alloc] init];
-    flexWindow.backgroundColor = [UIColor clearColor];
-    flexWindow.rootViewController = [[UIViewController alloc] init];
-    flexWindow.windowLevel = UIWindowLevelStatusBar + 50;
-    CGFloat windowY = CGRectGetMaxY([UIApplication sharedApplication].statusBarFrame);
-    flexWindow.frame = CGRectMake(0.5 * ([UIScreen mainScreen].bounds.size.width - 30), windowY, 30, 13);
-    [flexWindow makeKeyAndVisible];
-    
-    UIButton *flexBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    flexBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-    [flexBtn setTitle:@"FLEX" forState:UIControlStateNormal];
-    [flexBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [flexBtn addTarget:self action:@selector(showFlexSettingView) forControlEvents:UIControlEventTouchUpInside];
-    flexBtn.frame = flexWindow.bounds;
-    [flexWindow addSubview:flexBtn];
-}
-
--(void)showFlexSettingView
-{
-    [[FLEXManager sharedManager] showExplorer];
-}
-
-#endif
 
 @end

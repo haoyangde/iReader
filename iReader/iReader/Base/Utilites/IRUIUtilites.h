@@ -10,6 +10,7 @@
 
 #define APP_THEME_COLOR    [IRUIUtilites appThemeColor]
 #define IS_IPHONEX_SERIES  [IRUIUtilites isIPhoneXSeries]
+#define SCREEN_MIN_WIDTH   [IRUIUtilites UIScreenMinWidth]
 
 @interface IRUIUtilites : NSObject
 

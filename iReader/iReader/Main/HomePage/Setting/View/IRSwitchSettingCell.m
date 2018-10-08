@@ -8,6 +8,7 @@
 
 #import "IRSwitchSettingCell.h"
 #import "IRSettingModel.h"
+#import <Masonry.h>
 
 @interface IRSwitchSettingCell ()
 
@@ -25,11 +26,11 @@
     self.switchView.onTintColor = APP_THEME_COLOR;
     [self.switchView addTarget:self action:@selector(onSwitchValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.contentView addSubview:self.switchView];
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
+    
+    [self.switchView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.contentView);
+        make.right.equalTo(self.contentView).offset(-10);
+    }];
 }
 
 #pragma mark - Actions
@@ -45,7 +46,12 @@
 
 - (void)setSettingModel:(IRSettingModel *)settingModel
 {
-   
+    [super setSettingModel:settingModel];
+    
+    self.titleLabel.text = settingModel.title;
+    self.switchView.on = settingModel.isSwitchOn;
+    
+    [self setNeedsLayout];
 }
 
 @end
