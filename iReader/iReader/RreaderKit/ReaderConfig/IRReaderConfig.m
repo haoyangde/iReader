@@ -7,7 +7,6 @@
 //
 
 #import "IRReaderConfig.h"
-#import "HexColors.h"
 
 static NSString * const kReaderNightMode = @"kReaderNightMode";
 static NSString * const kReaderBgColor   = @"kReaderBgColor";
@@ -63,8 +62,8 @@ static CGFloat kReaderDefaultTextFontSize = 16;
     _transitionStyle = [[[IRCacheManager sharedInstance] objectForKey:kPagingTypeSelectCacheKey] integerValue];
     _navigationOrientation = [[[IRCacheManager sharedInstance] objectForKey:kReaderPageNavigationOrientation] integerValue];
     _isNightMode = [[NSUserDefaults standardUserDefaults] boolForKey:kReaderNightMode];
-    _nightModeBgColor = [UIColor hx_colorWithHexString:@"#1E1E1E"];
-    _nightModeTextColor = [UIColor hx_colorWithHexString:@"#767676"];
+    _nightModeBgColor = [UIColor ir_colorWithHexString:@"#1E1E1E"];
+    _nightModeTextColor = [UIColor ir_colorWithHexString:@"#767676"];
     _defaultBgColor = [UIColor whiteColor];
     _defaultTextColor = [UIColor blackColor];
     _readerBgImg = [[IRCacheManager sharedInstance] objectForKey:kReaderBgImg];
@@ -103,18 +102,18 @@ static CGFloat kReaderDefaultTextFontSize = 16;
     
     self.readerBgSelectColors = @[
                                   _defaultBgColor,
-                                  [UIColor hx_colorWithHexString:@"#BFAF8D"],
-                                  [UIColor hx_colorWithHexString:@"#E3E5F1"],
-                                  [UIColor hx_colorWithHexString:@"#CCE9C8"],
-                                  [UIColor hx_colorWithHexString:@"#F2E2E8"]
+                                  [UIColor ir_colorWithHexString:@"#BFAF8D"],
+                                  [UIColor ir_colorWithHexString:@"#E3E5F1"],
+                                  [UIColor ir_colorWithHexString:@"#CCE9C8"],
+                                  [UIColor ir_colorWithHexString:@"#F2E2E8"]
                                   ];
     
     self.bgColorToTextColor = @{
                                 _defaultBgColor : _defaultTextColor,
-                                [UIColor hx_colorWithHexString:@"#BFAF8D"] : [UIColor hx_colorWithHexString:@"#5A4531"],
-                                [UIColor hx_colorWithHexString:@"#E3E5F1"] : [UIColor hx_colorWithHexString:@"#313D55"],
-                                [UIColor hx_colorWithHexString:@"#CCE9C8"] : [UIColor hx_colorWithHexString:@"#445446"],
-                                [UIColor hx_colorWithHexString:@"#F2E2E8"] : [UIColor hx_colorWithHexString:@"#783441"]
+                                [UIColor ir_colorWithHexString:@"#BFAF8D"] : [UIColor ir_colorWithHexString:@"#5A4531"],
+                                [UIColor ir_colorWithHexString:@"#E3E5F1"] : [UIColor ir_colorWithHexString:@"#313D55"],
+                                [UIColor ir_colorWithHexString:@"#CCE9C8"] : [UIColor ir_colorWithHexString:@"#445446"],
+                                [UIColor ir_colorWithHexString:@"#F2E2E8"] : [UIColor ir_colorWithHexString:@"#783441"]
                                 };
 }
 
