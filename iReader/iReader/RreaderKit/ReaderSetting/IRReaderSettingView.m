@@ -28,7 +28,7 @@
 
 @property (nonatomic, strong) IRReaderBackgroundSelectView *readerBackgroundSelectView;
 
-@property (nonatomic, strong)UIView *readerNightModeView;
+@property (nonatomic, strong) UIView *readerNightModeView;
 @property (nonatomic ,strong) UIButton *nightModeBtn;
 @property (nonatomic ,strong) UIButton *sunModeBtn;
 
@@ -39,7 +39,7 @@
 - (instancetype)init
 {
     if (self = [super init]) {
-        self.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.35];
+        self.backgroundColor = [UIColor clearColor];
         
         if (@available(iOS 11.0, *)) {
             self.safeAreaInsetBottom = self.safeAreaInsets.bottom;
@@ -257,6 +257,14 @@
         make.width.mas_equalTo(0.5);
         make.center.height.equalTo(self.readerNightModeView);
     }];
+    
+     UIView *topLine = [[UIView alloc] init];
+    topLine.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+    [self.readerNightModeView addSubview:topLine];
+    [topLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(1.5);
+        make.top.right.left.equalTo(self.readerNightModeView);
+    }];
 }
 
 - (void)setupTextFontControllView
@@ -419,7 +427,6 @@
     self.frame = targetView.bounds;
     [targetView addSubview:self];
     
-    [self.readerBackgroundSelectView scrollSelectItemToVisible];
     if (animated) {
         self.alpha = 0;
         self.menuView.frame = CGRectMake(0, self.height, self.width, _menuViewHeight);

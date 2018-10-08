@@ -22,6 +22,4 @@
 
 + (CGFloat)viewHeight;
 
-- (void)scrollSelectItemToVisible;
-
 @end

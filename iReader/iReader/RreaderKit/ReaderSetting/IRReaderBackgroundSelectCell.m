@@ -1,20 +1,20 @@
 //
-//  IRReaderBackgroundSelectItem.m
+//  IRReaderBackgroundSelectCell.m
 //  iReader
 //
-//  Created by zzyong on 2018/8/28.
+//  Created by zzyong on 2018/10/8.
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "IRReaderBackgroundSelectItem.h"
+#import "IRReaderBackgroundSelectCell.h"
 
-@interface IRReaderBackgroundSelectItem ()
+@interface IRReaderBackgroundSelectCell ()
 
 @property (nonatomic, strong) UIImageView *bgSelectIconView;
 
 @end
 
-@implementation IRReaderBackgroundSelectItem
+@implementation IRReaderBackgroundSelectCell
 
 - (instancetype)initWithFrame:(CGRect)frame
 {

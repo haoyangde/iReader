@@ -137,11 +137,11 @@ IRSwitchSettingCellDelegate
     __weak typeof(self) weakSelf = self;
     
     IRSettingSectionModel *commonSection = [[IRSettingSectionModel alloc] init];
-    IRSettingModel *comment = [[IRSettingModel alloc] init];
-    comment.title = @"去评分";
-    comment.cellType = IRSettingCellTypeArrow;
-    comment.clickedHandler = ^{
-        [weakSelf onCommentCellClicked];
+    IRSettingModel *mark = [[IRSettingModel alloc] init];
+    mark.title = @"去评分";
+    mark.cellType = IRSettingCellTypeArrow;
+    mark.clickedHandler = ^{
+        [weakSelf onMarkCellClicked];
     };
     
     IRSettingModel *about = [[IRSettingModel alloc] init];
@@ -159,7 +159,7 @@ IRSwitchSettingCellDelegate
         
     };
     
-    commonSection.items = @[comment, about, cache];
+    commonSection.items = @[mark, about, cache];
     
     IRSettingModel *debug = [[IRSettingModel alloc] init];
     debug.title = @"开发实验室";
@@ -173,7 +173,7 @@ IRSwitchSettingCellDelegate
     self.settingInfos = @[commonSection, debugSection];
 }
 
-- (void)onCommentCellClicked
+- (void)onMarkCellClicked
 {
     
 }

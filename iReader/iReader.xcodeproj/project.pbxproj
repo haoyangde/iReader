@@ -29,7 +29,6 @@
 		810C505A212E9316000DA3B5 /* IRReaderSettingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 810C5059212E9316000DA3B5 /* IRReaderSettingView.m */; };
 		810C5061212FF565000DA3B5 /* IRCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 810C5060212FF565000DA3B5 /* IRCacheManager.m */; };
 		811170A6213581CC003CC400 /* IRReaderBackgroundSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 811170A5213581CC003CC400 /* IRReaderBackgroundSelectView.m */; };
-		811170A92135841B003CC400 /* IRReaderBackgroundSelectItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 811170A82135841B003CC400 /* IRReaderBackgroundSelectItem.m */; };
 		811170B221359848003CC400 /* HexColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 811170AF21359847003CC400 /* HexColors.m */; };
 		811170B321359848003CC400 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 811170B021359847003CC400 /* README.md */; };
 		81153EAE215A153D00F86A88 /* NSString+DTPaths.m in Sources */ = {isa = PBXBuildFile; fileRef = 81153E68215A153D00F86A88 /* NSString+DTPaths.m */; };
@@ -158,6 +157,7 @@
 		DFD88F542162192200C3B1D9 /* IRDebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DFD88F532162192200C3B1D9 /* IRDebugViewController.m */; };
 		DFD88F572162218A00C3B1D9 /* IRSettingSectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DFD88F562162218A00C3B1D9 /* IRSettingSectionModel.m */; };
 		DFD88F5E216AFF9300C3B1D9 /* AppDelegate+Debug.m in Sources */ = {isa = PBXBuildFile; fileRef = DFD88F5D216AFF9300C3B1D9 /* AppDelegate+Debug.m */; };
+		DFD88F61216B0A2700C3B1D9 /* IRReaderBackgroundSelectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DFD88F60216B0A2700C3B1D9 /* IRReaderBackgroundSelectCell.m */; };
 		DFDC3BC8205665E100E40E27 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BC7205665E100E40E27 /* AppDelegate.m */; };
 		DFDC3BD6205665E100E40E27 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BD5205665E100E40E27 /* main.m */; };
 		DFDC3BE0205665E100E40E27 /* iReaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DFDC3BDF205665E100E40E27 /* iReaderTests.m */; };
@@ -240,8 +240,6 @@
 		810C5060212FF565000DA3B5 /* IRCacheManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRCacheManager.m; sourceTree = "<group>"; };
 		811170A4213581CC003CC400 /* IRReaderBackgroundSelectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRReaderBackgroundSelectView.h; sourceTree = "<group>"; };
 		811170A5213581CC003CC400 /* IRReaderBackgroundSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRReaderBackgroundSelectView.m; sourceTree = "<group>"; };
-		811170A72135841B003CC400 /* IRReaderBackgroundSelectItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRReaderBackgroundSelectItem.h; sourceTree = "<group>"; };
-		811170A82135841B003CC400 /* IRReaderBackgroundSelectItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRReaderBackgroundSelectItem.m; sourceTree = "<group>"; };
 		811170AE21359847003CC400 /* HexColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HexColors.h; sourceTree = "<group>"; };
 		811170AF21359847003CC400 /* HexColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HexColors.m; sourceTree = "<group>"; };
 		811170B021359847003CC400 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -501,6 +499,8 @@
 		DFD88F59216AFA2F00C3B1D9 /* IRDebugConst.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRDebugConst.h; sourceTree = "<group>"; };
 		DFD88F5C216AFF9300C3B1D9 /* AppDelegate+Debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Debug.h"; sourceTree = "<group>"; };
 		DFD88F5D216AFF9300C3B1D9 /* AppDelegate+Debug.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Debug.m"; sourceTree = "<group>"; };
+		DFD88F5F216B0A2700C3B1D9 /* IRReaderBackgroundSelectCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRReaderBackgroundSelectCell.h; sourceTree = "<group>"; };
+		DFD88F60216B0A2700C3B1D9 /* IRReaderBackgroundSelectCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRReaderBackgroundSelectCell.m; sourceTree = "<group>"; };
 		DFDC3BC3205665E100E40E27 /* iReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFDC3BC6205665E100E40E27 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DFDC3BC7205665E100E40E27 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -603,8 +603,8 @@
 				810C5059212E9316000DA3B5 /* IRReaderSettingView.m */,
 				811170A4213581CC003CC400 /* IRReaderBackgroundSelectView.h */,
 				811170A5213581CC003CC400 /* IRReaderBackgroundSelectView.m */,
-				811170A72135841B003CC400 /* IRReaderBackgroundSelectItem.h */,
-				811170A82135841B003CC400 /* IRReaderBackgroundSelectItem.m */,
+				DFD88F5F216B0A2700C3B1D9 /* IRReaderBackgroundSelectCell.h */,
+				DFD88F60216B0A2700C3B1D9 /* IRReaderBackgroundSelectCell.m */,
 				810688BB21182BB20038B94A /* IRReaderNavigationView.h */,
 				810688BC21182BB20038B94A /* IRReaderNavigationView.m */,
 			);
@@ -1650,7 +1650,6 @@
 				81153EC1215A153E00F86A88 /* DTSmartPagingScrollView.m in Sources */,
 				81E2889F20F5F42B006DB29B /* IROpfSpine.m in Sources */,
 				810688B421181D060038B94A /* IRReaderCenterController.m in Sources */,
-				811170A92135841B003CC400 /* IRReaderBackgroundSelectItem.m in Sources */,
 				81086821215F8180000F0A05 /* IRSwitchSettingCell.m in Sources */,
 				81153EB1215A153D00F86A88 /* NSURL+DTComparing.m in Sources */,
 				81154051215A203A00F86A88 /* DTObjectTextAttachment.m in Sources */,
@@ -1661,6 +1660,7 @@
 				81E2888220F44FCF006DB29B /* IROpfMetadata.m in Sources */,
 				81E2889A20F4D924006DB29B /* IRTocRefrence.m in Sources */,
 				8115404E215A203A00F86A88 /* DTIframeTextAttachment.m in Sources */,
+				DFD88F61216B0A2700C3B1D9 /* IRReaderBackgroundSelectCell.m in Sources */,
 				8115403E215A203A00F86A88 /* DTCSSListStyle.m in Sources */,
 				8100899921084D3700C05391 /* IRChapterModel.m in Sources */,
 				81154039215A203A00F86A88 /* DTLinkButton.m in Sources */,

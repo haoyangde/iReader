@@ -6,16 +6,15 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "IRReaderBackgroundSelectView.h"
-#import "IRReaderBackgroundSelectItem.h"
 #import <Masonry.h>
+#import "IRReaderBackgroundSelectView.h"
+#import "IRReaderBackgroundSelectCell.h"
 
-static CGFloat const itemInterSpacing = 15;
+@interface IRReaderBackgroundSelectView () <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
-@interface IRReaderBackgroundSelectView ()
-
-@property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) IRReaderBackgroundSelectItem *currentSelectItem;
+@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) NSArray<UIColor *> *bgColors;
+@property (nonatomic, strong) NSIndexPath *cureentIndexPath;
 
 @end
 
@@ -24,69 +23,30 @@ static CGFloat const itemInterSpacing = 15;
 - (instancetype)init
 {
     if (self = [super init]) {
+        self.bgColors = IR_READER_CONFIG.readerBgSelectColors;
         [self setupSubviews];
     }
     
     return self;
 }
 
-- (void)onReaderBackgroundSelectItemClicked:(IRReaderBackgroundSelectItem *)item
-{
-    if (item.tag == self.currentSelectItem.tag) {
-        return;
-    }
-    
-    IR_READER_CONFIG.readerBgColor = item.backgroundColor;
-    [self.currentSelectItem setSelected:NO];
-    [item setSelected:YES];
-    self.currentSelectItem = item;
-    
-    if ([self.delegate respondsToSelector:@selector(readerBackgroundSelectViewDidSelectBackgroundColor:)]) {
-        [self.delegate readerBackgroundSelectViewDidSelectBackgroundColor:item.backgroundColor];
-    }
-}
-
 - (void)setupSubviews
 {
-    CGFloat itemW = 64;
-    CGFloat itemH = 25;
-    CGFloat itemY = ([IRReaderBackgroundSelectView viewHeight] - itemH) * 0.5;
-    NSUInteger itemCount = IR_READER_CONFIG.readerBgSelectColors.count;
-    
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, [IRUIUtilites UIScreenMinWidth], [IRReaderBackgroundSelectView viewHeight])];
-    self.scrollView.scrollsToTop = NO;
-    self.scrollView.showsHorizontalScrollIndicator = NO;
-    self.scrollView.contentSize = CGSizeMake(itemW * itemCount + itemInterSpacing * (itemCount + 1), self.height);
-    [self addSubview:self.scrollView];
-    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self);
-    }];
-    
-    __block BOOL hasSelectColor = NO;
-    __block IRReaderBackgroundSelectItem *firstItem = nil;
-    [IR_READER_CONFIG.readerBgSelectColors enumerateObjectsUsingBlock:^(UIColor * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        IRReaderBackgroundSelectItem *item = [[IRReaderBackgroundSelectItem alloc] init];
-        CGFloat itemX = ((itemW + itemInterSpacing) * idx) + itemInterSpacing;
-        item.frame = CGRectMake(itemX, itemY, itemW, itemH);
-        if (CGColorEqualToColor(IR_READER_CONFIG.readerBgSelectColor.CGColor, obj.CGColor)) {
-            [item setSelected:YES];
-            hasSelectColor = YES;
-            self.currentSelectItem = item;
-        }
-        item.backgroundColor = obj;
-        [item addTarget:self action:@selector(onReaderBackgroundSelectItemClicked:) forControlEvents:UIControlEventTouchUpInside];
-        item.tag = idx;
-        [self.scrollView addSubview:item];
-        
-        if (!idx) {
-            firstItem = item;
-        }
-        
-        if (idx == IR_READER_CONFIG.readerBgSelectColors.count - 1 && !hasSelectColor) {
-            [firstItem setSelected:YES];
-            self.currentSelectItem = firstItem;
-        }
-    }];
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    CGFloat collectionViewH = 25;
+    CGFloat collectionViewY = ([IRReaderBackgroundSelectView viewHeight] - collectionViewH) * 0.5;
+    CGRect frame = CGRectMake(0, collectionViewY, [IRUIUtilites UIScreenMinWidth], collectionViewH);
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:frame
+                                                          collectionViewLayout:flowLayout];
+    collectionView.dataSource = self;
+    collectionView.delegate   = self;
+    collectionView.backgroundColor      = [UIColor whiteColor];
+    collectionView.alwaysBounceHorizontal = YES;
+    collectionView.showsHorizontalScrollIndicator = NO;
+    [collectionView registerClass:[IRReaderBackgroundSelectCell class] forCellWithReuseIdentifier:@"IRReaderBackgroundSelectCell"];
+    [self addSubview:collectionView];
+    self.collectionView = collectionView;
     
     UIView *topLine = [[UIView alloc] init];
     topLine.backgroundColor = [UIColor ir_separatorLineColor];
@@ -97,13 +57,61 @@ static CGFloat const itemInterSpacing = 15;
     }];
 }
 
-- (void)scrollSelectItemToVisible
+#pragma mark - UICollectionView
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if (self.currentSelectItem) {
-        IRDebugLog(@"[IRReaderBackgroundSelectView] currentSelectItem frame: %@", NSStringFromCGRect(self.currentSelectItem.frame));
-        if (CGRectGetMaxX(self.currentSelectItem.frame) > [IRUIUtilites UIScreenMinWidth]) {
-            [self.scrollView setContentOffset:CGPointMake((CGRectGetMaxX(self.currentSelectItem.frame) - [IRUIUtilites UIScreenMinWidth] + itemInterSpacing ), 0) animated:NO];
-        }
+    return self.bgColors.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIColor *cellColor =  [self.bgColors safeObjectAtIndex:indexPath.row];
+    IRReaderBackgroundSelectCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRReaderBackgroundSelectCell" forIndexPath:indexPath];
+    cell.backgroundColor = cellColor;
+    BOOL isSelected = CGColorEqualToColor(IR_READER_CONFIG.readerBgSelectColor.CGColor, cellColor.CGColor);
+    if (isSelected) {
+        self.cureentIndexPath = indexPath;
+        [collectionView scrollToItemAtIndexPath:indexPath
+                               atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                        animated:NO];
+    }
+    [cell setSelected:isSelected];
+    return cell;
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(0, 15, 0, 15);
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(64, collectionView.height);
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 15;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 0;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:self.cureentIndexPath];
+    [cell setSelected:NO];
+    self.cureentIndexPath = indexPath;
+    
+    [collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+    
+     UIColor *cellColor =  [self.bgColors safeObjectAtIndex:indexPath.row];
+    IR_READER_CONFIG.readerBgColor = cellColor;
+    if ([self.delegate respondsToSelector:@selector(readerBackgroundSelectViewDidSelectBackgroundColor:)]) {
+        [self.delegate readerBackgroundSelectViewDidSelectBackgroundColor:cellColor];
     }
 }
 
