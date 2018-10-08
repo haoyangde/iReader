@@ -31,7 +31,7 @@
 {
     [super layoutSubviews];
     
-    self.titleLabel.frame = CGRectMake(10, 0, 200, self.height);
+    self.titleLabel.frame = CGRectMake(10, 0, self.width * 0.5, self.height);
     self.bottomLine.frame = CGRectMake(0, self.height - 0.7, self.width, 0.7);
 }
 

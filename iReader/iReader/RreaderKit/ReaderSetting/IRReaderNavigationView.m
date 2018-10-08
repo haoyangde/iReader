@@ -45,7 +45,9 @@
 
 - (void)onMoreSettingButtonClicked
 {
-    
+    if ([self.actionDelegate respondsToSelector:@selector(readerNavigationViewDidClickMoreSettingButton:)]) {
+        [self.actionDelegate readerNavigationViewDidClickMoreSettingButton:self];
+    }
 }
 
 - (void)onChapterListClicked

@@ -10,16 +10,21 @@
 
 #define IR_READER_CONFIG [IRReaderConfig sharedInstance]
 
-typedef NS_ENUM(NSUInteger, ReaderPageNavigationOrientation) {
-    ReaderPageNavigationOrientationHorizontal,
-    ReaderPageNavigationOrientationVertical
+typedef NS_ENUM(NSUInteger, IRPageTransitionStyle) {
+    IRPageTransitionStylePageCurl = 0, // 仿真
+    IRPageTransitionStyleScroll   = 1  // 简约
+    
+};
+
+typedef NS_ENUM(NSUInteger, IRPageNavigationOrientation) {
+    IRPageNavigationOrientationHorizontal,
+    IRPageNavigationOrientationVertical
 };
 
 @interface IRReaderConfig : NSObject
 
 + (instancetype)sharedInstance;
 
-@property (nonatomic, assign, readonly) ReaderPageNavigationOrientation readerPageNavigationOrientation;
 @property (nonatomic, assign, readonly) UIEdgeInsets pageInsets;
 @property (nonatomic, assign, readonly) CGFloat verticalInset;
 @property (nonatomic, assign, readonly) CGFloat horizontalInset;
@@ -32,6 +37,8 @@ typedef NS_ENUM(NSUInteger, ReaderPageNavigationOrientation) {
 
 #pragma mark - Custom
 
+@property (nonatomic, assign) IRPageTransitionStyle transitionStyle;
+@property (nonatomic, assign) IRPageNavigationOrientation navigationOrientation;
 @property (nonatomic, assign) BOOL isNightMode;
 @property (nonatomic, strong) NSString *fontFamily;
 @property (nonatomic, strong) NSString *fontName;
@@ -51,7 +58,6 @@ typedef NS_ENUM(NSUInteger, ReaderPageNavigationOrientation) {
 /// default 2 char
 @property (nonatomic, assign) CGFloat firstLineHeadIndent;
 
-- (void)updateReaderPageNavigationOrientation:(ReaderPageNavigationOrientation)orientation;
 - (UIColor *)readerTextColorWithBgColor:(UIColor *)bgColor;
 
 @end

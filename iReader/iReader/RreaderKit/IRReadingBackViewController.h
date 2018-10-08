@@ -10,6 +10,6 @@
 
 @interface IRReadingBackViewController : IRBaseViewController
 
-- (void)updateWithViewController:(UIViewController *)viewController;
+- (void)updateWithViewController:(UIViewController *)viewController needRotation:(BOOL)flag;
 
 @end

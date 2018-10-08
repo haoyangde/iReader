@@ -1,18 +1,17 @@
 //
-//  IRReaderMoreSettingViewController.m
+//  IRPagingTypeSelectViewController.m
 //  iReader
 //
-//  Created by zzyong on 2018/9/28.
+//  Created by zzyong on 2018/10/8.
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "IRReaderMoreSettingViewController.h"
+#import "IRPagingTypeSelectViewController.h"
 #import "IRSettingModel.h"
 #import "IRSettingSectionModel.h"
-#import "IRTextSettingCell.h"
-#import "IRPagingTypeSelectViewController.h"
+#import "IRPagingTypeSelectCell.h"
 
-@interface IRReaderMoreSettingViewController ()
+@interface IRPagingTypeSelectViewController ()
 <
 UICollectionViewDelegateFlowLayout,
 UICollectionViewDataSource
@@ -23,7 +22,7 @@ UICollectionViewDataSource
 
 @end
 
-@implementation IRReaderMoreSettingViewController
+@implementation IRPagingTypeSelectViewController
 
 - (void)viewDidLoad
 {
@@ -62,8 +61,8 @@ UICollectionViewDataSource
 {
     IRSettingSectionModel *sectionModel = [self.settingInfos safeObjectAtIndex:indexPath.section];
     IRSettingModel *settingModel = [sectionModel.items safeObjectAtIndex:indexPath.row];
-    if (settingModel.cellType == IRSettingCellTypeText) {
-        IRTextSettingCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRTextSettingCell" forIndexPath:indexPath];
+    if (settingModel.cellType == IRSettingCellTypeDefault) {
+        IRPagingTypeSelectCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRPagingTypeSelectCell" forIndexPath:indexPath];
         cell.settingModel = settingModel;
         return cell;
     } else {
@@ -118,41 +117,47 @@ UICollectionViewDataSource
     __weak typeof(self) weakSelf = self;
     
     IRSettingSectionModel *commonSection = [[IRSettingSectionModel alloc] init];
-    IRSettingModel *pagingType = [[IRSettingModel alloc] init];
-    pagingType.title = @"翻页方式";
-    if (IR_READER_CONFIG.transitionStyle == IRPageTransitionStyleScroll) {
-        pagingType.rightText = @"简约 >";
-    } else {
-        pagingType.rightText = @"仿真 >";
-    }
-    
-    pagingType.cellType = IRSettingCellTypeText;
-    pagingType.clickedHandler = ^{
-        [weakSelf onPagingTypeCellClicked];
+    IRSettingModel *scroll = [[IRSettingModel alloc] init];
+    scroll.title = @"简约";
+    scroll.isSelected = (IR_READER_CONFIG.transitionStyle == IRPageTransitionStyleScroll);
+    scroll.clickedHandler = ^{
+        [weakSelf onScrollTypeCellClicked];
     };
     
-    commonSection.items = @[pagingType];
+    IRSettingModel *paging = [[IRSettingModel alloc] init];
+    paging.title = @"仿真";
+    paging.isSelected = (IR_READER_CONFIG.transitionStyle == IRPageTransitionStylePageCurl);
+    paging.clickedHandler = ^{
+        [weakSelf onPageCurlTypeCellClicked];
+    };
     
+    commonSection.items = @[paging, scroll];
     self.settingInfos = @[commonSection];
-    
-    [self.collectionView reloadData];
 }
 
-- (void)onPagingTypeCellClicked
+- (void)onScrollTypeCellClicked
 {
-    IRPagingTypeSelectViewController *vc = [[IRPagingTypeSelectViewController alloc] init];
-    __weak typeof(self) weakSelf = self;
-    vc.selectHandler = ^(IRPageTransitionStyle type) {
-        [weakSelf handleTransitionStyleChangedWithType:type];
-    };
-    [self.navigationController pushViewController:vc animated:YES];
+    if (self.selectHandler) {
+        self.selectHandler(IRPageTransitionStyleScroll);
+    }
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)onPageCurlTypeCellClicked
+{
+    if (self.selectHandler) {
+        self.selectHandler(IRPageTransitionStylePageCurl);
+    }
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Private
 
 - (void)commonInit
 {
-    self.title = @"更多设置";
+    self.title = @"翻页方式";
     [self setupSettingInfos];
     [self setupLeftBackBarButton];
     [self setupCollectionView];
@@ -166,10 +171,9 @@ UICollectionViewDataSource
     collectionView.dataSource = self;
     collectionView.delegate   = self;
     collectionView.backgroundColor      = [UIColor whiteColor];
-    collectionView.alwaysBounceVertical = YES;
     collectionView.showsVerticalScrollIndicator = NO;
     
-    [collectionView registerClass:[IRTextSettingCell class] forCellWithReuseIdentifier:@"IRTextSettingCell"];
+    [collectionView registerClass:[IRPagingTypeSelectCell class] forCellWithReuseIdentifier:@"IRPagingTypeSelectCell"];
     [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"defaultCell"];
     [collectionView registerClass:[UICollectionReusableView class]
        forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
@@ -180,16 +184,6 @@ UICollectionViewDataSource
     
     [self.view addSubview:collectionView];
     self.collectionView = collectionView;
-}
-
-- (void)handleTransitionStyleChangedWithType:(IRPageTransitionStyle)transitionStyle
-{
-    IR_READER_CONFIG.transitionStyle = transitionStyle;
-    [self setupSettingInfos];
-    
-    if ([self.delegate respondsToSelector:@selector(readerMoreSettingViewControllerDidChangedTransitionStyle:)]) {
-        [self.delegate readerMoreSettingViewControllerDidChangedTransitionStyle:transitionStyle];
-    }
 }
 
 @end

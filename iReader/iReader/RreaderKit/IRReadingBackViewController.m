@@ -33,19 +33,24 @@
     self.imageView.frame = self.view.bounds;
 }
 
-- (void)updateWithViewController:(UIViewController *)viewController
+- (void)updateWithViewController:(UIViewController *)viewController needRotation:(BOOL)flag
 {
     CGRect rect = viewController.view.bounds;
     UIGraphicsBeginImageContextWithOptions(rect.size, YES, 0.0f);
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    CGAffineTransform transform = CGAffineTransformMake(-1.0, 0.0, 0.0, 1.0, rect.size.width, 0.0);
+    CGAffineTransform transform = CGAffineTransformMake(-1.0, 0.0, 0.0, 1.0, rect.size.width, 0);
+    
     CGContextConcatCTM(context,transform);
     [viewController.view.layer renderInContext:context];
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     self.imageView.image = image;
+    
+    if (flag) {
+        self.imageView.transform = CGAffineTransformMakeRotation(M_PI);
+    }
 }
 
 @end

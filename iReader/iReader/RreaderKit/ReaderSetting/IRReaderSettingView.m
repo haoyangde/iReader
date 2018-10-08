@@ -103,6 +103,7 @@
     
     btn.selected = YES;
     self.horizontalBtn.selected = NO;
+    IR_READER_CONFIG.navigationOrientation = IRPageNavigationOrientationVertical;
     
     if ([self.delegate respondsToSelector:@selector(readerSettingViewDidClickVerticalButton:)]) {
         [self.delegate readerSettingViewDidClickVerticalButton:self];
@@ -117,6 +118,7 @@
     
     btn.selected = YES;
     self.verticalBtn.selected = NO;
+    IR_READER_CONFIG.navigationOrientation = IRPageNavigationOrientationHorizontal;
     
     if ([self.delegate respondsToSelector:@selector(readerSettingViewDidClickHorizontalButton:)]) {
         [self.delegate readerSettingViewDidClickHorizontalButton:self];
@@ -362,7 +364,7 @@
         make.left.equalTo(self.pageOrientationView.mas_centerX);
     }];
     
-    if (ReaderPageNavigationOrientationHorizontal == IR_READER_CONFIG.readerPageNavigationOrientation) {
+    if (UIPageViewControllerNavigationOrientationHorizontal == IR_READER_CONFIG.navigationOrientation) {
         self.horizontalBtn.selected = YES;
     } else {
         self.verticalBtn.selected = YES;

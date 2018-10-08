@@ -11,6 +11,7 @@
 #import "IRPageViewController.h"
 #import "IRReadingViewController.h"
 #import "IRReadingBackViewController.h"
+#import "IRReaderMoreSettingViewController.h"
 
 // view
 #import "IRReaderNavigationView.h"
@@ -34,7 +35,8 @@ IRReaderNavigationViewDelegate,
 UIScrollViewDelegate,
 BookChapterListControllerDelegate,
 ReaderSettingViewDeletage,
-UIGestureRecognizerDelegate
+UIGestureRecognizerDelegate,
+IRReaderMoreSettingViewControllerDelegate
 >
 
 @property (nonatomic, strong) dispatch_queue_t chapter_parse_serial_queue;
@@ -57,7 +59,6 @@ UIGestureRecognizerDelegate
 @property (nonatomic, assign) NSUInteger chapterSelectIndex;
 @property (nonatomic, assign) NSUInteger pageSelectIndex;
 @property (nonatomic, weak) IRReaderSettingView *readerSettingView;
-@property (nonatomic, assign) BOOL changeNavigationOrientationByUser;
 
 @end
 
@@ -212,24 +213,24 @@ UIGestureRecognizerDelegate
 
 - (void)setupPageViewController
 {
-    UIPageViewControllerNavigationOrientation orientation = UIPageViewControllerNavigationOrientationHorizontal;
-    if (ReaderPageNavigationOrientationVertical == IR_READER_CONFIG.readerPageNavigationOrientation) {
-        orientation = UIPageViewControllerNavigationOrientationVertical;
+    if (IR_READER_CONFIG.transitionStyle == IRPageTransitionStylePageCurl) {
+        UIPageViewControllerNavigationOrientation navigationOrientation = UIPageViewControllerNavigationOrientationHorizontal;
+        if (IR_READER_CONFIG.navigationOrientation == IRPageNavigationOrientationVertical) {
+            navigationOrientation = UIPageViewControllerNavigationOrientationVertical;
+        }
+        [self updatePageCurlViewControllerWithOrientation:navigationOrientation];
+    } else {
+        
     }
-    [self updatePageViewControllerWithNavigationOrientation:orientation
-                                            transitionStyle:UIPageViewControllerTransitionStylePageCurl];
 }
 
-- (void)updatePageViewControllerWithNavigationOrientation:(UIPageViewControllerNavigationOrientation)orientation
-                                          transitionStyle:(UIPageViewControllerTransitionStyle)transitionStyle
+- (void)updatePageCurlViewControllerWithOrientation:(UIPageViewControllerNavigationOrientation)orientation
 {
-    IRPageViewController *pageViewController = [[IRPageViewController alloc] initWithTransitionStyle:transitionStyle
-                                                                               navigationOrientation:orientation
-                                                                                             options:nil];
+    IRPageViewController *pageViewController = [[IRPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStylePageCurl navigationOrientation:orientation options:nil];
     pageViewController.delegate = self;
     pageViewController.dataSource = self;
     pageViewController.view.backgroundColor = [UIColor clearColor];
-     pageViewController.doubleSided = (UIPageViewControllerTransitionStylePageCurl == transitionStyle);
+    pageViewController.doubleSided = YES;
     if (pageViewController.scrollView) {
         pageViewController.scrollView.delegate = self;
     }
@@ -244,13 +245,12 @@ UIGestureRecognizerDelegate
     [pageViewController didMoveToParentViewController:self];
     [self.view addSubview:pageViewController.view];
     
-    if (self.changeNavigationOrientationByUser && self.readerSettingView) {
+    if ([self currentReadingViewController] && self.readerSettingView) {
         [self.view bringSubviewToFront:self.readerSettingView];
     }
     
     IRReadingViewController *readVc = nil;
-    if (self.changeNavigationOrientationByUser) {
-        self.changeNavigationOrientationByUser = NO;
+    if ([self currentReadingViewController]) {
         readVc = [self currentReadingViewController];
         self.pageViewController.gestureRecognizerShouldBegin = YES;
     } else {
@@ -388,18 +388,12 @@ UIGestureRecognizerDelegate
 
 - (void)readerSettingViewDidClickVerticalButton:(IRReaderSettingView *)readerSettingView
 {
-    self.changeNavigationOrientationByUser = YES;
-    [IR_READER_CONFIG updateReaderPageNavigationOrientation:ReaderPageNavigationOrientationVertical];
-    [self updatePageViewControllerWithNavigationOrientation:UIPageViewControllerNavigationOrientationVertical
-                                            transitionStyle:UIPageViewControllerTransitionStylePageCurl];
+    [self updatePageCurlViewControllerWithOrientation:UIPageViewControllerNavigationOrientationVertical];
 }
 
 - (void)readerSettingViewDidClickHorizontalButton:(IRReaderSettingView *)readerSettingView
 {
-    self.changeNavigationOrientationByUser = YES;
-    [IR_READER_CONFIG updateReaderPageNavigationOrientation:ReaderPageNavigationOrientationHorizontal];
-    [self updatePageViewControllerWithNavigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
-                                            transitionStyle:UIPageViewControllerTransitionStylePageCurl];
+    [self updatePageCurlViewControllerWithOrientation:UIPageViewControllerNavigationOrientationHorizontal];
 }
 
 - (void)readerSettingViewDidChangedTextSizeMultiplier:(CGFloat)textSizeMultiplier
@@ -462,6 +456,20 @@ UIGestureRecognizerDelegate
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)readerNavigationViewDidClickMoreSettingButton:(IRReaderNavigationView *)aView
+{
+    IRReaderMoreSettingViewController *vc = [[IRReaderMoreSettingViewController alloc] init];
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - IRReaderMoreSettingViewControllerDelegate
+
+- (void)readerMoreSettingViewControllerDidChangedTransitionStyle:(IRPageTransitionStyle)transitionStyle
+{
+    
+}
+
 #pragma mark - UIPageViewController ScrollView
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -490,62 +498,6 @@ UIGestureRecognizerDelegate
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers
 {
     self.pageViewController.gestureRecognizerShouldBegin = NO;
-
-    if (UIPageViewControllerTransitionStyleScroll == pageViewController.transitionStyle) {
-        
-        IRReadingViewController *pending = (IRReadingViewController *)pendingViewControllers.firstObject;
-        IRPageModel *nextPage = nil;
-        NSUInteger pageIndex  = self.currentPage.pageIndex;
-        NSUInteger chapterIndex = self.currentPage.chapterIndex;
-        
-        if (self.isScrollToNext) {
-
-            IRChapterModel *currentChapter = [self.chapters safeObjectAtIndex:chapterIndex];
-            if (pageIndex < currentChapter.pages.count - 1) {
-                pageIndex++;
-                nextPage = [currentChapter.pages safeObjectAtIndex:pageIndex];
-            } else {
-                if (chapterIndex < self.chapterCount - 1) {
-                    chapterIndex++;
-                    IRChapterModel *chapter = [self.chapters safeObjectAtIndex:chapterIndex];
-                    if ([chapter isKindOfClass:[NSNull class]]) {
-                        self.reloadDataIfNeeded = YES;
-                        [self parseTocRefrenceToChapterModel:[self.book.flatTableOfContents safeObjectAtIndex:chapterIndex]
-                                                    atIndext:chapterIndex pendingReloadReadingVc:pending toBefore:NO];
-                    } else {
-                        nextPage = chapter.pages.firstObject;
-                    }
-                }
-            }
-        } else {
-
-            IRChapterModel *chapter = nil;
-            if (pageIndex > 0) {
-                pageIndex--;
-                chapter = [self.chapters safeObjectAtIndex:chapterIndex];
-                nextPage = [chapter.pages safeObjectAtIndex:pageIndex];
-            } else {
-
-                if (chapterIndex > 0) {
-                    chapterIndex--;
-                    chapter = [self.chapters safeObjectAtIndex:chapterIndex];
-                    if ([chapter isKindOfClass:[NSNull class]]) {
-                        self.reloadDataIfNeeded = YES;
-                        [self parseTocRefrenceToChapterModel:[self.book.flatTableOfContents safeObjectAtIndex:chapterIndex]
-                                                    atIndext:chapterIndex pendingReloadReadingVc:pending toBefore:YES];
-                    } else {
-                        nextPage = chapter.pages.lastObject;
-                    }
-                }
-            }
-        }
-        
-        if (nextPage) {
-            self.nextPage = nextPage;
-        }
-        pending.pageModel = nextPage;
-    }
-    
     IRDebugLog(@"pageViewController childViewControllers: %@ pendingViewControllers: %@", pageViewController.childViewControllers, pendingViewControllers);
 }
 
@@ -579,41 +531,35 @@ UIGestureRecognizerDelegate
     IRChapterModel *chapter = nil;
     IRReadingViewController *beforeReadVc = nil;
     
-    if (UIPageViewControllerTransitionStylePageCurl == pageViewController.transitionStyle) {
+    if ([viewController isKindOfClass:[IRReadingViewController class]]) {
+        self.currentReadingViewController = (IRReadingViewController *)viewController;
+        NSUInteger pageIndex = self.currentReadingViewController.pageModel.pageIndex;
+        NSUInteger chapterIndex = self.currentReadingViewController.pageModel.chapterIndex;
         
-        if ([viewController isKindOfClass:[IRReadingViewController class]]) {
-            self.currentReadingViewController = (IRReadingViewController *)viewController;
-            NSUInteger pageIndex = self.currentReadingViewController.pageModel.pageIndex;
-            NSUInteger chapterIndex = self.currentReadingViewController.pageModel.chapterIndex;
+        if (pageIndex > 0) {
+            pageIndex--;
+            chapter = [self.chapters safeObjectAtIndex:chapterIndex];
+            beforePage = [chapter.pages safeObjectAtIndex:pageIndex];
+        } else {
             
-            if (pageIndex > 0) {
-                pageIndex--;
+            if (chapterIndex > 0) {
+                chapterIndex--;
                 chapter = [self.chapters safeObjectAtIndex:chapterIndex];
-                beforePage = [chapter.pages safeObjectAtIndex:pageIndex];
-            } else {
-                
-                if (chapterIndex > 0) {
-                    chapterIndex--;
-                    chapter = [self.chapters safeObjectAtIndex:chapterIndex];
-                    if (![chapter isKindOfClass:[NSNull class]]) {
-                        beforePage = chapter.pages.lastObject;
-                    }
+                if (![chapter isKindOfClass:[NSNull class]]) {
+                    beforePage = chapter.pages.lastObject;
                 }
             }
-            
-            beforeReadVc = [self readingViewControllerWithPageModel:beforePage creatIfNoExist:YES];
-            if (!beforePage) {
-                [beforeReadVc dismissChapterLoadingHUD];
-            }
-            
-            IRReadingBackViewController *backViewController = [[IRReadingBackViewController alloc] init];
-            backViewController.view.frame = pageViewController.view.bounds;
-            [backViewController updateWithViewController:beforeReadVc];
-            return backViewController;
         }
         
-    } else {
-        self.currentReadingViewController = (IRReadingViewController *)viewController;
+        beforeReadVc = [self readingViewControllerWithPageModel:beforePage creatIfNoExist:YES];
+        if (!beforePage) {
+            [beforeReadVc dismissChapterLoadingHUD];
+        }
+        
+        IRReadingBackViewController *backViewController = [[IRReadingBackViewController alloc] init];
+        backViewController.view.frame = pageViewController.view.bounds;
+        [backViewController updateWithViewController:beforeReadVc needRotation:(IR_READER_CONFIG.navigationOrientation == IRPageNavigationOrientationVertical)];
+        return backViewController;
     }
     
     NSUInteger pageIndex = self.currentReadingViewController.pageModel.pageIndex;
@@ -638,7 +584,7 @@ UIGestureRecognizerDelegate
         }
     }
     
-    if (beforePage && UIPageViewControllerTransitionStylePageCurl == pageViewController.transitionStyle) {
+    if (beforePage) {
         self.currentPage = beforePage;
     }
     
@@ -654,18 +600,13 @@ UIGestureRecognizerDelegate
 
 - (nullable UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
-    if (UIPageViewControllerTransitionStylePageCurl == pageViewController.transitionStyle) {
-        if ([viewController isKindOfClass:[IRReadingViewController class]]) {
-            self.currentReadingViewController  = (IRReadingViewController *)viewController;
-            IRReadingBackViewController *backViewController = [[IRReadingBackViewController alloc] init];
-            backViewController.view.frame = pageViewController.view.bounds;
-            [backViewController updateWithViewController:viewController];
-            return backViewController;
-        }
-    } else {
+    if ([viewController isKindOfClass:[IRReadingViewController class]]) {
         self.currentReadingViewController  = (IRReadingViewController *)viewController;
+        IRReadingBackViewController *backViewController = [[IRReadingBackViewController alloc] init];
+        backViewController.view.frame = pageViewController.view.bounds;
+        [backViewController updateWithViewController:viewController needRotation:(IR_READER_CONFIG.navigationOrientation == IRPageNavigationOrientationVertical)];
+        return backViewController;
     }
-    
     
     IRPageModel *afterPage = nil;
     IRReadingViewController *afterReadVc = nil;
@@ -690,7 +631,7 @@ UIGestureRecognizerDelegate
         }
     }
     
-    if (afterPage && UIPageViewControllerTransitionStylePageCurl == pageViewController.transitionStyle) {
+    if (afterPage) {
         self.currentPage = afterPage;
     }
     

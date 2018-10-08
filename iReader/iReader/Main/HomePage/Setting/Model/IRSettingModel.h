@@ -11,6 +11,7 @@
 typedef void(^IRSettingCellClickedHandler)(void);
 
 typedef NS_ENUM(NSUInteger, IRSettingCellType) {
+    IRSettingCellTypeDefault,
     IRSettingCellTypeArrow,
     IRSettingCellTypeSwitch,
     IRSettingCellTypeText
@@ -24,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *rightText;
 @property (nonatomic, assign) IRSettingCellType cellType;
 @property (nonatomic, assign) NSUInteger modelId;
+@property (nonatomic, assign) BOOL isSelected;
 @property (nonatomic, strong) IRSettingCellClickedHandler clickedHandler;
 
 // Switch

@@ -15,6 +15,7 @@ static NSString * const kReaderTextColor = @"kReaderTextColor";
 static NSString * const kReaderBgImg     = @"kReaderBgImg";
 static NSString * const kReaderPageNavigationOrientation = @"kReaderPageNavigationOrientation";
 static NSString * const kReaderTextSizeMultiplier        = @"kReaderTextSizeMultiplier";
+static NSString * const kPagingTypeSelectCacheKey        = @"kPagingTypeSelectCacheKey";
 
 static CGFloat kReaderDefaultTextFontSize = 16;
 
@@ -59,13 +60,14 @@ static CGFloat kReaderDefaultTextFontSize = 16;
     CGFloat top = IS_IPHONEX_SERIES ? 40 : 20;
     CGFloat bottom = IS_IPHONEX_SERIES ? 30 : 20;
     _pageInsets = UIEdgeInsetsMake(top, 20, bottom, 20);
+    _transitionStyle = [[[IRCacheManager sharedInstance] objectForKey:kPagingTypeSelectCacheKey] integerValue];
+    _navigationOrientation = [[[IRCacheManager sharedInstance] objectForKey:kReaderPageNavigationOrientation] integerValue];
     _isNightMode = [[NSUserDefaults standardUserDefaults] boolForKey:kReaderNightMode];
     _nightModeBgColor = [UIColor hx_colorWithHexString:@"#1E1E1E"];
     _nightModeTextColor = [UIColor hx_colorWithHexString:@"#767676"];
     _defaultBgColor = [UIColor whiteColor];
     _defaultTextColor = [UIColor blackColor];
     _readerBgImg = [[IRCacheManager sharedInstance] objectForKey:kReaderBgImg];
-    _readerPageNavigationOrientation = [[NSUserDefaults standardUserDefaults] integerForKey:kReaderPageNavigationOrientation];
     _verticalInset = _pageInsets.top + _pageInsets.bottom;
     _horizontalInset = _pageInsets.left + _pageInsets.right;
     _pageSize = CGSizeMake([IRUIUtilites UIScreenMinWidth] - _horizontalInset, [IRUIUtilites UIScreenMaxHeight] - _verticalInset);
@@ -123,15 +125,11 @@ static CGFloat kReaderDefaultTextFontSize = 16;
     return [self.bgColorToTextColor safeObjectForKey:bgColor];
 }
 
-- (void)updateReaderPageNavigationOrientation:(ReaderPageNavigationOrientation)orientation
+- (void)setNavigationOrientation:(IRPageNavigationOrientation)navigationOrientation
 {
-    if (orientation == self.readerPageNavigationOrientation) {
-        return;
-    }
+    _navigationOrientation = navigationOrientation;
     
-    _readerPageNavigationOrientation = orientation;
-    [[NSUserDefaults standardUserDefaults] setInteger:orientation forKey:kReaderPageNavigationOrientation];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[IRCacheManager sharedInstance] asyncSetObject:@(navigationOrientation) forKey:kReaderPageNavigationOrientation];
 }
 
 - (void)setIsNightMode:(BOOL)isNightMode
@@ -212,6 +210,13 @@ static CGFloat kReaderDefaultTextFontSize = 16;
     
     [[NSUserDefaults standardUserDefaults] setDouble:textSizeMultiplier forKey:kReaderTextSizeMultiplier];
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)setTransitionStyle:(IRPageTransitionStyle)transitionStyle
+{
+    _transitionStyle = transitionStyle;
+    
+    [[IRCacheManager sharedInstance] asyncSetObject:@(transitionStyle) forKey:kPagingTypeSelectCacheKey];
 }
 
 @end

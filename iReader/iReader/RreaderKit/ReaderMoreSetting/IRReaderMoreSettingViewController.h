@@ -8,9 +8,17 @@
 
 #import "IRBaseViewController.h"
 
+@protocol IRReaderMoreSettingViewControllerDelegate <NSObject>
+
+- (void)readerMoreSettingViewControllerDidChangedTransitionStyle:(IRPageTransitionStyle)transitionStyle;
+
+@end
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface IRReaderMoreSettingViewController : IRBaseViewController
+
+@property (nonatomic, weak) id<IRReaderMoreSettingViewControllerDelegate> delegate;
 
 @end
 
