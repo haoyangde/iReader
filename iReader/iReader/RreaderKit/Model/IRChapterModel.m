@@ -101,10 +101,9 @@
     
     while (pageOffset <= htmlString.length && pageOffset != 0) {
         
-        IRPageModel *pageModel = [[IRPageModel alloc] init];
+        IRPageModel *pageModel = [IRPageModel modelWithPageIdx:pageCount - 1 chapterIdx:chapterIndex];
+        pageModel.isParsed = YES;
         pageModel.content = [htmlString attributedSubstringFromRange:visibleRange];
-        pageModel.pageIndex = pageCount - 1;
-        pageModel.chapterIndex = chapterIndex;
         
         __block BOOL nextPageNeedFirstLineHeadIndent = YES;
         [layoutFrame.paragraphRanges enumerateObjectsUsingBlock:^(NSValue  *_Nonnull rangeValue, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -132,6 +131,10 @@
         }
         
         pageCount++;
+        if ([pageModel.content.string isEqualToString:@"\n"]) {
+            continue;
+        }
+        
         [pages addObject:pageModel];
     }
     

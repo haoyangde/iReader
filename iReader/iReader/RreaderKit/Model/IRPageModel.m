@@ -18,4 +18,13 @@
     return model;
 }
 
++ (instancetype)modelWithPageIdx:(NSUInteger)page chapterIdx:(NSUInteger)chapter
+{
+    IRPageModel *model = [[self alloc] init];
+    model.pageIndex = page;
+    model.chapterIndex = chapter;
+    
+    return model;
+}
+
 @end

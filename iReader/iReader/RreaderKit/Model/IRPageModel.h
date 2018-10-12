@@ -13,7 +13,9 @@
 @property (nonatomic, strong) NSAttributedString *content;
 @property (nonatomic, assign) NSUInteger pageIndex;
 @property (nonatomic, assign) NSUInteger chapterIndex;
+@property (nonatomic, assign) BOOL isParsed;
 
 + (instancetype)modelWithContent:(NSAttributedString *)content;
++ (instancetype)modelWithPageIdx:(NSUInteger)page chapterIdx:(NSUInteger)chapter;
 
 @end

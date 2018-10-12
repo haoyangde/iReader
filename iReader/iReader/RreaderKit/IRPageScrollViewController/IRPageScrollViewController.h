@@ -8,6 +8,19 @@
 
 #import "IRBaseViewController.h"
 
+@class IRPageScrollViewController;
+
+@protocol IRPageScrollViewControllerDataSource <NSObject>
+
+@required
+
+- (nullable UIViewController *)pageScrollViewController:(IRPageScrollViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController;
+- (nullable UIViewController *)pageScrollViewController:(IRPageScrollViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController;
+
+@end
+
 @interface IRPageScrollViewController : IRBaseViewController
+
+@property (nonatomic, weak) id <IRPageScrollViewControllerDataSource> dataSource;
 
 @end

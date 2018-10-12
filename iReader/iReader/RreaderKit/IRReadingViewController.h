@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@class IRPageModel;
+@class IRPageModel, IRChapterModel;
 
 @interface IRReadingViewController : UIViewController
 
 @property (nonatomic, strong) IRPageModel *pageModel;
 
+- (void)setChapterModel:(IRChapterModel *)chapter currentPageModel:(IRPageModel *)page;
 - (void)showChapterLoadingHUD;
 - (void)dismissChapterLoadingHUD;
 

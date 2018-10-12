@@ -56,9 +56,13 @@ static CGFloat kReaderDefaultTextFontSize = 16;
 
 - (void)commonInit
 {
-    CGFloat top = IS_IPHONEX_SERIES ? 40 : 20;
-    CGFloat bottom = IS_IPHONEX_SERIES ? 30 : 20;
+    CGFloat top = IS_IPHONEX_SERIES ? SAFE_EDGE_INSETS.top + 15 : 35;
+    CGFloat bottom = IS_IPHONEX_SERIES ? SAFE_EDGE_INSETS.bottom + 15 : 35;
     _pageInsets = UIEdgeInsetsMake(top, 20, bottom, 20);
+    _verticalInset = _pageInsets.top + _pageInsets.bottom;
+    _horizontalInset = _pageInsets.left + _pageInsets.right;
+    _pageSize = CGSizeMake([IRUIUtilites UIScreenMinWidth] - _horizontalInset, [IRUIUtilites UIScreenMaxHeight] - _verticalInset);
+    
     _transitionStyle = [[[IRCacheManager sharedInstance] objectForKey:kPagingTypeSelectCacheKey] integerValue];
     _navigationOrientation = [[[IRCacheManager sharedInstance] objectForKey:kReaderPageNavigationOrientation] integerValue];
     _isNightMode = [[NSUserDefaults standardUserDefaults] boolForKey:kReaderNightMode];
@@ -67,9 +71,6 @@ static CGFloat kReaderDefaultTextFontSize = 16;
     _defaultBgColor = [UIColor whiteColor];
     _defaultTextColor = [UIColor blackColor];
     _readerBgImg = [[IRCacheManager sharedInstance] objectForKey:kReaderBgImg];
-    _verticalInset = _pageInsets.top + _pageInsets.bottom;
-    _horizontalInset = _pageInsets.left + _pageInsets.right;
-    _pageSize = CGSizeMake([IRUIUtilites UIScreenMinWidth] - _horizontalInset, [IRUIUtilites UIScreenMaxHeight] - _verticalInset);
     _textSizeMultiplier = [[NSUserDefaults standardUserDefaults] doubleForKey:kReaderTextSizeMultiplier] ?: 1;
     _textFontSize =  _textSizeMultiplier * kReaderDefaultTextFontSize;
     _textDefaultFontSize = kReaderDefaultTextFontSize;

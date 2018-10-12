@@ -11,6 +11,7 @@
 #define APP_THEME_COLOR    [IRUIUtilites appThemeColor]
 #define IS_IPHONEX_SERIES  [IRUIUtilites isIPhoneXSeries]
 #define SCREEN_MIN_WIDTH   [IRUIUtilites UIScreenMinWidth]
+#define SAFE_EDGE_INSETS   [IRUIUtilites safeEdgeInsets]
 
 @interface IRUIUtilites : NSObject
 
@@ -25,5 +26,7 @@
 + (CGFloat)UIScreenMaxHeight;
 
 + (BOOL)isIPhoneXSeries;
+
++ (UIEdgeInsets)safeEdgeInsets;
 
 @end

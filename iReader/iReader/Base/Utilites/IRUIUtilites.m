@@ -73,13 +73,23 @@ static inline BOOL isIPhoneXSeries()
     dispatch_once(&onceToken, ^{
         if (@available(iOS 11.0, *)) {
             UIWindow *mainWindow = [[[UIApplication sharedApplication] delegate] window];
-            if (mainWindow.safeAreaInsets.top > 0.0) {
+            if ((mainWindow.safeAreaInsets.top > 0.0 && mainWindow.safeAreaInsets.bottom > 0.0) ||
+                (mainWindow.safeAreaInsets.left > 0.0 && mainWindow.safeAreaInsets.right > 0.0)) {
                 iPhoneXSeries = YES;
             }
         }
     });
     
     return iPhoneXSeries;
+}
+
++ (UIEdgeInsets)safeEdgeInsets
+{
+    if (@available(iOS 11.0, *)) {
+        return [[[UIApplication sharedApplication] delegate] window].safeAreaInsets;
+    } else {
+        return UIEdgeInsetsZero;
+    }
 }
 
 @end

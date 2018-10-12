@@ -6,9 +6,9 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "IRBaseViewController.h"
+#import <UIKit/UIKit.h>
 
-@interface IRReadingBackViewController : IRBaseViewController
+@interface IRReadingBackViewController : UIViewController
 
 - (void)updateWithViewController:(UIViewController *)viewController needRotation:(BOOL)flag;
 

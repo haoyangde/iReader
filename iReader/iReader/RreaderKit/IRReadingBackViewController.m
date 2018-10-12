@@ -35,6 +35,10 @@
 
 - (void)updateWithViewController:(UIViewController *)viewController needRotation:(BOOL)flag
 {
+    if (!viewController) {
+        return;
+    }
+    
     CGRect rect = viewController.view.bounds;
     UIGraphicsBeginImageContextWithOptions(rect.size, YES, 0.0f);
     CGContextRef context = UIGraphicsGetCurrentContext();
