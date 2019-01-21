@@ -47,8 +47,6 @@ IRReaderMoreSettingViewControllerDelegate
 @property (nonatomic, strong) NSMutableArray *chapters;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
 @property (nonatomic, strong) IRReaderNavigationView *readerNavigationView;
-@property (nonatomic, strong) UINavigationBar *orilNavigationBar;
-@property (nonatomic, assign) BOOL shouldUpdateSettingViewState;
 @property (nonatomic, assign) BOOL fromChapterListView;
 @property (nonatomic, strong) NSMutableArray<IRReadingViewController *> *childViewControllersCache;
 @property (nonatomic, assign) BOOL parseDataIfNeeded;
@@ -79,17 +77,6 @@ IRReaderMoreSettingViewControllerDelegate
     if (self.fromChapterListView) {
         self.fromChapterListView = NO;
         [self updateReaderSettingViewStateWithAnimated:NO completion:nil];
-    }
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    if (self.shouldUpdateSettingViewState) {
-        [self updateReaderSettingViewStateWithAnimated:YES completion:^{
-            self.shouldUpdateSettingViewState = NO;
-        }];
     }
 }
 
@@ -169,10 +156,6 @@ IRReaderMoreSettingViewControllerDelegate
 
 - (void)onSingleTap:(UIGestureRecognizer *)recognizer
 {
-    if (self.shouldUpdateSettingViewState) {
-        return;
-    }
-    
     [self updateReaderSettingViewStateWithAnimated:YES completion:nil];
 }
 
@@ -194,20 +177,12 @@ IRReaderMoreSettingViewControllerDelegate
 - (void)ir_commonInit
 {
     self.view.backgroundColor = [UIColor whiteColor];
-    self.shouldHideStatusBar = NO;
-    self.shouldUpdateSettingViewState = YES;
     [self setupPageViewController];
-    [self setupNavigationbar];
+    
+    [self setupLeftBackBarButton];
+    [self.navigationController setNavigationBarHidden:self.shouldHideStatusBar animated:NO];
+    
     [self setupGestures];
-}
-
-- (void)setupNavigationbar
-{
-    if ([self.navigationController respondsToSelector:@selector(navigationBar)]) {
-        [self.navigationController setValue:self.readerNavigationView forKeyPath:@"navigationBar"];
-    } else {
-        NSAssert(NO, @"UINavigationController does not recognize selector : navigationBar");
-    }
 }
 
 - (void)setupPageViewController
@@ -658,6 +633,7 @@ IRReaderMoreSettingViewControllerDelegate
 {
     if (self = [super init]) {
         self.book = book;
+        self.shouldHideStatusBar = YES;
         self.chapterCount = book.flatTableOfContents.count;
         self.chapter_parse_serial_queue = dispatch_queue_create("ir_chapter_parse_serial_queue", DISPATCH_QUEUE_SERIAL);
     }

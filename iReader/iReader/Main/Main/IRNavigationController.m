@@ -18,7 +18,6 @@
 {
     [super viewDidLoad];
     
-    self.navigationBar.translucent = NO;
     [IRUIUtilites appStatusBarMaxY];
 }
 

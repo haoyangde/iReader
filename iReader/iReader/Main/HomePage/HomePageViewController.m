@@ -146,10 +146,7 @@ UICollectionViewDataSource
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     IRReaderCenterController *mainVc = [[IRReaderCenterController alloc] initWithBook:[self.myBooks objectAtIndex:indexPath.row]];
-    UINavigationController *containerNav = [[UINavigationController alloc] initWithRootViewController:mainVc];
-    containerNav.navigationBarHidden = YES;
-    containerNav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:containerNav animated:YES completion:nil];
+    [self.navigationController pushViewController:mainVc animated:YES];
 }
 
 
