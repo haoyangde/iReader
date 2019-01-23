@@ -64,11 +64,9 @@
 
 - (void)onSingleTap:(UIGestureRecognizer *)recognizer
 {
-    if ([self.delegate respondsToSelector:@selector(readerSettingViewWillDisappear:)]) {
-        [self.delegate readerSettingViewWillDisappear:self];
+    if ([self.delegate respondsToSelector:@selector(readerSettingViewDidClickBackground:)]) {
+        [self.delegate readerSettingViewDidClickBackground:self];
     }
-    
-    [self dismissWithAnimated:YES];
 }
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
@@ -421,12 +419,22 @@
 
 - (void)showInView:(UIView *)targetView animated:(BOOL)animated
 {
+    [self showInView:targetView frame:CGRectNull animated:animated];
+}
+
+- (void)showInView:(UIView *)targetView frame:(CGRect)frame animated:(BOOL)animated
+{
     if (!targetView) {
-        IRDebugLog(@"TargetView is nil");
+        IRDebugLog(@"[IRReaderSettingView] TargetView is nil");
         return;
     }
     
-    self.frame = targetView.bounds;
+    if (CGRectIsNull(frame)) {
+        self.frame = targetView.bounds;
+    } else {
+        self.frame = frame;
+    }
+    
     [targetView addSubview:self];
     
     if (animated) {

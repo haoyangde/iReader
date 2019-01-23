@@ -12,6 +12,7 @@
 #define IS_IPHONEX_SERIES  [IRUIUtilites isIPhoneXSeries]
 #define SCREEN_MIN_WIDTH   [IRUIUtilites UIScreenMinWidth]
 #define SAFE_EDGE_INSETS   [IRUIUtilites safeEdgeInsets]
+#define STATUS_BAR_MAX_Y   [IRUIUtilites appStatusBarMaxY]
 
 @interface IRUIUtilites : NSObject
 

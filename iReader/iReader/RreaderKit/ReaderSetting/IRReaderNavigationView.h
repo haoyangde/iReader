@@ -19,10 +19,8 @@
 
 @end
 
-@interface IRReaderNavigationView : UINavigationBar
+@interface IRReaderNavigationView : UIView
 
 @property (nonatomic, weak) id<IRReaderNavigationViewDelegate> actionDelegate;
-
-- (void)shouldHideAllCustomViews:(BOOL)hidden;
 
 @end

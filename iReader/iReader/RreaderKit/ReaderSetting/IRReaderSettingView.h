@@ -13,12 +13,18 @@
 @protocol ReaderSettingViewDeletage <NSObject>
 
 @optional
-- (void)readerSettingViewWillDisappear:(IRReaderSettingView *)readerSettingView;
+- (void)readerSettingViewDidClickBackground:(IRReaderSettingView *)readerSettingView;
+
 - (void)readerSettingViewDidClickVerticalButton:(IRReaderSettingView *)readerSettingView;
+
 - (void)readerSettingViewDidClickHorizontalButton:(IRReaderSettingView *)readerSettingView;
+
 - (void)readerSettingViewDidChangedTextSizeMultiplier:(CGFloat)textSizeMultiplier;
+
 - (void)readerSettingViewDidClickNightButton:(IRReaderSettingView *)readerSettingView;
+
 - (void)readerSettingViewDidClickSunButton:(IRReaderSettingView *)readerSettingView;
+
 - (void)readerSettingViewDidSelectBackgroundColor:(UIColor *)bgColor;
 
 @end
@@ -29,7 +35,11 @@
 
 + (instancetype)readerSettingView;
 
+// frame is CGRectNull
 - (void)showInView:(UIView *)targetView animated:(BOOL)animated;
+
+- (void)showInView:(UIView *)targetView frame:(CGRect)frame animated:(BOOL)animated;
+
 - (void)dismissWithAnimated:(BOOL)animated;
 
 @end

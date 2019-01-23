@@ -39,6 +39,7 @@ UIGestureRecognizerDelegate,
 IRReaderMoreSettingViewControllerDelegate
 >
 
+@property (nonatomic, assign) CGFloat readerNavigationViewHeight;
 @property (nonatomic, strong) dispatch_queue_t chapter_parse_serial_queue;
 @property (nonatomic, strong) IREpubBook *book;
 @property (nonatomic, strong) IRPageViewController *pageViewController;
@@ -56,7 +57,7 @@ IRReaderMoreSettingViewControllerDelegate
 @property (nonatomic, strong) IRPageModel *nextPage;
 @property (nonatomic, assign) NSUInteger chapterSelectIndex;
 @property (nonatomic, assign) NSUInteger pageSelectIndex;
-@property (nonatomic, weak) IRReaderSettingView *readerSettingView;
+@property (nonatomic, strong) IRReaderSettingView *readerSettingView;
 
 @end
 
@@ -72,7 +73,7 @@ IRReaderMoreSettingViewControllerDelegate
 {
     [super viewWillAppear:animated];
     
-    [self.readerNavigationView shouldHideAllCustomViews:NO];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     if (self.fromChapterListView) {
         self.fromChapterListView = NO;
@@ -84,7 +85,7 @@ IRReaderMoreSettingViewControllerDelegate
 {
     [super viewWillDisappear:animated];
     
-    [self.readerNavigationView shouldHideAllCustomViews:YES];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
 }
 
 - (void)viewDidLayoutSubviews
@@ -96,11 +97,23 @@ IRReaderMoreSettingViewControllerDelegate
 
 #pragma mark - Setter/Getter
 
+- (IRReaderSettingView *)readerSettingView
+{
+    if (!_readerSettingView) {
+        _readerSettingView = [IRReaderSettingView readerSettingView];
+        _readerSettingView.delegate = self;
+    }
+    
+    return _readerSettingView;
+}
+
 - (IRReaderNavigationView *)readerNavigationView
 {
     if (!_readerNavigationView) {
         _readerNavigationView = [[IRReaderNavigationView alloc] init];
+        _readerNavigationView.frame = CGRectMake(0, -_readerNavigationViewHeight, self.view.width, _readerNavigationViewHeight);
         _readerNavigationView.actionDelegate = self;
+        [self.view addSubview:_readerNavigationView];
     }
     
     return _readerNavigationView;
@@ -161,10 +174,6 @@ IRReaderMoreSettingViewControllerDelegate
 
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
-    if (self.readerSettingView && CGRectContainsPoint(self.readerSettingView.frame, [gestureRecognizer locationInView:self.view])) {
-        return NO;
-    }
-    
     if (CGRectContainsPoint(CGRectMake(CGRectGetMidX(self.view.frame) - 50, CGRectGetMidY(self.view.frame) - 100, 100, 200), [gestureRecognizer locationInView:self.view])) {
         return YES;
     }
@@ -176,11 +185,11 @@ IRReaderMoreSettingViewControllerDelegate
 
 - (void)ir_commonInit
 {
+    self.readerNavigationViewHeight = 40 + STATUS_BAR_MAX_Y;
     self.view.backgroundColor = [UIColor whiteColor];
     [self setupPageViewController];
     
-    [self setupLeftBackBarButton];
-    [self.navigationController setNavigationBarHidden:self.shouldHideStatusBar animated:NO];
+    self.navigationItem.hidesBackButton = YES;
     
     [self setupGestures];
 }
@@ -220,6 +229,7 @@ IRReaderMoreSettingViewControllerDelegate
     [self addChildViewController:pageViewController];
     [pageViewController didMoveToParentViewController:self];
     [self.view addSubview:pageViewController.view];
+    [self.view sendSubviewToBack:pageViewController.view];
     
     if ([self currentReadingViewController] && self.readerSettingView) {
         [self.view bringSubviewToFront:self.readerSettingView];
@@ -341,20 +351,25 @@ IRReaderMoreSettingViewControllerDelegate
     self.shouldHideStatusBar = !self.shouldHideStatusBar;
     
     [UIView animateWithDuration:(animated ? 0.25 : 0) animations:^{
+        
         [self setNeedsStatusBarAppearanceUpdate];
+        
+        if (self.readerNavigationView.y == 0) {
+            self.readerNavigationView.y = -_readerNavigationViewHeight;
+        } else {
+            self.readerNavigationView.y = 0;
+        }
     } completion:^(BOOL finished) {
         if (completion) {
             completion();
         }
     }];
     
-    [self.navigationController setNavigationBarHidden:self.shouldHideStatusBar animated:animated];
-    
-    if (!self.shouldHideStatusBar) {
-        IRReaderSettingView *settingView = [IRReaderSettingView readerSettingView];
-        settingView.delegate = self;
-        [settingView showInView:self.view animated:YES];
-        self.readerSettingView = settingView;
+    if (self.shouldHideStatusBar) {
+        [self.readerSettingView dismissWithAnimated:YES];
+    } else {
+        CGFloat frame_y = CGRectGetMaxY(self.readerNavigationView.frame);
+        [self.readerSettingView showInView:self.view frame:CGRectMake(0, frame_y, self.view.width, self.view.height - frame_y) animated:YES];
     }
 }
 
@@ -412,7 +427,7 @@ IRReaderMoreSettingViewControllerDelegate
 
 #pragma mark - ReaderSettingViewDeletage
 
-- (void)readerSettingViewWillDisappear:(IRReaderSettingView *)readerSettingView
+- (void)readerSettingViewDidClickBackground:(IRReaderSettingView *)readerSettingView
 {
     [self updateReaderSettingViewStateWithAnimated:YES completion:nil];
 }
@@ -484,7 +499,8 @@ IRReaderMoreSettingViewControllerDelegate
 
 - (void)readerNavigationViewDidClickCloseButton:(IRReaderNavigationView *)aView
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)readerNavigationViewDidClickMoreSettingButton:(IRReaderNavigationView *)aView

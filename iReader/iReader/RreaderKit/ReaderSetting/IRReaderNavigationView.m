@@ -21,13 +21,10 @@
 
 @implementation IRReaderNavigationView
 
-@dynamic delegate;
-
 - (instancetype)init
 {
     if (self = [super init]) {
         self.backgroundColor = [UIColor whiteColor];
-        self.translucent = YES;
         [self setupSubviews];
     }
     
@@ -68,20 +65,20 @@
     }];
     
     self.closeBtn = [self commonButtonWithImageName:@"reader_setting_close" action:@selector(onCloseButtonClicked)];
+    self.closeBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [self.customContentView addSubview:self.closeBtn];
     [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.mas_equalTo(17);
+        make.width.height.equalTo(self.mas_height);
         make.left.equalTo(self).offset(15);
-        make.centerY.equalTo(self);
+        make.centerY.equalTo(self).offset(STATUS_BAR_MAX_Y);
     }];
     
     self.moreSettingBtn = [self commonButtonWithImageName:@"reader_more_setting" action:@selector(onMoreSettingButtonClicked)];
     [self.customContentView addSubview:self.moreSettingBtn];
     [self.moreSettingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(20);
-        make.height.mas_equalTo(20);
+        make.width.height.mas_equalTo(20);
         make.right.equalTo(self).offset(-15);
-        make.centerY.equalTo(self);
+        make.centerY.equalTo(self).offset(STATUS_BAR_MAX_Y);
     }];
     
     self.chapterListBtn = [self commonButtonWithImageName:@"reader_chapter_list" action:@selector(onChapterListClicked)];
@@ -90,7 +87,7 @@
         make.width.mas_equalTo(22);
         make.height.mas_equalTo(14);
         make.right.equalTo(self.moreSettingBtn.mas_left).offset(-20);
-        make.centerY.equalTo(self);
+        make.centerY.equalTo(self).offset(STATUS_BAR_MAX_Y);
     }];
 }
 
