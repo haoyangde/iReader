@@ -7,56 +7,45 @@
 //
 
 #import "IREpubHeaders.h"
-
-// pod headers
 #import <ZipArchive.h>
 
 static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
 
-@interface IREpubParser ()
-
-@property (nonatomic, strong) IREpubBook *book;
-@property (nonatomic, strong) dispatch_queue_t ir_epub_parser_queue;
-@property (nonatomic, strong) NSFileManager *fileManager;
-
-@end
-
 @implementation IREpubParser
 
-- (instancetype)init
+static dispatch_queue_t _ir_epub_parser_queue()
 {
-    if (self = [super init]) {
+    static dispatch_queue_t _ir_epub_parser_queue;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         _ir_epub_parser_queue = dispatch_queue_create("ir_epub_parser_queue", DISPATCH_QUEUE_SERIAL);
-        _fileManager = [NSFileManager defaultManager];
-    }
+    });
     
-    return self;
+    return _ir_epub_parser_queue;
 }
 
-- (void)handleEpubWithEpubName:(NSString *)epubName completion:(ReadEpubCompletion)completion
++ (void)parseEpubBookWithFilePath:(NSString *)filePath bookName:(NSString *)bookName completion:(ReadEpubCompletion)completion
 {
-    NSString *epubPath = [[NSBundle mainBundle] pathForResource:epubName ofType:@"epub"];
-    
     IREpubBook *book = nil;
     NSError *epubError  = nil;
     NSString *errorInfo = nil;
     NSString *unzipPath = nil;
     
-    while (1) {
-        if (![_fileManager fileExistsAtPath:epubPath]) {
+    do {
+        if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
             errorInfo = @"[IREpubParser] Epub book not found";
             NSAssert(NO, errorInfo);
             break;
         }
         
-        unzipPath = [[IRFileUtilites applicationCachesDirectory] stringByAppendingPathComponent:epubName];
+        unzipPath = [[IRFileUtilites applicationCachesDirectory] stringByAppendingPathComponent:bookName];
         IRDebugLog(@"[IREpubParser] Epub unzip Path: %@", unzipPath);
         
         BOOL isDir;
-        BOOL needUnzip = ![_fileManager fileExistsAtPath:unzipPath isDirectory:&isDir] || !isDir;
+        BOOL needUnzip = ![[NSFileManager defaultManager] fileExistsAtPath:unzipPath isDirectory:&isDir] || !isDir;
         if (needUnzip) {
             ZipArchive *zip = [[ZipArchive alloc] init];
-            BOOL openSuccess = [zip UnzipOpenFile:epubPath];
+            BOOL openSuccess = [zip UnzipOpenFile:filePath];
             BOOL unzipSuccess = [zip UnzipFileTo:unzipPath overWrite:YES];
             [zip UnzipCloseFile];
             
@@ -66,14 +55,12 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
                 break;
             }
         }
-        
-        break;
-    }
+    } while (0);
     
     if (!errorInfo.length) {
         
         book = [[IREpubBook alloc] init];
-        book.name = epubName;
+        book.name = bookName;
         [self readContainerXMLWithUnzipPath:unzipPath book:book error:&epubError];
         if (!epubError) {
             [self readOpfWithUnzipPath:unzipPath book:book error:&epubError];
@@ -88,7 +75,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     });
 }
 
-- (void)readContainerXMLWithUnzipPath:(NSString *)unzipPath book:(IREpubBook *)book error:(NSError **)error
++ (void)readContainerXMLWithUnzipPath:(NSString *)unzipPath book:(IREpubBook *)book error:(NSError **)error
 {
     NSString *containerXMLPath = [unzipPath stringByAppendingPathComponent:kContainerXMLAppendPath];
     NSData *containerData = [NSData dataWithContentsOfFile:containerXMLPath options:NSDataReadingMappedAlways error:error];
@@ -114,7 +101,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     IRDebugLog(@"[IREpubParser] Resources base path: %@", book.resourcesBasePath);
 }
 
-- (void)readOpfWithUnzipPath:(NSString *)unzipPath book:(IREpubBook *)book error:(NSError **)error
++ (void)readOpfWithUnzipPath:(NSString *)unzipPath book:(IREpubBook *)book error:(NSError **)error
 {
     NSString *opfPath = [unzipPath stringByAppendingPathComponent:book.container.fullPath];
     NSData *opfData = [NSData dataWithContentsOfFile:opfPath options:NSDataReadingMappedAlways error:error];
@@ -167,7 +154,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     }
 }
 
-- (NSArray *)readFlatTableOfContentsWithBook:(IREpubBook *)book
++ (NSArray *)readFlatTableOfContentsWithBook:(IREpubBook *)book
 {
     NSMutableArray *flat = [NSMutableArray array];
     for (IRTocRefrence *tocRefrence in book.tableOfContents) {
@@ -181,7 +168,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     return flat.count ? flat : nil;
 }
 
-- (NSArray *)countOfTocRefrence:(IRTocRefrence *)tocRefrence
++ (NSArray *)countOfTocRefrence:(IRTocRefrence *)tocRefrence
 {
     NSMutableArray *all = [NSMutableArray arrayWithObject:tocRefrence];
     
@@ -196,7 +183,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     return all;
 }
 
-- (IROpfSpine *)readOpfSpineWithXMLElement:(GDataXMLElement *)spineElement book:(IREpubBook *)book error:(NSError **)error
++ (IROpfSpine *)readOpfSpineWithXMLElement:(GDataXMLElement *)spineElement book:(IREpubBook *)book error:(NSError **)error
 {
     IROpfSpine *opfSpine = [[IROpfSpine alloc] init];
     
@@ -225,7 +212,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     return opfSpine;
 }
 
-- (NSArray<IRTocRefrence *> *)readTableOfContentsWithBook:(IREpubBook *)book error:(NSError **)error
++ (NSArray<IRTocRefrence *> *)readTableOfContentsWithBook:(IREpubBook *)book error:(NSError **)error
 {
     NSMutableArray<IRTocRefrence *> *tableOfContents = nil;
     NSArray *tocItems = nil;
@@ -266,7 +253,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     return [tableOfContents copy];
 }
 
-- (GDataXMLElement *)findHtmlTocNavTag:(GDataXMLElement *)bodyElement
++ (GDataXMLElement *)findHtmlTocNavTag:(GDataXMLElement *)bodyElement
 {
     for (GDataXMLElement *element in bodyElement.children) {
         GDataXMLElement *nav = [element elementsForName:@"nav"].firstObject;
@@ -280,7 +267,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     return nil;
 }
 
-- (IRTocRefrence *)readTocRefrenceWithXMLElement:(GDataXMLElement *)tocElement tocResource:(IRResource *)tocResource book:(IREpubBook *)book
++ (IRTocRefrence *)readTocRefrenceWithXMLElement:(GDataXMLElement *)tocElement tocResource:(IRResource *)tocResource book:(IREpubBook *)book
 {
     IRTocRefrence *toc = nil;
     if ([tocResource.mediaType.defaultExtension isEqualToString:@"ncx"]) {
@@ -344,7 +331,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     return toc;
 }
 
-- (IROpfManifest *)readOpfManifestWithXMLElement:(GDataXMLElement *)opfManifestDoc book:(IREpubBook *)book unzipPath:(NSString *)unzipPath
++ (IROpfManifest *)readOpfManifestWithXMLElement:(GDataXMLElement *)opfManifestDoc book:(IREpubBook *)book unzipPath:(NSString *)unzipPath
 {
     IROpfManifest *manifest = [[IROpfManifest alloc] init];
     NSMutableDictionary *resources = [NSMutableDictionary dictionaryWithCapacity:opfManifestDoc.childCount];
@@ -369,7 +356,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
                    ([resource.itemId isEqualToString:@"cover"] && [resource.mediaType isBitmapImage])) {
             // Cover image
             manifest.coverImageResource = resource;
-            book.coverImage = resource;
+            book.bookCoverResource = resource;
         } else if ([resource.href.pathExtension isEqualToString:@"ncx"]) {
             manifest.tocNCXResource = resource;
         } else if ([resource.properties isEqualToString:@"nav"]) {
@@ -386,7 +373,7 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
     return manifest;
 }
 
-- (IROpfMetadata *)readOpfMetadataWithXMLElement:(GDataXMLElement *)opfMetadataDoc
++ (IROpfMetadata *)readOpfMetadataWithXMLElement:(GDataXMLElement *)opfMetadataDoc
 {
     IROpfMetadata *opfMetadata = [[IROpfMetadata alloc] init];
     for (GDataXMLElement *element in opfMetadataDoc.children) {
@@ -446,32 +433,21 @@ static NSString *const kContainerXMLAppendPath = @"META-INF/container.xml";
 
 #pragma mark - helper
 
-- (NSError *)epubPareserErrorWithInfo:(NSString *)info
++ (NSError *)epubPareserErrorWithInfo:(NSString *)info
 {
     return [NSError errorWithDomain:@"EpubPareserErrorDomain" code:-1 userInfo:@{@"errorInfo" : info}];
 }
 
 #pragma mark - public
 
-+ (instancetype)sharedInstance
-{
-    static IREpubParser *sharedInstance = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[self alloc] init];
-    });
-    
-    return sharedInstance;
-}
-
-- (void)asyncReadEpubWithEpubName:(NSString *)epubName completion:(ReadEpubCompletion)completion
++ (void)async_parseEpubBookWithFilePath:(NSString *)filePath bookName:(NSString *)bookName completion:(ReadEpubCompletion)completion
 {
     if (!completion) {
         return;
     }
     
-    dispatch_async(_ir_epub_parser_queue, ^{
-        [self handleEpubWithEpubName:epubName completion:completion];
+    dispatch_async(_ir_epub_parser_queue(), ^{
+        [self parseEpubBookWithFilePath:filePath bookName:bookName completion:completion];
     });
 }
 

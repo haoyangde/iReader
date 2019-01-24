@@ -20,7 +20,7 @@
 /** 作者*/
 @property (nonatomic, strong) IRAuthor *author;
 /** 封面*/
-@property (nonatomic, strong) IRResource *coverImage;
+@property (nonatomic, strong) IRResource *bookCoverResource;
 /** 目录*/
 @property (nonatomic, strong) NSArray<IRTocRefrence *> *tableOfContents;
 @property (nonatomic, strong) NSArray<IRTocRefrence *> *flatTableOfContents;

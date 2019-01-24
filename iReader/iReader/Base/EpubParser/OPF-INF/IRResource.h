@@ -13,9 +13,13 @@
 @interface IRResource : NSObject
 
 @property (nonatomic, strong) NSString *itemId;
+
 @property (nonatomic, strong) NSString *href;
+/// 资源全路径
 @property (nonatomic, strong) NSString *fullHref;
+
 @property (nonatomic, strong) NSString *properties;
+
 @property (nonatomic, strong) IRMediaType *mediaType;
 
 @end

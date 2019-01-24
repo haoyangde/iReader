@@ -8,15 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+//MARK:依赖第三方库 ZipArchive
+
 @class IREpubBook;
 
 typedef void(^ReadEpubCompletion)(IREpubBook *book, NSError *error);
 
 @interface IREpubParser : NSObject
 
-+ (instancetype)sharedInstance;
-
-- (void)asyncReadEpubWithEpubName:(NSString *)epubName completion:(ReadEpubCompletion)completion;
++ (void)async_parseEpubBookWithFilePath:(NSString *)filePath bookName:(NSString *)bookName completion:(ReadEpubCompletion)completion;
 
 @end
 

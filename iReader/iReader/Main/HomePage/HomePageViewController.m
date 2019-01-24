@@ -63,7 +63,8 @@ UICollectionViewDataSource
     NSArray *books = @[@"The Silver Chair", @"细说明朝"];
     
     for (NSString *bookName in books) {
-        [[IREpubParser sharedInstance] asyncReadEpubWithEpubName:bookName completion:^(IREpubBook *book, NSError *error) {
+        NSString *epubPath = [[NSBundle mainBundle] pathForResource:bookName ofType:@"epub"];
+        [IREpubParser async_parseEpubBookWithFilePath:epubPath bookName:bookName completion:^(IREpubBook *book, NSError *error) {
             if (book) {
                 [self.myBooks addObject:book];
             }
@@ -114,7 +115,7 @@ UICollectionViewDataSource
 {
     IRBookCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRBookCell" forIndexPath:indexPath];
     IREpubBook *book = [self.myBooks objectAtIndex:indexPath.row];
-    [cell setCoverImage:[UIImage imageWithContentsOfFile:book.coverImage.fullHref]];
+    [cell setCoverImage:[UIImage imageWithContentsOfFile:book.bookCoverResource.fullHref]];
     
     return cell;
 }
