@@ -19,4 +19,24 @@
     return container;
 }
 
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:self.fullPath forKey:@"fullPath"];
+    [encoder encodeObject:self.mediaType forKey:@"mediaType"];
+}
+
+- (nullable instancetype)initWithCoder:(NSCoder *)decoder
+{
+    if (self = [super init]) {
+        self.fullPath = [decoder decodeObjectForKey:@"fullPath"];
+        self.mediaType = [decoder decodeObjectForKey:@"mediaType"];
+    }
+    
+    if (self == nil) {
+        NSLog(@"IRContainer Could not unarchive");
+    }
+    
+    return self;
+}
+
 @end

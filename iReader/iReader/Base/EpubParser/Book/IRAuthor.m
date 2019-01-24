@@ -17,4 +17,26 @@
     return author;
 }
 
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:self.name forKey:@"name"];
+    [encoder encodeObject:self.role forKey:@"role"];
+    [encoder encodeObject:self.fileAs forKey:@"fileAs"];
+}
+
+- (nullable instancetype)initWithCoder:(NSCoder *)decoder
+{
+    if (self = [super init]) {
+        self.name = [decoder decodeObjectForKey:@"name"];
+        self.role = [decoder decodeObjectForKey:@"role"];
+        self.fileAs = [decoder decodeObjectForKey:@"fileAs"];
+    }
+    
+    if (self == nil) {
+        NSLog(@"IRAuthor Could not unarchive");
+    }
+    
+    return self;
+}
+
 @end

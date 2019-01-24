@@ -184,4 +184,26 @@
     return self;
 }
 
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeObject:self.name forKey:@"name"];
+    [encoder encodeObject:self.defaultExtension forKey:@"defaultExtension"];
+    [encoder encodeObject:self.extensions forKey:@"extensions"];
+}
+
+- (nullable instancetype)initWithCoder:(NSCoder *)decoder
+{
+    if (self = [super init]) {
+        self.name = [decoder decodeObjectForKey:@"name"];
+        self.defaultExtension = [decoder decodeObjectForKey:@"defaultExtension"];
+        self.extensions = [decoder decodeObjectForKey:@"extensions"];
+    }
+    
+    if (self == nil) {
+        NSLog(@"IRMediaType Could not unarchive");
+    }
+    
+    return self;
+}
+
 @end

@@ -19,4 +19,24 @@
     return spine;
 }
 
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    [encoder encodeBool:self.linear forKey:@"linear"];
+    [encoder encodeObject:self.resource forKey:@"resource"];
+}
+
+- (nullable instancetype)initWithCoder:(NSCoder *)decoder
+{
+    if (self = [super init]) {
+        self.linear = [decoder decodeBoolForKey:@"linear"];
+        self.resource = [decoder decodeObjectForKey:@"resource"];
+    }
+    
+    if (self == nil) {
+        NSLog(@"IRSpine Could not unarchive");
+    }
+    
+    return self;
+}
+
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface IRAuthor : NSObject
+@interface IRAuthor : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *role;
