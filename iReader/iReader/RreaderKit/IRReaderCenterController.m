@@ -111,7 +111,6 @@ IRReaderMoreSettingViewControllerDelegate
 {
     if (!_readerNavigationView) {
         _readerNavigationView = [[IRReaderNavigationView alloc] init];
-        _readerNavigationView.frame = CGRectMake(0, -_readerNavigationViewHeight, self.view.width, _readerNavigationViewHeight);
         _readerNavigationView.actionDelegate = self;
         [self.view addSubview:_readerNavigationView];
     }
@@ -186,6 +185,8 @@ IRReaderMoreSettingViewControllerDelegate
 - (void)ir_commonInit
 {
     self.readerNavigationViewHeight = 40 + STATUS_BAR_MAX_Y;
+    self.readerNavigationView.frame = CGRectMake(0, -_readerNavigationViewHeight, self.view.width, _readerNavigationViewHeight);
+    
     self.view.backgroundColor = [UIColor whiteColor];
     [self setupPageViewController];
     

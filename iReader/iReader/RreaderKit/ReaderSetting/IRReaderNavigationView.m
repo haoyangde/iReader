@@ -58,36 +58,37 @@
 
 - (void)setupSubviews
 {
-    self.customContentView = [[UIView alloc] init];
-    [self addSubview:self.customContentView];
-    [self.customContentView mas_makeConstraints:^(MASConstraintMaker *make) {
+    UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
+    [self addSubview:effectView];
+    [effectView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self);
     }];
     
     self.closeBtn = [self commonButtonWithImageName:@"reader_setting_close" action:@selector(onCloseButtonClicked)];
     self.closeBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [self.customContentView addSubview:self.closeBtn];
+    [self addSubview:self.closeBtn];
     [self.closeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(self.mas_height);
+        make.height.width.mas_equalTo(40);
         make.left.equalTo(self).offset(15);
-        make.centerY.equalTo(self).offset(STATUS_BAR_MAX_Y);
+        make.top.mas_equalTo(STATUS_BAR_MAX_Y);
     }];
     
     self.moreSettingBtn = [self commonButtonWithImageName:@"reader_more_setting" action:@selector(onMoreSettingButtonClicked)];
-    [self.customContentView addSubview:self.moreSettingBtn];
+    [self addSubview:self.moreSettingBtn];
     [self.moreSettingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.mas_equalTo(20);
+        make.width.mas_equalTo(20);
         make.right.equalTo(self).offset(-15);
-        make.centerY.equalTo(self).offset(STATUS_BAR_MAX_Y);
+        make.height.mas_equalTo(40);
+        make.top.mas_equalTo(STATUS_BAR_MAX_Y);
     }];
     
     self.chapterListBtn = [self commonButtonWithImageName:@"reader_chapter_list" action:@selector(onChapterListClicked)];
-    [self.customContentView addSubview:self.chapterListBtn];
+    [self addSubview:self.chapterListBtn];
     [self.chapterListBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(22);
-        make.height.mas_equalTo(14);
+        make.height.mas_equalTo(40);
         make.right.equalTo(self.moreSettingBtn.mas_left).offset(-20);
-        make.centerY.equalTo(self).offset(STATUS_BAR_MAX_Y);
+        make.top.mas_equalTo(STATUS_BAR_MAX_Y);
     }];
 }
 
@@ -97,13 +98,6 @@
     [btn addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
     [btn setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     return btn;
-}
-
-#pragma mark - Public
-
-- (void)shouldHideAllCustomViews:(BOOL)hidden
-{
-    self.customContentView.hidden = hidden;
 }
 
 @end
