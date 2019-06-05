@@ -6,10 +6,11 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "AppDelegate.h"
 #ifdef DEBUG
 #import "AppDelegate+Debug.h"
 #endif
+
+#import "AppDelegate.h"
 
 @interface AppDelegate ()
 

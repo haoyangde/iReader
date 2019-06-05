@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *rightText;
 @property (nonatomic, assign) IRSettingCellType cellType;
-@property (nonatomic, assign) NSUInteger modelId;
+@property (nonatomic, strong) NSString *settingKind;
 @property (nonatomic, assign) BOOL isSelected;
 @property (nonatomic, strong) IRSettingCellClickedHandler clickedHandler;
 

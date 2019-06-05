@@ -6,6 +6,8 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
+#ifdef DEBUG
+
 #ifndef IRDebugConst_h
 #define IRDebugConst_h
 
@@ -13,3 +15,5 @@
 #define kDTCoreTextDebugEnableCacheKey  @"kDTCoreTextDebugEnableCacheKey"
 
 #endif /* IRDebugConst_h */
+
+#endif

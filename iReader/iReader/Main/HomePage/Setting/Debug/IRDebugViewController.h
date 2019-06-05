@@ -6,8 +6,12 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
+#ifdef DEBUG
+
 #import "IRBaseViewController.h"
 
 @interface IRDebugViewController : IRBaseViewController
 
 @end
+
+#endif

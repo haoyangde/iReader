@@ -6,10 +6,13 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
+#ifdef DEBUG
+#import "IRDebugViewController.h"
+#endif
+
 #import "IRSettingViewController.h"
 #import "IRSettingModel.h"
 #import "IRSwitchSettingCell.h"
-#import "IRDebugViewController.h"
 #import "IRArrowSettingCell.h"
 #import "IRSettingSectionModel.h"
 #import "IRTextSettingCell.h"
@@ -134,6 +137,7 @@ IRSwitchSettingCellDelegate
 
 - (void)setupSettingInfos
 {
+    NSMutableArray *tempSettingInfos = [NSMutableArray array];
     __weak typeof(self) weakSelf = self;
     
     IRSettingSectionModel *commonSection = [[IRSettingSectionModel alloc] init];
@@ -160,7 +164,9 @@ IRSwitchSettingCellDelegate
     };
     
     commonSection.items = @[mark, about, cache];
+    [tempSettingInfos addObject:commonSection];
     
+#ifdef DEBUG
     IRSettingModel *debug = [[IRSettingModel alloc] init];
     debug.title = @"开发实验室";
     debug.cellType = IRSettingCellTypeArrow;
@@ -169,8 +175,10 @@ IRSwitchSettingCellDelegate
     };
     IRSettingSectionModel *debugSection = [[IRSettingSectionModel alloc] init];
     debugSection.items = @[debug];
+    [tempSettingInfos addObject:debugSection];
+#endif
     
-    self.settingInfos = @[commonSection, debugSection];
+    self.settingInfos = [tempSettingInfos copy];
 }
 
 - (void)onMarkCellClicked
@@ -181,12 +189,6 @@ IRSwitchSettingCellDelegate
 - (void)onAboutCellClicked
 {
     
-}
-
-- (void)onDebugCellClicked
-{
-    IRDebugViewController *debugVc = [[IRDebugViewController alloc] init];
-    [self.navigationController pushViewController:debugVc animated:YES];
 }
 
 #pragma mark - Private
@@ -224,5 +226,17 @@ IRSwitchSettingCellDelegate
     [self.view addSubview:collectionView];
     self.collectionView = collectionView;
 }
+
+#pragma mark - DEBUG
+
+#ifdef DEBUG
+
+- (void)onDebugCellClicked
+{
+    IRDebugViewController *debugVc = [[IRDebugViewController alloc] init];
+    [self.navigationController pushViewController:debugVc animated:YES];
+}
+
+#endif
 
 @end

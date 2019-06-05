@@ -6,19 +6,16 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
+#ifdef DEBUG
+
 #import "IRDebugViewController.h"
 #import "IRSwitchSettingCell.h"
 #import "IRSettingModel.h"
 #import "IRDebugConst.h"
-#ifdef DEBUG
 #import "AppDelegate+Debug.h"
-#endif
 #import "DTCoreTextLayoutFrame.h"
-
-typedef NS_ENUM(NSUInteger, IRSwitchSettingCellModleId) {
-    IRSwitchSettingCellModleIdFlex    = 0,
-    IRSwitchSettingCellModleIdDTDebug = 1
-};
+#import "CCAspectDebugViewController.h"
+#import "IRArrowSettingCell.h"
 
 @interface IRDebugViewController ()
 <
@@ -60,9 +57,9 @@ IRSwitchSettingCellDelegate
 {
     IRSettingModel *model = cell.settingModel;
     
-    if (model.modelId == IRSwitchSettingCellModleIdDTDebug) {
+    if ([model.settingKind isEqualToString:@"DTCoreText"]) {
         [self onDTDebugCellValueChanged:cell.switchView.isOn];
-    } else if (model.modelId == IRSwitchSettingCellModleIdFlex) {
+    } else if ([model.settingKind isEqualToString:@"flex"]) {
         [self onFlexCellValueChanged:cell.switchView.isOn];
     }
 }
@@ -71,10 +68,7 @@ IRSwitchSettingCellDelegate
 {
     [[IRCacheManager sharedInstance] asyncSetObject:@(!value) forKey:kFlexDebugDisableCacheKey];
     
-#ifdef DEBUG
     [[(AppDelegate *)[UIApplication sharedApplication].delegate flexWindow] setHidden:!value];
-#endif
-    
 }
 
 - (void)onDTDebugCellValueChanged:(BOOL)value
@@ -97,6 +91,10 @@ IRSwitchSettingCellDelegate
     if (settingModel.cellType == IRSettingCellTypeSwitch) {
         IRSwitchSettingCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRSwitchSettingCell" forIndexPath:indexPath];
         cell.delegate = self;
+        cell.settingModel = settingModel;
+        return cell;
+    } else if (settingModel.cellType == IRSettingCellTypeArrow) {
+        IRArrowSettingCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRArrowSettingCell" forIndexPath:indexPath];
         cell.settingModel = settingModel;
         return cell;
     } else {
@@ -147,19 +145,27 @@ IRSwitchSettingCellDelegate
 
 - (void)setupDebugInfos
 {
+    __weak typeof(self) weakSelf = self;
     IRSettingModel *flex = [[IRSettingModel alloc] init];
     flex.title = @"FLEX";
-    flex.modelId = IRSwitchSettingCellModleIdFlex;
+    flex.settingKind = @"flex";
     flex.cellType = IRSettingCellTypeSwitch;
     flex.isSwitchOn = ![[[IRCacheManager sharedInstance] objectForKey:kFlexDebugDisableCacheKey] boolValue];
     
     IRSettingModel *dtDebug = [[IRSettingModel alloc] init];
     dtDebug.title = @"DTCoreText Debug";
-    dtDebug.modelId = IRSwitchSettingCellModleIdDTDebug;
+    dtDebug.settingKind = @"DTCoreText";
     dtDebug.cellType = IRSettingCellTypeSwitch;
     dtDebug.isSwitchOn = [[[IRCacheManager sharedInstance] objectForKey:kDTCoreTextDebugEnableCacheKey] boolValue];
     
-    self.debugInfos = @[flex, dtDebug];
+    IRSettingModel *aspectDebug = [[IRSettingModel alloc] init];
+    aspectDebug.title = @"CCAspect Debug";
+    aspectDebug.cellType = IRSettingCellTypeArrow;
+    aspectDebug.clickedHandler = ^{
+        [weakSelf.navigationController pushViewController:[[CCAspectDebugViewController alloc] init] animated:YES];
+    };
+    
+    self.debugInfos = @[flex, dtDebug, aspectDebug];
 }
 
 #pragma mark - Private
@@ -184,6 +190,7 @@ IRSwitchSettingCellDelegate
     collectionView.showsVerticalScrollIndicator = NO;
     
     [collectionView registerClass:[IRSwitchSettingCell class] forCellWithReuseIdentifier:@"IRSwitchSettingCell"];
+    [collectionView registerClass:[IRArrowSettingCell class] forCellWithReuseIdentifier:@"IRArrowSettingCell"];
     [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"defaultCell"];
     [collectionView registerClass:[UICollectionReusableView class]
        forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
@@ -196,5 +203,6 @@ IRSwitchSettingCellDelegate
     self.collectionView = collectionView;
 }
 
-
 @end
+
+#endif

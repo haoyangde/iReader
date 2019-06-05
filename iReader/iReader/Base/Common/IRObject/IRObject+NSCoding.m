@@ -42,8 +42,7 @@
 - (void)setValue:(nullable id)value forUndefinedKey:(NSString *)key
 {
     // do nothing
-    NSString *info = [NSString stringWithFormat:@"Class:%@ undefined key:%@", NSStringFromClass([self class]), key];
-    NSAssert(NO, info);
+    NSAssert(NO, @"Class:%@ undefined key:%@", NSStringFromClass([self class]), key);
 }
 
 @end
