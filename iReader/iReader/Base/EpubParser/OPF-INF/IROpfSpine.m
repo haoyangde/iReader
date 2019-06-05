@@ -19,7 +19,7 @@
 - (nullable instancetype)initWithCoder:(NSCoder *)decoder
 {
     if (self = [super init]) {
-        self.spineReferences = [decoder decodeBoolForKey:@"spineReferences"];
+        self.spineReferences = [decoder decodeObjectForKey:@"spineReferences"];
         self.pageProgressionDirection = [decoder decodeObjectForKey:@"pageProgressionDirection"];
     }
     
