@@ -8,7 +8,7 @@
 
 #import "NSDictionary+Safe.h"
 
-@implementation NSDictionary (Safe)
+@implementation NSDictionary (IR_Safe)
 
 - (id)safeObjectForKey:(id)aKey
 {
@@ -24,7 +24,7 @@
 
 @end
 
-@implementation NSMutableDictionary (Safe)
+@implementation NSMutableDictionary (IR_Safe)
 
 - (void)safeRemoveObjectForKey:(id)aKey
 {

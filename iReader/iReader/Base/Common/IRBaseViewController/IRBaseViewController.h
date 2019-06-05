@@ -6,11 +6,13 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "UIViewController+IRNavigationBar.h"
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface IRBaseViewController : UIViewController
+
+- (void)setupLeftBackBarButton;
 
 @end
 

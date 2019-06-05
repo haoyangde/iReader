@@ -10,7 +10,9 @@
 
 #define IR_RANDOM_COLOR [UIColor ir_randomColor]
 
-@interface UIColor (Extension)
+#define IR_SEPARATOR_COLOR [UIColor ir_separatorLineColor]
+
+@interface UIColor (IR_Extension)
 
 + (UIColor *)ir_separatorLineColor;
 

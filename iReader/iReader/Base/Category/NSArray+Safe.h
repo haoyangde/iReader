@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSArray (Safe)
+@interface NSArray (IR_Safe)
 
 - (id)safeObjectAtIndex:(NSUInteger)index;
 
@@ -16,7 +16,7 @@
 
 @end
 
-@interface NSMutableArray (Safe)
+@interface NSMutableArray (IR_Safe)
 
 - (void)safeAddObject:(id)anObject;
 

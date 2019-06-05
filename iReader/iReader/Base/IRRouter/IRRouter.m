@@ -1,29 +1,30 @@
 //
-//  IERouter.m
-//  iOS_Extensions
+//  IRRouter.m
+//  iReader
 //
 //  Created by zzyong on 2018/1/22.
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "IERouter.h"
+#import "IRRouter.h"
 #import <objc/runtime.h>
 #import "NSString+Extension.h"
+#import "IRRouterContext.h"
 
-NSString * const IERouterUserInfo          = @"IERouterUserInfo";
-NSString * const IERouterHandlerCompletion = @"IERouterHandlerCompletion";
+NSString * const IRRouterUserInfo          = @"IRRouterUserInfo";
+NSString * const IRRouterHandlerCompletion = @"IRRouterHandlerCompletion";
 
 static NSString * const kTarget      = @"target";
 static NSString * const kActionUrl   = @"actionurl";
 static NSString * const kParamters   = @"paramters";
 
-@interface IERouter ()
+@interface IRRouter ()
 
 @property (nonatomic, strong) NSMutableDictionary *routers;
 
 @end
 
-@implementation IERouter
+@implementation IRRouter
 
 - (instancetype)init
 {
@@ -38,10 +39,10 @@ static NSString * const kParamters   = @"paramters";
 
 - (BOOL)handleURLString:(NSString *)urlStr
                userInfo:(NSDictionary *)userInfo
-             completion:(IERouterResultHandler)completion
+             completion:(IRRouterResultHandler)completion
 {
     NSDictionary *params = [urlStr decodeUrlParameters];
-    IERouterHandler handle = [[IERouter defaultRouter].routers objectForKey:[params objectForKey:kTarget]];
+    IRRouterHandler handle = [[IRRouter defaultRouter].routers objectForKey:[params objectForKey:kTarget]];
     
     if (!handle) {
         NSAssert(NO, @"URL is not register");
@@ -51,11 +52,11 @@ static NSString * const kParamters   = @"paramters";
         NSMutableDictionary *routerInfo = [[NSMutableDictionary alloc] init];
         
         if (userInfo) {
-            [routerInfo setValue:userInfo forKey:IERouterUserInfo];
+            [routerInfo setValue:userInfo forKey:IRRouterUserInfo];
         }
         
         if (completion) {
-            [routerInfo setValue:completion forKey:IERouterHandlerCompletion];
+            [routerInfo setValue:completion forKey:IRRouterHandlerCompletion];
         }
         
         handle(routerInfo);
@@ -166,8 +167,8 @@ static NSString * const kParamters   = @"paramters";
             NSArray *initInfos = obj[kParamters];
             Class target = NSClassFromString(obj[kTarget]);
             if (target) {
-                [IERouter registerTargetStr:obj[kActionUrl] toHandler:^(NSDictionary *routerInfo) {
-                    IERouterResultHandler handler = routerInfo[IERouterHandlerCompletion];
+                [IRRouter registerTargetStr:obj[kActionUrl] toHandler:^(NSDictionary *routerInfo) {
+                    IRRouterResultHandler handler = routerInfo[IRRouterHandlerCompletion];
                     if (handler) {
                         handler(target, initInfos);
                     }
@@ -179,7 +180,7 @@ static NSString * const kParamters   = @"paramters";
     }];
 }
 
-+ (void)registerTargetStr:(NSString *)targetStr toHandler:(IERouterHandler)handler
++ (void)registerTargetStr:(NSString *)targetStr toHandler:(IRRouterHandler)handler
 {
     if ([[[self defaultRouter] routers] objectForKey:targetStr]) {
         return;
@@ -197,7 +198,7 @@ static NSString * const kParamters   = @"paramters";
     }
 }
 
-+ (BOOL)openURLString:(NSString *)urlStr context:(RouterOpenContext *)context
++ (BOOL)openURLString:(NSString *)urlStr context:(IRRouterContext *)context
 {
     UIViewController *currentVc = context.fromViewController;
     if (!currentVc) {
@@ -205,7 +206,7 @@ static NSString * const kParamters   = @"paramters";
         return NO;
     }
     
-    IERouterResultHandler handler = ^(__unsafe_unretained Class target, NSArray *initInfos) {
+    IRRouterResultHandler handler = ^(__unsafe_unretained Class target, NSArray *initInfos) {
         
         id targetObj = [[target alloc] init];
         
@@ -232,7 +233,7 @@ static NSString * const kParamters   = @"paramters";
                 }
             }
             
-            if (context.transitionType == TransitionTypePush) {
+            if (context.transitionType == IRViewControllerTransitionPush) {
                 [currentVc.navigationController pushViewController:targetObj animated:YES];
             } else {
                 [currentVc presentViewController:targetObj animated:YES completion:nil];
@@ -247,33 +248,14 @@ static NSString * const kParamters   = @"paramters";
                                       completion:handler];
 }
 
-+ (RouterOpenContext *)openContextWithUserInfo:(NSDictionary *)userInfo
-                            fromViewController:(UIViewController *)vc
-                                transitionType:(TransitionType)type
-                                      animated:(BOOL)flag
-{
-    RouterOpenContext *context = [[RouterOpenContext alloc] init];
-    
-    context.fromViewController = vc;
-    context.userInfo = userInfo;
-    context.transitionType = type;
-    context.transitionAnimated = flag;
-    
-    return context;
-}
-
 + (instancetype)defaultRouter
 {
-    static IERouter *router = nil;
+    static IRRouter *router = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         router = [[self alloc] init];
     });
     return router;
 }
-
-@end
-
-@implementation RouterOpenContext
 
 @end

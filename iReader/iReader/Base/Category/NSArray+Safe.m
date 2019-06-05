@@ -8,7 +8,7 @@
 
 #import "NSArray+Safe.h"
 
-@implementation NSArray (Safe)
+@implementation NSArray (IR_Safe)
 
 - (id)safeObjectAtIndex:(NSUInteger)index
 {
@@ -40,7 +40,7 @@
 
 @end
 
-@implementation NSMutableArray (Safe)
+@implementation NSMutableArray (IR_Safe)
 
 - (void)safeAddObject:(id)anObject
 {

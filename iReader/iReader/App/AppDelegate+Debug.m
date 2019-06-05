@@ -17,7 +17,6 @@ static UIWindow *flexWindow;
 
 @implementation AppDelegate (Debug)
 
-
 - (void)debugInit
 {
     [self addFLEX];

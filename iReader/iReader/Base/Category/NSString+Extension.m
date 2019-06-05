@@ -1,6 +1,6 @@
 //
 //  NSString+Extension.m
-//  iOS_Extensions
+//  iReader
 //
 //  Created by zouzhiyong on 2017/12/7.
 //  Copyright © 2017年 zouzhiyong. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import "NSString+Extension.h"
 
-@implementation NSString (NE_URLDecode)
+@implementation NSString (IR_URLDecode)
 
 - (NSDictionary *)decodeUrlParameters
 {
@@ -47,7 +47,7 @@
 @end
 
 
-@implementation NSString (NE_AttributedString)
+@implementation NSString (IR_AttributedString)
 
 - (NSAttributedString *)attributedStringWithFontSize:(CGFloat)fontSize
 {

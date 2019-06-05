@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSObject (IRSwizzling)
+@interface NSObject (IR_Swizzling)
 
 //method swizzling
 + (BOOL)ir_swizzleMethod:(SEL)origSel withMethod:(SEL)altSel error:(NSError**)error;

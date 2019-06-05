@@ -8,7 +8,7 @@
 
 #import "UIView+Extension.h"
 
-@implementation UIView (IRLayout)
+@implementation UIView (IR_Layout)
 
 - (CGFloat)x
 {
@@ -71,6 +71,10 @@
 }
 
 #pragma mark -
+
+@end
+
+@implementation UIView (IR_Common)
 
 - (void)removeAllSubViews
 {

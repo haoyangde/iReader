@@ -11,7 +11,6 @@
 #import <objc/message.h>
 #import <objc/runtime.h>
 #import "CCAspectDebugViewController.h"
-#import "UIViewController+IRNavigationBar.h"
 
 @interface CCAspectTest : NSObject
 

@@ -20,12 +20,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    IRDebugLog(@"");
+    IRDebugLog(@"launchOptions: %@", launchOptions);
+    
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    
+    [self commonAppInit];
+    
 #ifdef DEBUG
     [self debugInit];
 #endif
-    
-     [self commonInit];
     
     return YES;
 }
@@ -66,12 +70,9 @@
 
 #pragma mark - Privte
 
-- (void)commonInit
+- (void)commonAppInit
 {
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
-    
-    [IRUIUtilites commonInit];
+    IS_IPHONEX_SERIES;
 }
 
 + (UINavigationController *)navigationController

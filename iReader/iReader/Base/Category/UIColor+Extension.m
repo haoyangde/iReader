@@ -9,7 +9,7 @@
 #import "UIColor+Extension.h"
 #import "HexColors.h"
 
-@implementation UIColor (Extension)
+@implementation UIColor (IR_Extension)
 
 + (UIColor *)ir_separatorLineColor
 {

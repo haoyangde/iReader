@@ -16,8 +16,6 @@
 
 @interface IRUIUtilites : NSObject
 
-+ (void)commonInit;
-
 + (UIColor *)appThemeColor;
 
 + (CGFloat)appStatusBarMaxY;

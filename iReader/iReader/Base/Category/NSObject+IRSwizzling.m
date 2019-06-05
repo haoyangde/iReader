@@ -19,7 +19,7 @@ if (ERROR_VAR) {    \
 
 #define SetNSError(ERROR_VAR, FORMAT,...) SetNSErrorFor(__func__, ERROR_VAR, FORMAT, ##__VA_ARGS__)
 
-@implementation NSObject (IRSwizzling)
+@implementation NSObject (IR_Swizzling)
 
 + (BOOL)ir_swizzleMethod:(SEL)origSel withMethod:(SEL)altSel error:(NSError**)error
 {

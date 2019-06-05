@@ -1,6 +1,6 @@
 //
 //  NSString+Extension.h
-//  iOS_Extensions
+//  iReader
 //
 //  Created by zouzhiyong on 2017/12/7.
 //  Copyright © 2017年 zouzhiyong. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NSString (NE_URLDecode)
+@interface NSString (IR_URLDecode)
 
 /**
  lowercase 是否需要对key转成小写,默认 NO
@@ -28,7 +28,7 @@
 
 @end
 
-@interface NSString (NE_AttributedString)
+@interface NSString (IR_AttributedString)
 
 - (NSAttributedString *)attributedStringWithFontSize:(CGFloat)fontSize;
 

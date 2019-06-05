@@ -10,11 +10,6 @@
 
 @implementation IRUIUtilites
 
-+ (void)commonInit
-{
-    IS_IPHONEX_SERIES;
-}
-
 + (UIColor *)appThemeColor
 {
     static UIColor *appThemeColor = nil;

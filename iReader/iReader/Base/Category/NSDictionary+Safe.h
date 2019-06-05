@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSDictionary (Safe)
+@interface NSDictionary (IR_Safe)
 
 - (id)safeObjectForKey:(id)aKey;
 
 @end
 
-@interface NSMutableDictionary (Safe)
+@interface NSMutableDictionary (IR_Safe)
 
 - (void)safeRemoveObjectForKey:(id)aKey;
 
