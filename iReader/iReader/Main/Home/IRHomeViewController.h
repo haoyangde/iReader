@@ -1,5 +1,5 @@
 //
-//  HomePageViewController.h
+//  IRHomeViewController.h
 //  iReader
 //
 //  Created by zzyong on 2018/8/23.
@@ -8,6 +8,6 @@
 
 #import "IRBaseViewController.h"
 
-@interface HomePageViewController : IRBaseViewController
+@interface IRHomeViewController : IRBaseViewController
 
 @end

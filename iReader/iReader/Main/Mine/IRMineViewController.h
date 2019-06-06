@@ -1,5 +1,5 @@
 //
-//  DiscoveryViewController.h
+//  IRMineViewController.h
 //  iReader
 //
 //  Created by zouzhiyong on 2018/3/12.
@@ -8,6 +8,6 @@
 
 #import "IRBaseViewController.h"
 
-@interface DiscoveryViewController : IRBaseViewController
+@interface IRMineViewController : IRBaseViewController
 
 @end

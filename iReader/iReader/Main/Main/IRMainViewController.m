@@ -6,14 +6,16 @@
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "MainViewController.h"
+#import "IRMainViewController.h"
+#import "IRHomeViewController.h"
+#import "IRMineViewController.h"
 
-@interface MainViewController () <UITabBarControllerDelegate>
+@interface IRMainViewController () <UITabBarControllerDelegate>
 
 
 @end
 
-@implementation MainViewController
+@implementation IRMainViewController
 
 - (void)viewDidLoad
 {
@@ -55,6 +57,13 @@
 - (void)setupTabbarItems
 {
     self.tabBar.tintColor = APP_THEME_COLOR;
+    NSArray<NSString *> *tabbarTitles = @[@"首页", @"我的"];
+    NSMutableArray *childViewControllers = [NSMutableArray arrayWithCapacity:tabbarTitles.count];
+    [tabbarTitles enumerateObjectsUsingBlock:^(NSString * _Nonnull title, NSUInteger idx, BOOL * _Nonnull stop) {
+        [childViewControllers addObject:[self childViewControllerWithTabIndex:idx]];
+    }];
+    self.viewControllers = childViewControllers;
+    
     [self.tabBar.items enumerateObjectsUsingBlock:^(UITabBarItem * _Nonnull item, NSUInteger idx, BOOL * _Nonnull stop) {
         
         UIImage *normalImg = nil;
@@ -62,13 +71,29 @@
         if (idx == IRMainTabIndexHome) {
             normalImg = [UIImage imageNamed:@"tabbar_home_n"];
             selectImg = [[UIImage imageNamed:@"tabbar_home_s"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        } else if (idx == IRMainTabIndexDiscovery) {
-            normalImg = [UIImage imageNamed:@"tabbar_discovery_n"];
-            selectImg = [[UIImage imageNamed:@"tabbar_discovery_s"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        } else if (idx == IRMainTabIndexMine) {
+            normalImg = [UIImage imageNamed:@"tabbar_mine_n"];
+            selectImg = [[UIImage imageNamed:@"tabbar_mine_s"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         }
-        [item setImage:normalImg];
-        [item setSelectedImage:selectImg];
+        item.title = tabbarTitles[idx];
+        item.image = normalImg;
+        item.selectedImage = selectImg;
     }];
+}
+
+- (UIViewController *)childViewControllerWithTabIndex:(IRMainTabIndex)tabIndex
+{
+    UIViewController *vc = nil;
+    
+    if (tabIndex == IRMainTabIndexHome) {
+        vc = [[IRHomeViewController alloc] init];
+    } else if (tabIndex == IRMainTabIndexMine) {
+        vc = [[IRMineViewController alloc] init];
+    } else {
+        vc = [[UIViewController alloc] init];
+        NSAssert(NO, @"unsupport type");
+    }
+    return vc;
 }
 
 - (void)updateNavigationItemsForIndex:(IRMainTabIndex)index
@@ -84,7 +109,7 @@
             break;
         }
             
-        case IRMainTabIndexDiscovery: {
+        case IRMainTabIndexMine: {
             self.navigationItem.title = self.selectedViewController.navigationItem.title;
             break;
         }

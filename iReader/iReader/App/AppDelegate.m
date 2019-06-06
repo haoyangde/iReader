@@ -11,6 +11,8 @@
 #endif
 
 #import "AppDelegate.h"
+#import "IRMainViewController.h"
+#import "IRNavigationController.h"
 
 @interface AppDelegate ()
 
@@ -21,9 +23,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     IRDebugLog(@"launchOptions: %@", launchOptions);
-    
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
     
     [self commonAppInit];
     
@@ -70,9 +69,23 @@
 
 #pragma mark - Privte
 
+- (void)setupMainViewController
+{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.backgroundColor = [UIColor whiteColor];
+    
+    IRMainViewController *mainVc = [[IRMainViewController alloc] init];
+    IRNavigationController *rootVc = [[IRNavigationController alloc] initWithRootViewController:mainVc];
+    self.window.rootViewController = rootVc;
+    
+    [self.window makeKeyAndVisible];
+}
+
 - (void)commonAppInit
 {
     IS_IPHONEX_SERIES;
+    
+    [self setupMainViewController];
 }
 
 + (UINavigationController *)navigationController

@@ -1,5 +1,5 @@
 //
-//  MainViewController.h
+//  IRMainViewController.h
 //  iReader
 //
 //  Created by zouzhiyong on 2018/3/12.
@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSUInteger, IRMainTabIndex) {
-    IRMainTabIndexHome      = 0,
-    IRMainTabIndexDiscovery = 1
+    IRMainTabIndexHome  = 0,
+    IRMainTabIndexMine  = 1
 };
 
-@interface MainViewController : UITabBarController
+@interface IRMainViewController : UITabBarController
 
 @end

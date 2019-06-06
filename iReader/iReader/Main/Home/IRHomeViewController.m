@@ -1,12 +1,12 @@
 //
-//  HomePageViewController.m
+//  IRHomeViewController.m
 //  iReader
 //
 //  Created by zzyong on 2018/8/23.
 //  Copyright © 2018年 zouzhiyong. All rights reserved.
 //
 
-#import "HomePageViewController.h"
+#import "IRHomeViewController.h"
 #import "IRReaderCenterController.h"
 #import "IRSettingViewController.h"
 
@@ -16,7 +16,7 @@
 // Other
 #import "IREpubHeaders.h"
 
-@interface HomePageViewController ()
+@interface IRHomeViewController ()
 <
 UICollectionViewDelegateFlowLayout,
 UICollectionViewDataSource
@@ -27,7 +27,7 @@ UICollectionViewDataSource
 
 @end
 
-@implementation HomePageViewController
+@implementation IRHomeViewController
 
 - (void)viewDidLoad
 {
