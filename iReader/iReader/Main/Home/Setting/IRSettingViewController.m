@@ -11,21 +11,21 @@
 #endif
 
 #import "IRSettingViewController.h"
-#import "IRSettingModel.h"
-#import "IRSwitchSettingCell.h"
-#import "IRArrowSettingCell.h"
-#import "IRSettingSectionModel.h"
-#import "IRTextSettingCell.h"
+#import "IRCommonArrowCell.h"
+#import "IRCommonCellModel.h"
+#import "IRCommonCellSectionModel.h"
+#import "IRCommonTextCell.h"
+#import "IRCommonSwitchCell.h"
 
 @interface IRSettingViewController ()
 <
 UICollectionViewDelegateFlowLayout,
 UICollectionViewDataSource,
-IRSwitchSettingCellDelegate
+IRCommonSwitchCellDelegate
 >
 
 @property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, strong) NSArray<IRSettingSectionModel *> *settingInfos;
+@property (nonatomic, strong) NSArray<IRCommonCellSectionModel *> *settingInfos;
 
 @end
 
@@ -51,9 +51,9 @@ IRSwitchSettingCellDelegate
     self.collectionView.dataSource = nil;
 }
 
-#pragma mark - IRSwitchSettingCellDelegate
+#pragma mark - IRCommonSwitchCellDelegate
 
-- (void)settingCellDidClickSwitchButton:(IRSwitchSettingCell *)cell
+- (void)switchCellDidClickSwitchButton:(IRCommonSwitchCell *)cell
 {
     
 }
@@ -67,26 +67,26 @@ IRSwitchSettingCellDelegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    IRSettingSectionModel *sectionModel = [self.settingInfos safeObjectAtIndex:section];
+    IRCommonCellSectionModel *sectionModel = [self.settingInfos safeObjectAtIndex:section];
     return sectionModel.items.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    IRSettingSectionModel *sectionModel = [self.settingInfos safeObjectAtIndex:indexPath.section];
-    IRSettingModel *settingModel = [sectionModel.items safeObjectAtIndex:indexPath.row];
-    if (settingModel.cellType == IRSettingCellTypeSwitch) {
-        IRSwitchSettingCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRSwitchSettingCell" forIndexPath:indexPath];
+    IRCommonCellSectionModel *sectionModel = [self.settingInfos safeObjectAtIndex:indexPath.section];
+    IRCommonCellModel *settingModel = [sectionModel.items safeObjectAtIndex:indexPath.row];
+    if (settingModel.cellType == IRCommonCellTypeSwitch) {
+        IRCommonSwitchCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRCommonSwitchCell" forIndexPath:indexPath];
         cell.delegate = self;
-        cell.settingModel = settingModel;
+        cell.commonCellModel = settingModel;
         return cell;
-    } else if (settingModel.cellType == IRSettingCellTypeArrow) {
-        IRArrowSettingCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRArrowSettingCell" forIndexPath:indexPath];
-        cell.settingModel = settingModel;
+    } else if (settingModel.cellType == IRCommonCellTypeArrow) {
+        IRCommonArrowCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRCommonArrowCell" forIndexPath:indexPath];
+        cell.commonCellModel = settingModel;
         return cell;
-    } else if (settingModel.cellType == IRSettingCellTypeText) {
-        IRTextSettingCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRTextSettingCell" forIndexPath:indexPath];
-        cell.settingModel = settingModel;
+    } else if (settingModel.cellType == IRCommonCellTypeText) {
+        IRCommonTextCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRCommonTextCell" forIndexPath:indexPath];
+        cell.commonCellModel = settingModel;
         return cell;
     } else {
         return  [collectionView dequeueReusableCellWithReuseIdentifier:@"defaultCell" forIndexPath:indexPath];
@@ -126,10 +126,10 @@ IRSwitchSettingCellDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    IRSettingSectionModel *sectionModel = [self.settingInfos safeObjectAtIndex:indexPath.section];
-    IRSettingModel *settingModel = [sectionModel.items safeObjectAtIndex:indexPath.row];
+    IRCommonCellSectionModel *sectionModel = [self.settingInfos safeObjectAtIndex:indexPath.section];
+    IRCommonCellModel *settingModel = [sectionModel.items safeObjectAtIndex:indexPath.row];
     if (settingModel.clickedHandler) {
-        settingModel.clickedHandler();
+        settingModel.clickedHandler(settingModel);
     }
 }
 
@@ -140,26 +140,26 @@ IRSwitchSettingCellDelegate
     NSMutableArray *tempSettingInfos = [NSMutableArray array];
     __weak typeof(self) weakSelf = self;
     
-    IRSettingSectionModel *commonSection = [[IRSettingSectionModel alloc] init];
-    IRSettingModel *mark = [[IRSettingModel alloc] init];
+    IRCommonCellSectionModel *commonSection = [[IRCommonCellSectionModel alloc] init];
+    IRCommonCellModel *mark = [[IRCommonCellModel alloc] init];
     mark.title = @"去评分";
-    mark.cellType = IRSettingCellTypeArrow;
-    mark.clickedHandler = ^{
+    mark.cellType = IRCommonCellTypeArrow;
+    mark.clickedHandler = ^(IRCommonCellModel * _Nonnull cellModel) {
         [weakSelf onMarkCellClicked];
     };
     
-    IRSettingModel *about = [[IRSettingModel alloc] init];
+    IRCommonCellModel *about = [[IRCommonCellModel alloc] init];
     about.title = @"关于";
-    about.cellType = IRSettingCellTypeArrow;
-    about.clickedHandler = ^{
+    about.cellType = IRCommonCellTypeArrow;
+    about.clickedHandler = ^(IRCommonCellModel * _Nonnull cellModel) {
         [weakSelf onAboutCellClicked];
     };
     
-    IRSettingModel *cache = [[IRSettingModel alloc] init];
+    IRCommonCellModel *cache = [[IRCommonCellModel alloc] init];
     cache.title = @"清除缓存";
     cache.rightText = @"0M";
-    cache.cellType = IRSettingCellTypeText;
-    cache.clickedHandler = ^{
+    cache.cellType = IRCommonCellTypeText;
+    cache.clickedHandler = ^(IRCommonCellModel * _Nonnull cellModel) {
         
     };
     
@@ -167,13 +167,13 @@ IRSwitchSettingCellDelegate
     [tempSettingInfos addObject:commonSection];
     
 #ifdef DEBUG
-    IRSettingModel *debug = [[IRSettingModel alloc] init];
+    IRCommonCellModel *debug = [[IRCommonCellModel alloc] init];
     debug.title = @"开发实验室";
-    debug.cellType = IRSettingCellTypeArrow;
-    debug.clickedHandler = ^{
+    debug.cellType = IRCommonCellTypeArrow;
+    debug.clickedHandler = ^(IRCommonCellModel * _Nonnull cellModel) {
         [weakSelf onDebugCellClicked];
     };
-    IRSettingSectionModel *debugSection = [[IRSettingSectionModel alloc] init];
+    IRCommonCellSectionModel *debugSection = [[IRCommonCellSectionModel alloc] init];
     debugSection.items = @[debug];
     [tempSettingInfos addObject:debugSection];
 #endif
@@ -212,9 +212,9 @@ IRSwitchSettingCellDelegate
     collectionView.alwaysBounceVertical = YES;
     collectionView.showsVerticalScrollIndicator = NO;
     
-    [collectionView registerClass:[IRTextSettingCell class] forCellWithReuseIdentifier:@"IRTextSettingCell"];
-    [collectionView registerClass:[IRArrowSettingCell class] forCellWithReuseIdentifier:@"IRArrowSettingCell"];
-    [collectionView registerClass:[IRSwitchSettingCell class] forCellWithReuseIdentifier:@"IRSwitchSettingCell"];
+    [collectionView registerClass:[IRCommonTextCell class] forCellWithReuseIdentifier:@"IRCommonTextCell"];
+    [collectionView registerClass:[IRCommonArrowCell class] forCellWithReuseIdentifier:@"IRCommonArrowCell"];
+    [collectionView registerClass:[IRCommonSwitchCell class] forCellWithReuseIdentifier:@"IRCommonSwitchCell"];
     [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"defaultCell"];
     [collectionView registerClass:[UICollectionReusableView class]
        forSupplementaryViewOfKind:UICollectionElementKindSectionHeader

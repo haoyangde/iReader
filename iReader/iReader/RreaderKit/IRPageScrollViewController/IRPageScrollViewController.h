@@ -10,6 +10,8 @@
 
 @class IRPageScrollViewController;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol IRPageScrollViewControllerDataSource <NSObject>
 
 @required
@@ -24,3 +26,5 @@
 @property (nonatomic, weak) id <IRPageScrollViewControllerDataSource> dataSource;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -15,7 +15,6 @@
 @optional
 - (void)readerNavigationViewDidClickCloseButton:(IRReaderNavigationView *)aView;
 - (void)readerNavigationViewDidClickChapterListButton:(IRReaderNavigationView *)aView;
-- (void)readerNavigationViewDidClickMoreSettingButton:(IRReaderNavigationView *)aView;
 
 @end
 

@@ -14,7 +14,6 @@
 @property (nonatomic, strong) UIView *customContentView;
 @property (nonatomic, strong) UIButton *closeBtn;
 @property (nonatomic, strong) UIButton *fontBtn;
-@property (nonatomic, strong) UIButton *moreSettingBtn;
 @property (nonatomic, strong) UIButton *chapterListBtn;
 
 @end
@@ -37,13 +36,6 @@
 {
     if (self.actionDelegate && [self.actionDelegate respondsToSelector:@selector(readerNavigationViewDidClickCloseButton:)]) {
         [self.actionDelegate readerNavigationViewDidClickCloseButton:self];
-    }
-}
-
-- (void)onMoreSettingButtonClicked
-{
-    if ([self.actionDelegate respondsToSelector:@selector(readerNavigationViewDidClickMoreSettingButton:)]) {
-        [self.actionDelegate readerNavigationViewDidClickMoreSettingButton:self];
     }
 }
 
@@ -73,21 +65,12 @@
         make.top.mas_equalTo(STATUS_BAR_MAX_Y);
     }];
     
-    self.moreSettingBtn = [self commonButtonWithImageName:@"reader_more_setting" action:@selector(onMoreSettingButtonClicked)];
-    [self addSubview:self.moreSettingBtn];
-    [self.moreSettingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(20);
-        make.right.equalTo(self).offset(-15);
-        make.height.mas_equalTo(40);
-        make.top.mas_equalTo(STATUS_BAR_MAX_Y);
-    }];
-    
     self.chapterListBtn = [self commonButtonWithImageName:@"reader_chapter_list" action:@selector(onChapterListClicked)];
     [self addSubview:self.chapterListBtn];
     [self.chapterListBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(22);
+        make.width.mas_equalTo(20);
+        make.right.equalTo(self).offset(-15);
         make.height.mas_equalTo(40);
-        make.right.equalTo(self.moreSettingBtn.mas_left).offset(-20);
         make.top.mas_equalTo(STATUS_BAR_MAX_Y);
     }];
 }

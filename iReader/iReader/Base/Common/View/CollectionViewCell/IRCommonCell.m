@@ -1,22 +1,22 @@
 //
-//  IRSettingCell.m
+//  IRCommonCell.m
 //  iReader
 //
-//  Created by zzyong on 2018/9/28.
-//  Copyright © 2018年 zouzhiyong. All rights reserved.
+//  Created by zzyong on 2019/6/6.
+//  Copyright © 2019 zouzhiyong. All rights reserved.
 //
 
-#import "IRSettingCell.h"
-#import "IRSettingModel.h"
+#import "IRCommonCell.h"
+#import "IRCommonCellModel.h"
 
-@interface IRSettingCell ()
+@interface IRCommonCell ()
 
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIView *bottomLine;
 
 @end
 
-@implementation IRSettingCell
+@implementation IRCommonCell
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -47,7 +47,7 @@
     self.titleLabel = titleLabel;
     
     self.bottomLine = [[UIView alloc] init];
-    self.bottomLine.backgroundColor = [UIColor colorWithWhite:0.9 alpha:0.8];
+    self.bottomLine.backgroundColor = IR_SEPARATOR_COLOR;
     [self.contentView addSubview:self.bottomLine];
 }
 

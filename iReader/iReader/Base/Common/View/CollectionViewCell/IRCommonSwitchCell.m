@@ -1,22 +1,22 @@
 //
-//  IRSwitchSettingCell.m
+//  IRCommonSwitchCell.m
 //  iReader
 //
-//  Created by zzyong on 2018/9/29.
-//  Copyright © 2018年 zouzhiyong. All rights reserved.
+//  Created by zzyong on 2019/6/6.
+//  Copyright © 2019 zouzhiyong. All rights reserved.
 //
 
-#import "IRSwitchSettingCell.h"
-#import "IRSettingModel.h"
+#import "IRCommonSwitchCell.h"
+#import "IRCommonCellModel.h"
 #import <Masonry.h>
 
-@interface IRSwitchSettingCell ()
+@interface IRCommonSwitchCell ()
 
 @property (nonatomic, strong) UISwitch *switchView;
 
 @end
 
-@implementation IRSwitchSettingCell
+@implementation IRCommonSwitchCell
 
 - (void)setupSubviews
 {
@@ -37,21 +37,22 @@
 
 - (void)onSwitchValueChanged:(UISwitch *)switchView
 {
-    if ([self.delegate respondsToSelector:@selector(settingCellDidClickSwitchButton:)]) {
-        [self.delegate settingCellDidClickSwitchButton:self];
+    if ([self.delegate respondsToSelector:@selector(switchCellDidClickSwitchButton:)]) {
+        [self.delegate switchCellDidClickSwitchButton:self];
     }
 }
 
 #pragma mark - Public
 
-- (void)setSettingModel:(IRSettingModel *)settingModel
+- (void)setCommonCellModel:(IRCommonCellModel *)commonCellModel
 {
-    [super setSettingModel:settingModel];
+    [super setCommonCellModel:commonCellModel];
     
-    self.titleLabel.text = settingModel.title;
-    self.switchView.on = settingModel.isSwitchOn;
+    self.titleLabel.text = commonCellModel.title;
+    self.switchView.on = commonCellModel.isSwitchOn;
     
     [self setNeedsLayout];
 }
 
 @end
+

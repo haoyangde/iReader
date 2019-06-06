@@ -9,23 +9,23 @@
 #ifdef DEBUG
 
 #import "IRDebugViewController.h"
-#import "IRSwitchSettingCell.h"
-#import "IRSettingModel.h"
+#import "IRCommonSwitchCell.h"
+#import "IRCommonCellModel.h"
 #import "IRDebugConst.h"
 #import "AppDelegate+Debug.h"
 #import "DTCoreTextLayoutFrame.h"
 #import "CCAspectDebugViewController.h"
-#import "IRArrowSettingCell.h"
+#import "IRCommonArrowCell.h"
 
 @interface IRDebugViewController ()
 <
 UICollectionViewDelegateFlowLayout,
 UICollectionViewDataSource,
-IRSwitchSettingCellDelegate
+IRCommonSwitchCellDelegate
 >
 
 @property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, strong) NSArray<IRSettingModel *> *debugInfos;
+@property (nonatomic, strong) NSArray<IRCommonCellModel *> *debugInfos;
 
 @end
 
@@ -51,15 +51,15 @@ IRSwitchSettingCellDelegate
     self.collectionView.dataSource = nil;
 }
 
-#pragma mark - IRSwitchSettingCellDelegate
+#pragma mark - IRCommonSwitchCellDelegate
 
-- (void)settingCellDidClickSwitchButton:(IRSwitchSettingCell *)cell
+- (void)switchCellDidClickSwitchButton:(IRCommonSwitchCell *)cell
 {
-    IRSettingModel *model = cell.settingModel;
+    IRCommonCellModel *model = cell.commonCellModel;
     
-    if ([model.settingKind isEqualToString:@"DTCoreText"]) {
+    if ([model.cellKind isEqualToString:@"DTCoreText"]) {
         [self onDTDebugCellValueChanged:cell.switchView.isOn];
-    } else if ([model.settingKind isEqualToString:@"flex"]) {
+    } else if ([model.cellKind isEqualToString:@"flex"]) {
         [self onFlexCellValueChanged:cell.switchView.isOn];
     }
 }
@@ -87,15 +87,15 @@ IRSwitchSettingCellDelegate
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    IRSettingModel *settingModel = [self.debugInfos safeObjectAtIndex:indexPath.row];
-    if (settingModel.cellType == IRSettingCellTypeSwitch) {
-        IRSwitchSettingCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRSwitchSettingCell" forIndexPath:indexPath];
+    IRCommonCellModel *settingModel = [self.debugInfos safeObjectAtIndex:indexPath.row];
+    if (settingModel.cellType == IRCommonCellTypeSwitch) {
+        IRCommonSwitchCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRCommonSwitchCell" forIndexPath:indexPath];
         cell.delegate = self;
-        cell.settingModel = settingModel;
+        cell.commonCellModel = settingModel;
         return cell;
-    } else if (settingModel.cellType == IRSettingCellTypeArrow) {
-        IRArrowSettingCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRArrowSettingCell" forIndexPath:indexPath];
-        cell.settingModel = settingModel;
+    } else if (settingModel.cellType == IRCommonCellTypeArrow) {
+        IRCommonArrowCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"IRCommonArrowCell" forIndexPath:indexPath];
+        cell.commonCellModel = settingModel;
         return cell;
     } else {
         return  [collectionView dequeueReusableCellWithReuseIdentifier:@"defaultCell" forIndexPath:indexPath];
@@ -135,9 +135,9 @@ IRSwitchSettingCellDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    IRSettingModel *settingModel = [self.debugInfos safeObjectAtIndex:indexPath.row];
+    IRCommonCellModel *settingModel = [self.debugInfos safeObjectAtIndex:indexPath.row];
     if (settingModel.clickedHandler) {
-        settingModel.clickedHandler();
+        settingModel.clickedHandler(settingModel);
     }
 }
 
@@ -146,22 +146,22 @@ IRSwitchSettingCellDelegate
 - (void)setupDebugInfos
 {
     __weak typeof(self) weakSelf = self;
-    IRSettingModel *flex = [[IRSettingModel alloc] init];
+    IRCommonCellModel *flex = [[IRCommonCellModel alloc] init];
     flex.title = @"FLEX";
-    flex.settingKind = @"flex";
-    flex.cellType = IRSettingCellTypeSwitch;
+    flex.cellKind = @"flex";
+    flex.cellType = IRCommonCellTypeSwitch;
     flex.isSwitchOn = ![[[IRCacheManager sharedInstance] objectForKey:kFlexDebugDisableCacheKey] boolValue];
     
-    IRSettingModel *dtDebug = [[IRSettingModel alloc] init];
+    IRCommonCellModel *dtDebug = [[IRCommonCellModel alloc] init];
     dtDebug.title = @"DTCoreText Debug";
-    dtDebug.settingKind = @"DTCoreText";
-    dtDebug.cellType = IRSettingCellTypeSwitch;
+    dtDebug.cellKind = @"DTCoreText";
+    dtDebug.cellType = IRCommonCellTypeSwitch;
     dtDebug.isSwitchOn = [[[IRCacheManager sharedInstance] objectForKey:kDTCoreTextDebugEnableCacheKey] boolValue];
     
-    IRSettingModel *aspectDebug = [[IRSettingModel alloc] init];
+    IRCommonCellModel *aspectDebug = [[IRCommonCellModel alloc] init];
     aspectDebug.title = @"CCAspect Debug";
-    aspectDebug.cellType = IRSettingCellTypeArrow;
-    aspectDebug.clickedHandler = ^{
+    aspectDebug.cellType = IRCommonCellTypeArrow;
+    aspectDebug.clickedHandler = ^(IRCommonCellModel * _Nonnull cellModel) {
         [weakSelf.navigationController pushViewController:[[CCAspectDebugViewController alloc] init] animated:YES];
     };
     
@@ -189,8 +189,8 @@ IRSwitchSettingCellDelegate
     collectionView.alwaysBounceVertical = YES;
     collectionView.showsVerticalScrollIndicator = NO;
     
-    [collectionView registerClass:[IRSwitchSettingCell class] forCellWithReuseIdentifier:@"IRSwitchSettingCell"];
-    [collectionView registerClass:[IRArrowSettingCell class] forCellWithReuseIdentifier:@"IRArrowSettingCell"];
+    [collectionView registerClass:[IRCommonSwitchCell class] forCellWithReuseIdentifier:@"IRCommonSwitchCell"];
+    [collectionView registerClass:[IRCommonArrowCell class] forCellWithReuseIdentifier:@"IRCommonArrowCell"];
     [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"defaultCell"];
     [collectionView registerClass:[UICollectionReusableView class]
        forSupplementaryViewOfKind:UICollectionElementKindSectionHeader

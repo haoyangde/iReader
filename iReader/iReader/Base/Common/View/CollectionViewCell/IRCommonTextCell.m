@@ -1,22 +1,22 @@
 //
-//  IRTextSettingCell.m
+//  IRCommonTextCell.m
 //  iReader
 //
-//  Created by zzyong on 2018/9/29.
-//  Copyright © 2018年 zouzhiyong. All rights reserved.
+//  Created by zzyong on 2019/6/6.
+//  Copyright © 2019 zouzhiyong. All rights reserved.
 //
 
-#import "IRTextSettingCell.h"
-#import "IRSettingModel.h"
+#import "IRCommonTextCell.h"
+#import "IRCommonCellModel.h"
 #import <Masonry.h>
 
-@interface IRTextSettingCell ()
+@interface IRCommonTextCell ()
 
 @property (nonatomic, strong) UILabel *rightTextLabel;
 
 @end
 
-@implementation IRTextSettingCell
+@implementation IRCommonTextCell
 
 - (void)setupSubviews
 {
@@ -37,14 +37,15 @@
 
 #pragma mark - Public
 
-- (void)setSettingModel:(IRSettingModel *)settingModel
+- (void)setCommonCellModel:(IRCommonCellModel *)commonCellModel
 {
-    [super setSettingModel:settingModel];
+    [super setCommonCellModel:commonCellModel];
     
-    self.titleLabel.text = settingModel.title;
-    self.rightTextLabel.text = settingModel.rightText;
+    self.titleLabel.text = commonCellModel.title;
+    self.rightTextLabel.text = commonCellModel.rightText;
     
     [self setNeedsLayout];
 }
 
 @end
+

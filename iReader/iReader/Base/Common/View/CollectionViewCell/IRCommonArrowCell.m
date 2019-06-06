@@ -1,22 +1,22 @@
 //
-//  IRArrowSettingCell.m
+//  IRCommonArrowCell.m
 //  iReader
 //
-//  Created by zzyong on 2018/9/29.
-//  Copyright © 2018年 zouzhiyong. All rights reserved.
+//  Created by zzyong on 2019/6/6.
+//  Copyright © 2019 zouzhiyong. All rights reserved.
 //
 
-#import "IRArrowSettingCell.h"
-#import "IRSettingModel.h"
+#import "IRCommonArrowCell.h"
+#import "IRCommonCellModel.h"
 #import <Masonry.h>
 
-@interface IRArrowSettingCell ()
+@interface IRCommonArrowCell ()
 
 @property (nonatomic, strong) UIImageView *arrowView;
 
 @end
 
-@implementation IRArrowSettingCell
+@implementation IRCommonArrowCell
 
 - (void)setupSubviews
 {
@@ -33,11 +33,11 @@
 
 #pragma mark - Public
 
-- (void)setSettingModel:(IRSettingModel *)settingModel
+- (void)setCommonCellModel:(IRCommonCellModel *)commonCellModel
 {
-    [super setSettingModel:settingModel];
+    [super setCommonCellModel:commonCellModel];
     
-    self.titleLabel.text = settingModel.title;
+    self.titleLabel.text = commonCellModel.title;
     
     [self setNeedsLayout];
 }

@@ -11,7 +11,6 @@
 #import "IRPageViewController.h"
 #import "IRReadingViewController.h"
 #import "IRReadingBackViewController.h"
-#import "IRReaderMoreSettingViewController.h"
 
 // view
 #import "IRReaderNavigationView.h"
@@ -35,8 +34,7 @@ IRReaderNavigationViewDelegate,
 UIScrollViewDelegate,
 BookChapterListControllerDelegate,
 ReaderSettingViewDeletage,
-UIGestureRecognizerDelegate,
-IRReaderMoreSettingViewControllerDelegate
+UIGestureRecognizerDelegate
 >
 
 @property (nonatomic, assign) CGFloat readerNavigationViewHeight;
@@ -502,20 +500,6 @@ IRReaderMoreSettingViewControllerDelegate
 {
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)readerNavigationViewDidClickMoreSettingButton:(IRReaderNavigationView *)aView
-{
-    IRReaderMoreSettingViewController *vc = [[IRReaderMoreSettingViewController alloc] init];
-    vc.delegate = self;
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-#pragma mark - IRReaderMoreSettingViewControllerDelegate
-
-- (void)readerMoreSettingViewControllerDidChangedTransitionStyle:(IRPageTransitionStyle)transitionStyle
-{
-    
 }
 
 #pragma mark - UIPageViewController ScrollView
