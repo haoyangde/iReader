@@ -41,7 +41,6 @@
 {
     [super setCommonCellModel:commonCellModel];
     
-    self.titleLabel.text = commonCellModel.title;
     self.rightTextLabel.text = commonCellModel.rightText;
     
     [self setNeedsLayout];

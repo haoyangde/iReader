@@ -10,4 +10,13 @@
 
 @implementation IRCommonCellModel
 
+- (instancetype)init
+{
+    if (self = [super init]) {
+        self.hasSeparatorLine = YES;
+    }
+    
+    return self;
+}
+
 @end

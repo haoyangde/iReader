@@ -23,11 +23,21 @@ typedef NS_ENUM(NSUInteger, IRCommonCellType) {
 
 @interface IRCommonCellModel : NSObject
 
+@property (nonatomic, strong) NSString *imageName;
+
 @property (nonatomic, strong) NSString *title;
+
 @property (nonatomic, strong) NSString *rightText;
+
+/// default is YES
+@property (nonatomic, assign) BOOL hasSeparatorLine;
+
 @property (nonatomic, assign) IRCommonCellType cellType;
+
 @property (nonatomic, strong) NSString *cellKind;
+
 @property (nonatomic, strong) IRCommonCellClickedHandler clickedHandler;
+
 /// Only for IRCommonCellTypeSwitch
 @property (nonatomic, assign) BOOL isSwitchOn;
 

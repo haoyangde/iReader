@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface IRCommonCell : IRCollectionViewCell
 
+@property (nonatomic, strong, readonly) UIImageView *imageView;
+
 @property (nonatomic, strong, readonly) UILabel *titleLabel;
 
 /// override by subclass

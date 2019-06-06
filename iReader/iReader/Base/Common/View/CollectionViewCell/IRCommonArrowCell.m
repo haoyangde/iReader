@@ -31,15 +31,4 @@
     }];
 }
 
-#pragma mark - Public
-
-- (void)setCommonCellModel:(IRCommonCellModel *)commonCellModel
-{
-    [super setCommonCellModel:commonCellModel];
-    
-    self.titleLabel.text = commonCellModel.title;
-    
-    [self setNeedsLayout];
-}
-
 @end

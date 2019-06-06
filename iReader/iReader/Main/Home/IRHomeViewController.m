@@ -8,7 +8,6 @@
 
 #import "IRHomeViewController.h"
 #import "IRReaderCenterController.h"
-#import "IRSettingViewController.h"
 
 // View
 #import "IRBookCell.h"
@@ -38,24 +37,9 @@ UICollectionViewDataSource
 
 - (void)commonInit
 {
-    [self setupNavigationBar];
+    self.title = @"首页";
     [self setupCollectionView];
     [self parseBooks];
-}
-
-- (void)setupNavigationBar
-{
-    UIImage *settingImg = [[UIImage imageNamed:@"reader_more_setting"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:settingImg
-                                                                              style:UIBarButtonItemStylePlain
-                                                                             target:self
-                                                                             action:@selector(onSettingButtonclicked)];
-}
-
-- (void)onSettingButtonclicked
-{
-    IRSettingViewController *vc = [[IRSettingViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)parseBooks
@@ -83,7 +67,7 @@ UICollectionViewDataSource
                                                           collectionViewLayout:flowLayout];
     collectionView.dataSource = self;
     collectionView.delegate   = self;
-    collectionView.backgroundColor      = [UIColor whiteColor];
+    collectionView.backgroundColor = [UIColor whiteColor];
     collectionView.alwaysBounceVertical = YES;
     collectionView.showsVerticalScrollIndicator = NO;
     

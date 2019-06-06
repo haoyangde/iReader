@@ -208,7 +208,7 @@ IRCommonSwitchCellDelegate
                                                           collectionViewLayout:flowLayout];
     collectionView.dataSource = self;
     collectionView.delegate   = self;
-    collectionView.backgroundColor      = [UIColor whiteColor];
+    collectionView.backgroundColor = [UIColor whiteColor];
     collectionView.alwaysBounceVertical = YES;
     collectionView.showsVerticalScrollIndicator = NO;
     

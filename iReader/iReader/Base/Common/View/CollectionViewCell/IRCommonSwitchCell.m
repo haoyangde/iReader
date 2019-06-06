@@ -48,7 +48,6 @@
 {
     [super setCommonCellModel:commonCellModel];
     
-    self.titleLabel.text = commonCellModel.title;
     self.switchView.on = commonCellModel.isSwitchOn;
     
     [self setNeedsLayout];
