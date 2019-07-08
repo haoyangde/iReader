@@ -741,7 +741,6 @@
 		810C5050212E6393000DA3B5 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				810A4CFA215DCB0B00296DFF /* Setting */,
 				810C5051212E63B0000DA3B5 /* View */,
 				810C5055212E6459000DA3B5 /* IRHomeViewController.h */,
 				810C5056212E6459000DA3B5 /* IRHomeViewController.m */,
@@ -1443,6 +1442,7 @@
 		DFDC3C1420566AA300E40E27 /* Mine */ = {
 			isa = PBXGroup;
 			children = (
+				810A4CFA215DCB0B00296DFF /* Setting */,
 				DFDC3C1520566ACD00E40E27 /* IRMineViewController.h */,
 				DFDC3C1620566ACD00E40E27 /* IRMineViewController.m */,
 			);
