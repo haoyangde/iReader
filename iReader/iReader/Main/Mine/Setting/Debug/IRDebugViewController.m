@@ -14,7 +14,6 @@
 #import "IRDebugConst.h"
 #import "AppDelegate+Debug.h"
 #import "DTCoreTextLayoutFrame.h"
-#import "CCAspectDebugViewController.h"
 #import "IRCommonArrowCell.h"
 
 @interface IRDebugViewController ()
@@ -145,7 +144,6 @@ IRCommonSwitchCellDelegate
 
 - (void)setupDebugInfos
 {
-    __weak typeof(self) weakSelf = self;
     IRCommonCellModel *flex = [[IRCommonCellModel alloc] init];
     flex.title = @"FLEX";
     flex.cellKind = @"flex";
@@ -158,14 +156,7 @@ IRCommonSwitchCellDelegate
     dtDebug.cellType = IRCommonCellTypeSwitch;
     dtDebug.isSwitchOn = [[[IRCacheManager sharedInstance] objectForKey:kDTCoreTextDebugEnableCacheKey] boolValue];
     
-    IRCommonCellModel *aspectDebug = [[IRCommonCellModel alloc] init];
-    aspectDebug.title = @"CCAspect Debug";
-    aspectDebug.cellType = IRCommonCellTypeArrow;
-    aspectDebug.clickedHandler = ^(IRCommonCellModel * _Nonnull cellModel) {
-        [weakSelf.navigationController pushViewController:[[CCAspectDebugViewController alloc] init] animated:YES];
-    };
-    
-    self.debugInfos = @[flex, dtDebug, aspectDebug];
+    self.debugInfos = @[flex, dtDebug];
 }
 
 #pragma mark - Private

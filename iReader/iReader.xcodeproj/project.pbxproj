@@ -10,17 +10,6 @@
 		8100899921084D3700C05391 /* IRChapterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8100899821084D3700C05391 /* IRChapterModel.m */; };
 		810089B2210B1D7200C05391 /* IRPageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 810089B1210B1D7200C05391 /* IRPageModel.m */; };
 		810089B5210B204100C05391 /* IRReaderConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 810089B4210B204100C05391 /* IRReaderConfig.m */; };
-		8104BF8C22A7B314003DDAF8 /* CCAspect.m in Sources */ = {isa = PBXBuildFile; fileRef = 8104BF7122A7B314003DDAF8 /* CCAspect.m */; };
-		8104BF8D22A7B314003DDAF8 /* CCAspect+CustomInvokeInstead.m in Sources */ = {isa = PBXBuildFile; fileRef = 8104BF7322A7B314003DDAF8 /* CCAspect+CustomInvokeInstead.m */; };
-		8104BF8E22A7B314003DDAF8 /* CCAspectArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = 8104BF7522A7B314003DDAF8 /* CCAspectArgument.m */; };
-		8104BF8F22A7B314003DDAF8 /* CCAspectMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8104BF7722A7B314003DDAF8 /* CCAspectMessage.m */; };
-		8104BF9122A7B314003DDAF8 /* CCAspectInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = 8104BF7D22A7B314003DDAF8 /* CCAspectInstance.m */; };
-		8104BF9222A7B314003DDAF8 /* CCAspectModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8104BF7E22A7B314003DDAF8 /* CCAspectModel.m */; };
-		8104BF9322A7B314003DDAF8 /* NSInvocation+Aspects.m in Sources */ = {isa = PBXBuildFile; fileRef = 8104BF8122A7B314003DDAF8 /* NSInvocation+Aspects.m */; };
-		8104BF9422A7B314003DDAF8 /* AspectInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8104BF8222A7B314003DDAF8 /* AspectInfo.m */; };
-		8104BF9522A7B314003DDAF8 /* Aspects.m in Sources */ = {isa = PBXBuildFile; fileRef = 8104BF8522A7B314003DDAF8 /* Aspects.m */; };
-		8104BF9622A7B314003DDAF8 /* CCAspectDebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8104BF8922A7B314003DDAF8 /* CCAspectDebugViewController.m */; };
-		8104BF9922A7B4CE003DDAF8 /* CCAspect+ConfigLoad.m in Sources */ = {isa = PBXBuildFile; fileRef = 8104BF9822A7B4CE003DDAF8 /* CCAspect+ConfigLoad.m */; };
 		8104BF9C22A7C988003DDAF8 /* IRRouterContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 8104BF9B22A7C988003DDAF8 /* IRRouterContext.m */; };
 		8104BFA922A8C537003DDAF8 /* IRCommonCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8104BFA822A8C537003DDAF8 /* IRCommonCellModel.m */; };
 		8104BFAC22A8C555003DDAF8 /* IRCommonCellSectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8104BFAB22A8C555003DDAF8 /* IRCommonCellSectionModel.m */; };
@@ -210,30 +199,6 @@
 		810089B1210B1D7200C05391 /* IRPageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRPageModel.m; sourceTree = "<group>"; };
 		810089B3210B204100C05391 /* IRReaderConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRReaderConfig.h; sourceTree = "<group>"; };
 		810089B4210B204100C05391 /* IRReaderConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRReaderConfig.m; sourceTree = "<group>"; };
-		8104BF6E22A7B314003DDAF8 /* CCAspect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAspect.h; sourceTree = "<group>"; };
-		8104BF6F22A7B314003DDAF8 /* CCAspect+CustomInvokeInstead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCAspect+CustomInvokeInstead.h"; sourceTree = "<group>"; };
-		8104BF7122A7B314003DDAF8 /* CCAspect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCAspect.m; sourceTree = "<group>"; };
-		8104BF7322A7B314003DDAF8 /* CCAspect+CustomInvokeInstead.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCAspect+CustomInvokeInstead.m"; sourceTree = "<group>"; };
-		8104BF7522A7B314003DDAF8 /* CCAspectArgument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCAspectArgument.m; sourceTree = "<group>"; };
-		8104BF7622A7B314003DDAF8 /* CCAspectModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAspectModel.h; sourceTree = "<group>"; };
-		8104BF7722A7B314003DDAF8 /* CCAspectMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCAspectMessage.m; sourceTree = "<group>"; };
-		8104BF7822A7B314003DDAF8 /* CCAspectInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAspectInstance.h; sourceTree = "<group>"; };
-		8104BF7A22A7B314003DDAF8 /* CCAspectArgument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAspectArgument.h; sourceTree = "<group>"; };
-		8104BF7C22A7B314003DDAF8 /* CCAspectMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAspectMessage.h; sourceTree = "<group>"; };
-		8104BF7D22A7B314003DDAF8 /* CCAspectInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCAspectInstance.m; sourceTree = "<group>"; };
-		8104BF7E22A7B314003DDAF8 /* CCAspectModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCAspectModel.m; sourceTree = "<group>"; };
-		8104BF7F22A7B314003DDAF8 /* CCAspectTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAspectTypes.h; sourceTree = "<group>"; };
-		8104BF8122A7B314003DDAF8 /* NSInvocation+Aspects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSInvocation+Aspects.m"; sourceTree = "<group>"; };
-		8104BF8222A7B314003DDAF8 /* AspectInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AspectInfo.m; sourceTree = "<group>"; };
-		8104BF8322A7B314003DDAF8 /* Aspects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Aspects.h; sourceTree = "<group>"; };
-		8104BF8422A7B314003DDAF8 /* NSInvocation+Aspects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSInvocation+Aspects.h"; sourceTree = "<group>"; };
-		8104BF8522A7B314003DDAF8 /* Aspects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Aspects.m; sourceTree = "<group>"; };
-		8104BF8622A7B314003DDAF8 /* AspectProtocols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AspectProtocols.h; sourceTree = "<group>"; };
-		8104BF8722A7B314003DDAF8 /* AspectInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AspectInfo.h; sourceTree = "<group>"; };
-		8104BF8922A7B314003DDAF8 /* CCAspectDebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCAspectDebugViewController.m; sourceTree = "<group>"; };
-		8104BF8A22A7B314003DDAF8 /* CCAspectDebugViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAspectDebugViewController.h; sourceTree = "<group>"; };
-		8104BF9722A7B4CE003DDAF8 /* CCAspect+ConfigLoad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CCAspect+ConfigLoad.h"; sourceTree = "<group>"; };
-		8104BF9822A7B4CE003DDAF8 /* CCAspect+ConfigLoad.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "CCAspect+ConfigLoad.m"; sourceTree = "<group>"; };
 		8104BF9A22A7C988003DDAF8 /* IRRouterContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRRouterContext.h; sourceTree = "<group>"; };
 		8104BF9B22A7C988003DDAF8 /* IRRouterContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IRRouterContext.m; sourceTree = "<group>"; };
 		8104BFA722A8C537003DDAF8 /* IRCommonCellModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRCommonCellModel.h; sourceTree = "<group>"; };
@@ -596,61 +561,6 @@
 				1F5255C12A7E313323610965 /* Pods-iReader.release.xcconfig */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		8104BF6D22A7B314003DDAF8 /* CCAspect */ = {
-			isa = PBXGroup;
-			children = (
-				8104BF7422A7B314003DDAF8 /* Model */,
-				8104BF8022A7B314003DDAF8 /* Base */,
-				8104BF8822A7B314003DDAF8 /* Debug */,
-				8104BF6E22A7B314003DDAF8 /* CCAspect.h */,
-				8104BF7122A7B314003DDAF8 /* CCAspect.m */,
-				8104BF9722A7B4CE003DDAF8 /* CCAspect+ConfigLoad.h */,
-				8104BF9822A7B4CE003DDAF8 /* CCAspect+ConfigLoad.m */,
-				8104BF6F22A7B314003DDAF8 /* CCAspect+CustomInvokeInstead.h */,
-				8104BF7322A7B314003DDAF8 /* CCAspect+CustomInvokeInstead.m */,
-			);
-			path = CCAspect;
-			sourceTree = "<group>";
-		};
-		8104BF7422A7B314003DDAF8 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				8104BF7F22A7B314003DDAF8 /* CCAspectTypes.h */,
-				8104BF7622A7B314003DDAF8 /* CCAspectModel.h */,
-				8104BF7E22A7B314003DDAF8 /* CCAspectModel.m */,
-				8104BF7A22A7B314003DDAF8 /* CCAspectArgument.h */,
-				8104BF7522A7B314003DDAF8 /* CCAspectArgument.m */,
-				8104BF7C22A7B314003DDAF8 /* CCAspectMessage.h */,
-				8104BF7722A7B314003DDAF8 /* CCAspectMessage.m */,
-				8104BF7822A7B314003DDAF8 /* CCAspectInstance.h */,
-				8104BF7D22A7B314003DDAF8 /* CCAspectInstance.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		8104BF8022A7B314003DDAF8 /* Base */ = {
-			isa = PBXGroup;
-			children = (
-				8104BF8322A7B314003DDAF8 /* Aspects.h */,
-				8104BF8522A7B314003DDAF8 /* Aspects.m */,
-				8104BF8722A7B314003DDAF8 /* AspectInfo.h */,
-				8104BF8222A7B314003DDAF8 /* AspectInfo.m */,
-				8104BF8622A7B314003DDAF8 /* AspectProtocols.h */,
-				8104BF8422A7B314003DDAF8 /* NSInvocation+Aspects.h */,
-				8104BF8122A7B314003DDAF8 /* NSInvocation+Aspects.m */,
-			);
-			path = Base;
-			sourceTree = "<group>";
-		};
-		8104BF8822A7B314003DDAF8 /* Debug */ = {
-			isa = PBXGroup;
-			children = (
-				8104BF8A22A7B314003DDAF8 /* CCAspectDebugViewController.h */,
-				8104BF8922A7B314003DDAF8 /* CCAspectDebugViewController.m */,
-			);
-			path = Debug;
 			sourceTree = "<group>";
 		};
 		8104BFA522A8C4E1003DDAF8 /* CollectionViewCell */ = {
@@ -1178,7 +1088,6 @@
 		81B3747120F8AA6200D86F5C /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				8104BF6D22A7B314003DDAF8 /* CCAspect */,
 				817AB2262159D89500DF3B9D /* IRBaseViewController */,
 				81E412AB21512AA400951D18 /* IRObject */,
 				810C505E212FF53D000DA3B5 /* IRCacheManager */,
@@ -1693,7 +1602,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				81154064215A203A00F86A88 /* NSAttributedString+HTML.m in Sources */,
-				8104BF9222A7B314003DDAF8 /* CCAspectModel.m in Sources */,
 				DFD88F542162192200C3B1D9 /* IRDebugViewController.m in Sources */,
 				81E2851D20F8592B00348253 /* BookChapterListController.m in Sources */,
 				810A4CFD215DCB3B00296DFF /* IRSettingViewController.m in Sources */,
@@ -1717,12 +1625,10 @@
 				810089B2210B1D7200C05391 /* IRPageModel.m in Sources */,
 				8115405B215A203A00F86A88 /* DTTextBlock.m in Sources */,
 				81154041215A203A00F86A88 /* DTTextAttachmentHTMLElement.m in Sources */,
-				8104BF8D22A7B314003DDAF8 /* CCAspect+CustomInvokeInstead.m in Sources */,
 				81E2886A20F34700006DB29B /* GDataXMLNode.m in Sources */,
 				81154060215A203A00F86A88 /* NSAttributedString+SmallCaps.m in Sources */,
 				810C5061212FF565000DA3B5 /* IRCacheManager.m in Sources */,
 				81154049215A203A00F86A88 /* DTHTMLParserTextNode.m in Sources */,
-				8104BF9622A7B314003DDAF8 /* CCAspectDebugViewController.m in Sources */,
 				81153EB3215A153D00F86A88 /* NSString+DTURLEncoding.m in Sources */,
 				81E2889320F4A4D7006DB29B /* IROpfManifest.m in Sources */,
 				81154074215A235700F86A88 /* default.css.c in Sources */,
@@ -1752,7 +1658,6 @@
 				81E2888D20F48A46006DB29B /* IRResource.m in Sources */,
 				8115402F215A203A00F86A88 /* DTLazyImageView.m in Sources */,
 				81154043215A203A00F86A88 /* DTHTMLElement.m in Sources */,
-				8104BF9922A7B4CE003DDAF8 /* CCAspect+ConfigLoad.m in Sources */,
 				DFDC3BD6205665E100E40E27 /* main.m in Sources */,
 				81153ECC215A153E00F86A88 /* NSData+DTCrypto.m in Sources */,
 				810688C021192E330038B94A /* IRUIUtilites.m in Sources */,
@@ -1762,7 +1667,6 @@
 				8115404C215A203A00F86A88 /* DTCoreTextParagraphStyle.m in Sources */,
 				81153EB5215A153D00F86A88 /* DTBlockFunctions.m in Sources */,
 				8115406D215A203A00F86A88 /* DTCoreTextLayoutFrame+Cursor.m in Sources */,
-				8104BF9522A7B314003DDAF8 /* Aspects.m in Sources */,
 				81154036215A203A00F86A88 /* DTAttributedTextCell.m in Sources */,
 				81154040215A203A00F86A88 /* DTBreakHTMLElement.m in Sources */,
 				81153EC8215A153E00F86A88 /* DTHTMLParser.m in Sources */,
@@ -1789,7 +1693,6 @@
 				81154046215A203A00F86A88 /* DTListItemHTMLElement.m in Sources */,
 				8104BFAC22A8C555003DDAF8 /* IRCommonCellSectionModel.m in Sources */,
 				811170B221359848003CC400 /* HexColors.m in Sources */,
-				8104BF8C22A7B314003DDAF8 /* CCAspect.m in Sources */,
 				81153EBE215A153E00F86A88 /* UIView+DTFoundation.m in Sources */,
 				81E2887920F38C4E006DB29B /* IRContainer.m in Sources */,
 				81153EC3215A153E00F86A88 /* DTTiledLayerWithoutFade.m in Sources */,
@@ -1803,7 +1706,6 @@
 				DFEADB8620FB82B100BB4F97 /* UIColor+Extension.m in Sources */,
 				DFDC3C0F2056690000E40E27 /* IRMainViewController.m in Sources */,
 				81E412B4215131FA00951D18 /* IRObject+NSCoding.m in Sources */,
-				8104BF9322A7B314003DDAF8 /* NSInvocation+Aspects.m in Sources */,
 				8145189520F307E000DC5F3D /* IREpubBook.m in Sources */,
 				81FD55362126CC7B005AA7AF /* IRPageViewController.m in Sources */,
 				8115404B215A203A00F86A88 /* NSDictionary+DTCoreText.m in Sources */,
@@ -1817,7 +1719,6 @@
 				81154056215A203A00F86A88 /* DTCSSStylesheet.m in Sources */,
 				81153EB6215A153E00F86A88 /* DTFolderMonitor.m in Sources */,
 				8115405E215A203A00F86A88 /* NSMutableString+HTML.m in Sources */,
-				8104BF9122A7B314003DDAF8 /* CCAspectInstance.m in Sources */,
 				810688BD21182BB20038B94A /* IRReaderNavigationView.m in Sources */,
 				817AB2292159D8BC00DF3B9D /* IRBaseViewController.m in Sources */,
 				81154033215A203A00F86A88 /* DTAccessibilityElement.m in Sources */,
@@ -1838,8 +1739,6 @@
 				8115406C215A203A00F86A88 /* NSAttributedString+DTCoreText.m in Sources */,
 				81153EC7215A153E00F86A88 /* NSURL+DTUnshorten.m in Sources */,
 				810C5054212E63F6000DA3B5 /* IRBookCell.m in Sources */,
-				8104BF9422A7B314003DDAF8 /* AspectInfo.m in Sources */,
-				8104BF8E22A7B314003DDAF8 /* CCAspectArgument.m in Sources */,
 				81FD55392126CD22005AA7AF /* IRReadingViewController.m in Sources */,
 				81153EBA215A153E00F86A88 /* NSString+DTUtilities.m in Sources */,
 				81153ECB215A153E00F86A88 /* DTCoreGraphicsUtils.m in Sources */,
@@ -1850,7 +1749,6 @@
 				8104BFB822A8EBDA003DDAF8 /* IRCommonSwitchCell.m in Sources */,
 				81E2852020F85A3B00348253 /* BookChapterListCell.m in Sources */,
 				810C5057212E6459000DA3B5 /* IRHomeViewController.m in Sources */,
-				8104BF8F22A7B314003DDAF8 /* CCAspectMessage.m in Sources */,
 				81154034215A203A00F86A88 /* DTAttributedTextView.m in Sources */,
 				81153EB4215A153D00F86A88 /* DTFoundationConstants.m in Sources */,
 				81153ECA215A153E00F86A88 /* NSString+DTFormatNumbers.m in Sources */,
