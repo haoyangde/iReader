@@ -9,6 +9,7 @@ target 'iReader' do
     pod 'SVProgressHUD', '2.1.2'
     pod 'Masonry', '1.1.0'
     pod 'ZipArchive', '~> 1.4.0'
+    pod 'JPAspect'
     pod 'FLEX', '~> 2.0', :configurations => ['Debug']
 
 end
